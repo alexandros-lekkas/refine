@@ -104,21 +104,15 @@ export function WeekViewCalendar({
   const handleMouseMove = (e: MouseEvent) => {
     if (!dragState && !resizeState) return;
 
-    const dayWidth = document.querySelector(".day-column")?.getBoundingClientRect().width || 0;
-    const timeHeight = document.querySelector(".time-slot")?.getBoundingClientRect().height || 0;
+    const dayWidth =
+      document.querySelector(".day-column")?.getBoundingClientRect().width || 0;
+    const timeHeight =
+      document.querySelector(".time-slot")?.getBoundingClientRect().height || 0;
 
     if (dragState && isDragging) {
       const deltaX = (e.clientX - dragState.initialX) / dayWidth;
       const deltaY = (e.clientY - dragState.initialY) / timeHeight;
 
-      const updatedEvent = {
-        ...dragState.event,
-        startTime: addMinutes(dragState.event.startTime, deltaY * 60),
-        endTime: addMinutes(dragState.event.endTime, deltaY * 60),
-        day: addDays(dragState.event.day, deltaX),
-      };
-
-      onEventUpdate(updatedEvent);
       setDragState({
         ...dragState,
         offsetX: deltaX,
@@ -128,35 +122,52 @@ export function WeekViewCalendar({
 
     if (resizeState) {
       const deltaY = (e.clientY - resizeState.initialY) / timeHeight;
-      const updatedEvent = { ...resizeState.event };
-      
-      if (resizeState.edge === "start") {
-        const newStartTime = addMinutes(resizeState.event.startTime, deltaY * 60);
-        if (newStartTime < resizeState.event.endTime) {
-          updatedEvent.startTime = newStartTime;
-        }
-      } else {
-        const newEndTime = addMinutes(resizeState.event.endTime, deltaY * 60);
-        if (newEndTime > resizeState.event.startTime) {
-          updatedEvent.endTime = newEndTime;
-        }
-      }
-      
-      onEventUpdate(updatedEvent);
       setResizeState({
         ...resizeState,
         currentY: e.clientY,
+        deltaY,
       });
     }
   };
 
   const handleMouseUp = (e: MouseEvent) => {
     if (dragState && isDragging) {
+      const updatedEvent = {
+        ...dragState.event,
+        startTime: addMinutes(
+          dragState.event.startTime,
+          dragState.offsetY * 60
+        ),
+        endTime: addMinutes(dragState.event.endTime, dragState.offsetY * 60),
+        day: addDays(dragState.event.day, dragState.offsetX),
+      };
+      onEventUpdate(updatedEvent);
       setDragState(null);
       setIsDragging(false);
     }
 
     if (resizeState) {
+      const updatedEvent = { ...resizeState.event };
+
+      if (resizeState.edge === "start") {
+        const newStartTime = addMinutes(
+          resizeState.event.startTime,
+          resizeState.deltaY * 60
+        );
+        if (newStartTime < resizeState.event.endTime) {
+          updatedEvent.startTime = newStartTime;
+        }
+      } else {
+        const newEndTime = addMinutes(
+          resizeState.event.endTime,
+          resizeState.deltaY * 60
+        );
+        if (newEndTime > resizeState.event.startTime) {
+          updatedEvent.endTime = newEndTime;
+        }
+      }
+
+      onEventUpdate(updatedEvent);
       setResizeState(null);
     }
   };
@@ -184,6 +195,7 @@ export function WeekViewCalendar({
       edge,
       initialY: e.clientY,
       currentY: e.clientY,
+      deltaY: 0,
     });
   };
 
@@ -200,15 +212,36 @@ export function WeekViewCalendar({
     const startMinutes =
       event.startTime.getHours() * 60 + event.startTime.getMinutes();
     const durationMinutes = differenceInMinutes(event.endTime, event.startTime);
-    const headerHeight = 48; // Height of the day header
+    const headerHeight = 48;
+
+    let top = headerHeight + (startMinutes / 60) * CELL_HEIGHT * 4;
+    let height = (durationMinutes / 60) * CELL_HEIGHT * 4;
+
+    // Apply drag offset if being dragged
+    if (dragState?.event.id === event.id) {
+      top += dragState.offsetY * CELL_HEIGHT * 4;
+    }
+
+    // Apply resize offset if being resized
+    if (resizeState?.event.id === event.id) {
+      if (resizeState.edge === "start") {
+        top += resizeState.deltaY * CELL_HEIGHT * 4;
+        height -= resizeState.deltaY * CELL_HEIGHT * 4;
+      } else {
+        height += resizeState.deltaY * CELL_HEIGHT * 4;
+      }
+    }
 
     return {
-      top: `${headerHeight + (startMinutes / 60) * CELL_HEIGHT * 4}px`,
-      height: `${(durationMinutes / 60) * CELL_HEIGHT * 4}px`,
+      top: `${top}px`,
+      height: `${height}px`,
       position: "absolute",
       left: 0,
       right: 0,
-      zIndex: 10,
+      zIndex:
+        dragState?.event.id === event.id || resizeState?.event.id === event.id
+          ? 50
+          : 10,
     };
   };
 

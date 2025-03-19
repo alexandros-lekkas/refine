@@ -30,6 +30,7 @@ export interface ResizeState {
   edge: "start" | "end";
   initialY: number;
   currentY: number;
+  deltaY: number;
 }
 
 export interface CalendarEventProps {
