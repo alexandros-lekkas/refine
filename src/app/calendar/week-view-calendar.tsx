@@ -102,45 +102,62 @@ export function WeekViewCalendar({
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!dragState || !isDragging) return;
+    if (!dragState && !resizeState) return;
 
-    const dayWidth =
-      document.querySelector(".day-column")?.getBoundingClientRect().width || 0;
-    const timeHeight =
-      document.querySelector(".time-slot")?.getBoundingClientRect().height || 0;
+    const dayWidth = document.querySelector(".day-column")?.getBoundingClientRect().width || 0;
+    const timeHeight = document.querySelector(".time-slot")?.getBoundingClientRect().height || 0;
 
-    const deltaX = Math.round((e.clientX - dragState.initialX) / dayWidth);
-    const deltaY = Math.round((e.clientY - dragState.initialY) / timeHeight);
+    if (dragState && isDragging) {
+      const deltaX = (e.clientX - dragState.initialX) / dayWidth;
+      const deltaY = (e.clientY - dragState.initialY) / timeHeight;
 
-    // Update event position
-    const updatedEvent = {
-      ...dragState.event,
-      startTime: addMinutes(dragState.event.startTime, deltaY * 30),
-      endTime: addMinutes(dragState.event.endTime, deltaY * 30),
-      day: addDays(dragState.event.day, deltaX),
-    };
+      const updatedEvent = {
+        ...dragState.event,
+        startTime: addMinutes(dragState.event.startTime, deltaY * 60),
+        endTime: addMinutes(dragState.event.endTime, deltaY * 60),
+        day: addDays(dragState.event.day, deltaX),
+      };
 
-    setDragState({
-      ...dragState,
-      offsetX: deltaX,
-      offsetY: deltaY,
-    });
+      onEventUpdate(updatedEvent);
+      setDragState({
+        ...dragState,
+        offsetX: deltaX,
+        offsetY: deltaY,
+      });
+    }
+
+    if (resizeState) {
+      const deltaY = (e.clientY - resizeState.initialY) / timeHeight;
+      const updatedEvent = { ...resizeState.event };
+      
+      if (resizeState.edge === "start") {
+        const newStartTime = addMinutes(resizeState.event.startTime, deltaY * 60);
+        if (newStartTime < resizeState.event.endTime) {
+          updatedEvent.startTime = newStartTime;
+        }
+      } else {
+        const newEndTime = addMinutes(resizeState.event.endTime, deltaY * 60);
+        if (newEndTime > resizeState.event.startTime) {
+          updatedEvent.endTime = newEndTime;
+        }
+      }
+      
+      onEventUpdate(updatedEvent);
+      setResizeState({
+        ...resizeState,
+        currentY: e.clientY,
+      });
+    }
   };
 
   const handleMouseUp = (e: MouseEvent) => {
     if (dragState && isDragging) {
-      const updatedEvent = {
-        ...dragState.event,
-        startTime: addMinutes(
-          dragState.event.startTime,
-          dragState.offsetY * 30
-        ),
-        endTime: addMinutes(dragState.event.endTime, dragState.offsetY * 30),
-        day: addDays(dragState.event.day, dragState.offsetX),
-      };
-      onEventUpdate(updatedEvent);
       setDragState(null);
       setIsDragging(false);
+    }
+
+    if (resizeState) {
+      setResizeState(null);
     }
   };
 
