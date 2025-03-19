@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 import "./globals.css";
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import { ThemeProvider } from "next-themes";
-import { cn } from "@/lib/utils";
-import { Sidebar } from "@/components/layout/sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 
 const figtree = Figtree({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Refine",
-  description: "Task Management App",
+  description: "Your personal productivity companion",
 };
 
 export default function RootLayout({
@@ -27,9 +28,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex h-screen">
-            <Sidebar />
-            <div className="flex-1 overflow-auto">{children}</div>
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
           </div>
           <Toaster />
         </ThemeProvider>
