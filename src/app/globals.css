@@ -115,15 +115,13 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
   }
 }
 
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
 
 @layer base {
@@ -190,11 +188,6 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+@layer utilities {
+  /* Remove scrollbar utilities as they are no longer needed */
 }
