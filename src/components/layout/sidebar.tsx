@@ -1,75 +1,68 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Home, Calendar, ListTodo, ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Calendar, Home, Settings, ListTodo } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+
+const sidebarItems = [
+  {
+    icon: Home,
+    label: "Home",
+    href: "/",
+  },
+  {
+    icon: ListTodo,
+    label: "Tasks",
+    href: "/tasks",
+  },
+  {
+    icon: Calendar,
+    label: "Calendar",
+    href: "/calendar",
+  },
+] as const;
+
+const settingsItem = {
+  icon: Settings,
+  label: "Settings",
+  href: "/settings",
+} as const;
 
 export function Sidebar() {
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  const navigation = [
-    {
-      name: "Home",
-      href: "/",
-      icon: Home,
-    },
-    {
-      name: "Tasks",
-      href: "/tasks",
-      icon: ListTodo,
-    },
-    {
-      name: "Calendar",
-      href: "/calendar",
-      icon: Calendar,
-    },
-  ];
 
   return (
-    <div
-      className={cn(
-        "flex h-full flex-col border-r bg-sidebar transition-all duration-300",
-        isCollapsed ? "w-[60px]" : "w-[200px]"
-      )}
-    >
-      <div className="flex items-center justify-between p-4">
-        {!isCollapsed && <h1 className="text-2xl font-bold text-primary">refine</h1>}
+    <div className="w-[200px] border-r flex flex-col gap-2 p-2">
+      <div className="text-xl font-semibold px-2 py-4">Refine</div>
+      <nav className="flex flex-col gap-1">
+        {sidebarItems.map((item) => (
+          <Link key={item.href} href={item.href}>
+            <Button
+              variant="ghost"
+              className={cn("w-full justify-start gap-2", {
+                "bg-accent": pathname === item.href,
+              })}
+            >
+              <item.icon className="h-4 w-4" />
+              {item.label}
+            </Button>
+          </Link>
+        ))}
+      </nav>
+      <div className="flex-1" />
+      <Link href={settingsItem.href}>
         <Button
           variant="ghost"
-          size="icon"
-          className="ml-auto"
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          className={cn("w-full justify-start gap-2", {
+            "bg-accent": pathname === settingsItem.href,
+          })}
         >
-          {isCollapsed ? (
-            <ChevronRight className="h-4 w-4" />
-          ) : (
-            <ChevronLeft className="h-4 w-4" />
-          )}
+          <settingsItem.icon className="h-4 w-4" />
+          {settingsItem.label}
         </Button>
-      </div>
-      <nav className="flex-1 space-y-1 p-2">
-        {navigation.map((item) => {
-          const isActive = pathname === item.href;
-          return (
-            <Link key={item.name} href={item.href}>
-              <Button
-                variant="ghost"
-                className={cn(
-                  "w-full justify-start gap-2",
-                  isActive && "bg-sidebar-accent text-sidebar-accent-foreground"
-                )}
-              >
-                <item.icon className="h-4 w-4" />
-                {!isCollapsed && item.name}
-              </Button>
-            </Link>
-          );
-        })}
-      </nav>
+      </Link>
     </div>
   );
 }

@@ -1,29 +1,38 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Figtree } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
+import { cn } from "@/lib/utils";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+const figtree = Figtree({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "refine",
-  description: "Smart task management for students",
+  title: "Refine",
+  description: "Task Management App",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className={inter.className}>
-      <body>
-        <div className="flex h-screen">
-          <Sidebar />
-          <div className="flex-1 overflow-auto">{children}</div>
-        </div>
-        <Toaster />
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn(figtree.className, "min-h-screen")}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex h-screen">
+            <Sidebar />
+            <div className="flex-1 overflow-auto">{children}</div>
+          </div>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
