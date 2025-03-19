@@ -23,7 +23,7 @@ export function CalendarEvent({
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 0) return; // Only handle left clicks
-    if ((e.target as HTMLElement).classList.contains('resize-handle')) return;
+    if ((e.target as HTMLElement).classList.contains("resize-handle")) return;
 
     const startDrag = () => {
       setIsDragStarted(true);
@@ -62,7 +62,7 @@ export function CalendarEvent({
     };
   }, []);
 
-  const colorClasses = COLORS[event.color as ColorKey || 'blue'];
+  const colorClasses = COLORS[(event.color as ColorKey) || "blue"];
 
   return (
     <ContextMenuTrigger>
@@ -72,12 +72,14 @@ export function CalendarEvent({
           colorClasses.bg,
           colorClasses.text,
           colorClasses.border,
-          isInteracting ? "shadow-lg opacity-90 cursor-move z-50" : "hover:shadow-md cursor-pointer",
+          isInteracting
+            ? "shadow-lg opacity-90 cursor-move z-50"
+            : "hover:shadow-md cursor-pointer",
           isInteracting && "ring-2 ring-primary ring-offset-2"
         )}
         style={{
           ...style,
-          transform: isBeingDragged ? 'scale(1.02)' : undefined,
+          transform: isBeingDragged ? "scale(1.02)" : undefined,
         }}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
@@ -109,4 +111,4 @@ export function CalendarEvent({
       </div>
     </ContextMenuTrigger>
   );
-} 
+}
