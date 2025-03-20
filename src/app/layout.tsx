@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 
-import { TaskProvider } from "@/lib/contexts/TaskContext";
 import { AuthProvider } from "@/lib/providers/auth";
 
 import { cn } from "@/lib/utils";
@@ -33,12 +32,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <TaskProvider>
               <div className="min-h-screen flex flex-col">
                 <main className="flex-1">{children}</main>
               </div>
+
               <Toaster />
-            </TaskProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>
