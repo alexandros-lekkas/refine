@@ -144,13 +144,50 @@
   }
   body {
     @apply bg-background text-foreground;
+    scroll-behavior: smooth;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 }
 
 @tailwind utilities;
 
+/* Magnetic Snap Scrolling */
+html {
+  scroll-snap-type: y mandatory;
+  height: 100%;
+}
+
+.min-h-screen {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0A0F;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 61, 192, 0.2);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 61, 192, 0.4);
+}
+
 @layer base {
   :root {
+    --radius: 0.5rem;
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -178,8 +215,6 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
   }
 
   .dark {
