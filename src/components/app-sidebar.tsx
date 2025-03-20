@@ -60,7 +60,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              className="bg-primary/20 text-primary py-6 px-4 text-lg transition-all duration-150 cursor-pointer hover:bg-primary/20 hover:text-primary"
+              className="bg-secondary text-foreground py-6 px-4 text-lg transition-all duration-150 cursor-pointer"
             >
               <Link href="/dashboard" className="flex items-center gap-2">
                 <GalleryVerticalEnd className="h-4 w-4" />
