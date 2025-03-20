@@ -4,6 +4,7 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react";
+import { createContext, useContext } from "react";
 
 import { useIsMobile } from "@/lib/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -696,6 +697,126 @@ function SidebarMenuSubButton({
       {...props}
     />
   );
+}
+
+const sidebarVariants = cva(
+  "fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full border-r bg-background transition-transform sm:translate-x-0",
+  {
+    variants: {
+      collapsed: {
+        true: "w-16",
+        false: "w-64",
+      },
+    },
+    defaultVariants: {
+      collapsed: false,
+    },
+  }
+)
+
+export interface SidebarProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof sidebarVariants> {}
+
+export function Sidebar({ className, collapsed, ...props }: SidebarProps) {
+  const { collapsed: isCollapsed } = useSidebar()
+  return (
+    <aside
+      className={cn(sidebarVariants({ collapsed: isCollapsed }), className)}
+      {...props}
+    />
+  )
+}
+
+export function SidebarContent({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("px-3 py-4", className)} {...props} />
+}
+
+export function SidebarHeader({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("px-3 py-2", className)} {...props} />
+}
+
+export function SidebarFooter({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("mt-auto px-3 py-2", className)} {...props} />
+}
+
+export function SidebarGroup({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("space-y-3", className)} {...props} />
+}
+
+export function SidebarGroupLabel({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn("px-2 text-xs font-semibold text-muted-foreground", className)}
+      {...props}
+    />
+  )
+}
+
+export function SidebarGroupContent({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("space-y-1", className)} {...props} />
+}
+
+export function SidebarMenu({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return <nav className={cn("", className)} {...props} />
+}
+
+export function SidebarMenuItem({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLLIElement>) {
+  return <li className={cn("px-2", className)} {...props} />
+}
+
+export function SidebarMenuButton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLAnchorElement>) {
+  return (
+    <a
+      className={cn(
+        "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+export function SidebarTrigger({
+  className,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      className={cn(
+        "inline-flex h-10 w-10 items-center justify-center rounded-lg border bg-background text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        className
+      )}
+      {...props}
+    />
+  )
 }
 
 export {
