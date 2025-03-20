@@ -16,6 +16,7 @@ export default function SignUpPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
   const supabase = createClient();
 
@@ -23,34 +24,41 @@ export default function SignUpPage() {
     e.preventDefault();
     try {
       // Sign up the user
-      const { data: authData, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${location.origin}/auth/callback`,
-        },
-      });
+      const { data: authData, error: signUpError } = await supabase.auth.signUp(
+        {
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${location.origin}/auth/callback`,
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+            },
+          },
+        }
+      );
 
-      if (signUpError) throw signUpError;
-
-      if (authData.user) {
-        // Create the user profile in the users table
-        const { error: profileError } = await supabase
-          .from("users")
-          .insert({
-            id: authData.user.id,
-            first_name: firstName,
-            last_name: lastName,
-          });
-
-        if (profileError) throw profileError;
+      if (signUpError) {
+        console.error("Signup error details:", {
+          message: signUpError.message,
+          status: signUpError.status,
+          name: signUpError.name,
+        });
+        throw signUpError;
       }
-      
+
+      setIsSuccess(true);
       // Show success message or redirect to a verification page
       router.push("/auth/verify-email");
-      router.refresh();
     } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      console.error("Full signup error:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(
+          "An unexpected error occurred during signup. Please try again."
+        );
+      }
     }
   };
 
@@ -77,6 +85,12 @@ export default function SignUpPage() {
               {error && (
                 <div className="rounded-md bg-destructive/15 p-4 text-sm text-destructive">
                   {error}
+                </div>
+              )}
+              {isSuccess && (
+                <div className="rounded-md bg-green-50 p-4 text-sm text-green-700">
+                  Account created successfully! Please check your email for
+                  verification.
                 </div>
               )}
               <div className="grid gap-6">
@@ -131,7 +145,10 @@ export default function SignUpPage() {
               </div>
               <div className="text-center text-sm">
                 Already have an account?{" "}
-                <Link href="/auth/login" className="underline underline-offset-4">
+                <Link
+                  href="/auth/login"
+                  className="underline underline-offset-4"
+                >
                   Sign in
                 </Link>
               </div>
@@ -152,4 +169,4 @@ export default function SignUpPage() {
       </div>
     </div>
   );
-} 
+}
