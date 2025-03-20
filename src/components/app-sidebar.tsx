@@ -59,12 +59,12 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>
+            <SidebarMenuButton
+              className="bg-primary/20 text-primary py-6 px-4 text-lg transition-all duration-150 cursor-pointer hover:bg-primary/20 hover:text-primary"
+            >
               <Link href="/dashboard" className="flex items-center gap-2">
-                  <GalleryVerticalEnd className="size-4" />
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Refine</span>
-                </div>
+                <GalleryVerticalEnd className="h-4 w-4" />
+                <span className="text-base font-semibold">Refine</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
