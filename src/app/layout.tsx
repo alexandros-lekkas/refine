@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import { TaskProvider } from "@/lib/contexts/TaskContext";
 
 const figtree = Figtree({ subsets: ["latin"] });
 
@@ -28,10 +27,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen flex flex-col">
-            <main className="flex-1">{children}</main>
-          </div>
-          <Toaster />
+          <TaskProvider>
+            <div className="min-h-screen flex flex-col">
+              <main className="flex-1">{children}</main>
+            </div>
+            <Toaster />
+          </TaskProvider>
         </ThemeProvider>
       </body>
     </html>

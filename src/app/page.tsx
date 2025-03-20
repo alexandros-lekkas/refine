@@ -1,99 +1,133 @@
 "use client";
 
 import { RainbowButton } from "@/components/magicui/rainbow-button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, CheckSquare, Calendar, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ArrowRight, CheckSquare, Calendar, Settings, Brain } from "lucide-react";
 import Link from "next/link";
+import { ParallaxSection } from "@/components/parallax-section";
+import { useTask } from "@/lib/contexts/TaskContext";
+import { format } from "date-fns";
+
+function TaskPreview() {
+  const { tasks } = useTask();
+
+  return (
+    <div className="space-y-4">
+      {tasks.slice(0, 3).map((task) => (
+        <Card key={task.id} className="bg-black/40 backdrop-blur-sm border-white/10">
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <span className="text-sm font-medium text-primary">{task.courseCode}</span>
+                <h3 className="text-lg font-semibold text-white">{task.title}</h3>
+              </div>
+              <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                task.status === "due-today" ? "bg-red-500/20 text-red-300" :
+                task.status === "due-soon" ? "bg-blue-500/20 text-blue-300" :
+                "bg-gray-500/20 text-gray-300"
+              }`}>
+                {format(task.dueDate, "MMM d")}
+              </span>
+            </div>
+            <div className="text-sm text-gray-400">
+              {task.phases && task.phases.length > 0 && (
+                <div className="mt-2 space-y-1">
+                  {task.phases.slice(0, 2).map((phase) => (
+                    <div key={phase.id} className="flex items-center">
+                      <CheckSquare className="h-4 w-4 mr-2 text-primary/60" />
+                      <span>{phase.title}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+function AIWritingPreview() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-black/40 backdrop-blur-sm border-white/10 rounded-lg p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Brain className="h-5 w-5 text-primary" />
+          <span className="text-primary font-medium">AI Assistant</span>
+        </div>
+        <div className="space-y-2 text-gray-300">
+          <p>Based on your task, here's a suggested study plan:</p>
+          <ul className="list-disc list-inside space-y-1 text-sm">
+            <li>Break down the neural network implementation into modules</li>
+            <li>Start with data preprocessing (1.5 hours)</li>
+            <li>Focus on model architecture (2 hours)</li>
+            <li>Test and validate results (1 hour)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col">
+      {/* Hero Section */}
       <section className="w-full min-h-[80vh] flex items-center justify-center text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-primary/5 to-background" />
         <div className="container mx-auto px-4 relative">
           <h1 className="text-5xl md:text-7xl font-bold mb-8 animate-in fade-in slide-in-from-top-4 duration-1000">
-            Welcome to{" "}
+            STUDY SMARTER,{" "}
             <span className="animate-in fade-in slide-in-from-bottom-4 duration-1000 bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-pink-500">
-              Refine
+              LEARN BETTER
             </span>
           </h1>
           <p className="text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
-            Your personal productivity companion. Organize tasks, manage your
-            calendar, and stay focused on what matters most. Hope you enjoy. 
+            Your AI-powered academic companion. Organize tasks, optimize study time, and excel in your courses.
           </p>
-          <Link href="/dashboard">
-            <RainbowButton>
-              Get Started
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </RainbowButton>
-          </Link>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="w-full py-20 bg-muted/50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            Features
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 rounded-lg bg-background shadow-lg hover:shadow-xl transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <CheckSquare className="h-6 w-6 text-primary" />
+          <div className="flex flex-col items-center gap-8">
+            <Link href="/dashboard">
+              <RainbowButton>
+                Join Early Access
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </RainbowButton>
+            </Link>
+            <div className="flex gap-8 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <CheckSquare className="h-4 w-4 text-primary" />
+                <span>50+ Universities</span>
               </div>
-              <h3 className="text-xl font-semibold mb-4">Task Management</h3>
-              <p className="text-muted-foreground">
-                Organize your tasks with ease. Create, edit, and track your
-                progress all in one place.
-              </p>
-            </div>
-            <div className="p-6 rounded-lg bg-background shadow-lg hover:shadow-xl transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <Calendar className="h-6 w-6 text-primary" />
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-primary" />
+                <span>Limited Spots</span>
               </div>
-              <h3 className="text-xl font-semibold mb-4">
-                Calendar Integration
-              </h3>
-              <p className="text-muted-foreground">
-                Keep track of your schedule with our intuitive calendar
-                interface.
-              </p>
-            </div>
-            <div className="p-6 rounded-lg bg-background shadow-lg hover:shadow-xl transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <Settings className="h-6 w-6 text-primary" />
+              <div className="flex items-center gap-2">
+                <Settings className="h-4 w-4 text-primary" />
+                <span>2,000+ Students</span>
               </div>
-              <h3 className="text-xl font-semibold mb-4">Settings</h3>
-              <p className="text-muted-foreground">
-                Customize your experience with powerful settings and
-                preferences.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="w-full py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            Ready to Get Started?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
-            Join thousands of users who are already using Refine to boost their
-            productivity.
-          </p>
-          <Link href="/dashboard">
-            <RainbowButton
-              size="lg"
-              className="animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300"
-            >
-              Try it Now
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </RainbowButton>
-          </Link>
-        </div>
-      </section>
+      {/* Task Management Section */}
+      <ParallaxSection
+        title="SYNC ALL YOUR COURSES SEAMLESSLY"
+        description="Overwhelmed by multiple courses? Now all your assignments and deadlines are in one place."
+        imageSide="left"
+      >
+        <TaskPreview />
+      </ParallaxSection>
+
+      {/* AI Writing Section */}
+      <ParallaxSection
+        title="AI-POWERED STUDY ASSISTANCE FROM START TO FINISH"
+        description="Get personalized study plans, task breakdowns, and time estimates powered by AI."
+        imageSide="right"
+      >
+        <AIWritingPreview />
+      </ParallaxSection>
     </div>
   );
 }

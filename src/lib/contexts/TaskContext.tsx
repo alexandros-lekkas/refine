@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { addDays } from "date-fns";
 
 interface Phase {
   id: string;
@@ -45,155 +46,101 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: "1",
-      courseCode: "MATH-21",
-      courseTitle: "Mathematical Foundations for D...",
-      title: "Solving LP & Sensitivity with Duality",
+      courseCode: "CS-301",
+      courseTitle: "Machine Learning",
+      title: "Neural Networks Project",
       dueDate: new Date(),
-      dueTime: "11:59pm",
-      startMar: 4,
+      dueTime: "23:59",
+      startMar: 7,
       status: "due-today",
       completed: false,
-      description: "",
-      subtasks: [],
-      timeUsed: { hours: 0, minutes: 0 },
-      plannedTime: { hours: 1, minutes: 0 },
-      actualTime: "00:00:00",
-      type: "assignment"
+      description: "Implement a neural network from scratch",
+      plannedTime: { hours: 4, minutes: 30 },
+      phases: [
+        {
+          id: "1-1",
+          title: "Data Preprocessing",
+          description: "Clean and prepare the dataset",
+          plannedTime: { hours: 1, minutes: 30 },
+          dueDate: new Date(),
+          completed: false
+        },
+        {
+          id: "1-2",
+          title: "Model Implementation",
+          description: "Code the neural network",
+          plannedTime: { hours: 2, minutes: 0 },
+          dueDate: new Date(),
+          completed: false
+        }
+      ]
     },
     {
       id: "2",
-      courseCode: "ENGS-11",
-      courseTitle: "Cultural Studies and the Body",
-      title: "Cultural Analysis Essay",
-      dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-      dueTime: "11:59pm",
+      courseCode: "MATH-401",
+      courseTitle: "Advanced Statistics",
+      title: "Hypothesis Testing Assignment",
+      dueDate: addDays(new Date(), 3),
+      dueTime: "23:59",
       startMar: 5,
       status: "due-soon",
       completed: false,
-      description: "Write a 2500-word essay analyzing the cultural significance of body representation in modern media.",
-      subtasks: [],
-      timeUsed: { hours: 0, minutes: 0 },
-      plannedTime: { hours: 12, minutes: 0 },
-      actualTime: "00:00:00",
-      type: "essay",
-      isMultiPhase: true,
+      description: "Complete problems 1-5 from Chapter 7",
+      plannedTime: { hours: 2, minutes: 45 },
       phases: [
         {
-          id: "p1",
-          title: "Research & Planning",
-          description: "Research key concepts, gather sources, and create outline",
-          plannedTime: { hours: 3, minutes: 0 },
-          dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+          id: "2-1",
+          title: "Review Material",
+          description: "Study chapter content",
+          plannedTime: { hours: 1, minutes: 0 },
+          dueDate: addDays(new Date(), 3),
           completed: false
         },
         {
-          id: "p2",
-          title: "First Draft",
-          description: "Write first draft focusing on main arguments",
-          plannedTime: { hours: 4, minutes: 0 },
-          dueDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
-          completed: false
-        },
-        {
-          id: "p3",
-          title: "Review & Revision",
-          description: "Review feedback, revise content and structure",
-          plannedTime: { hours: 3, minutes: 0 },
-          dueDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000),
-          completed: false
-        },
-        {
-          id: "p4",
-          title: "Final Polish",
-          description: "Final proofreading and formatting",
-          plannedTime: { hours: 2, minutes: 0 },
-          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          id: "2-2",
+          title: "Solve Problems",
+          description: "Work on assigned problems",
+          plannedTime: { hours: 1, minutes: 45 },
+          dueDate: addDays(new Date(), 3),
           completed: false
         }
       ]
     },
     {
       id: "3",
-      courseCode: "ENGS-11",
-      courseTitle: "Cultural Studies and the Body",
-      title: "Perusal #4",
-      dueDate: new Date(),
-      dueTime: "11:59pm",
+      courseCode: "PHYS-201",
+      courseTitle: "Quantum Mechanics",
+      title: "Wave Functions Essay",
+      dueDate: addDays(new Date(), 7),
+      dueTime: "23:59",
       startMar: 3,
-      status: "due-soon",
-      completed: false,
-      description: "",
-      subtasks: [],
-      timeUsed: { hours: 0, minutes: 0 },
-      plannedTime: { hours: 1, minutes: 0 },
-      actualTime: "00:00:00",
-      type: "assignment"
-    },
-    {
-      id: "4",
-      courseCode: "FI118-14",
-      courseTitle: "Introduction to Finance",
-      title: "Financial Markets Quiz",
-      dueDate: new Date(),
-      dueTime: "11:59pm",
-      startMar: 5,
-      status: "due-soon",
-      completed: false,
-      description: "",
-      subtasks: [],
-      timeUsed: { hours: 0, minutes: 0 },
-      plannedTime: { hours: 1, minutes: 0 },
-      actualTime: "00:00:00",
-      type: "quiz"
-    },
-    {
-      id: "5",
-      courseCode: "HGHR-11",
-      courseTitle: "Human Dynamics in Organizations",
-      title: "Group Project: Organizational Culture Analysis",
-      dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
-      dueTime: "10:00pm",
-      startMar: 5,
       status: "start-soon",
       completed: false,
-      description: "Analyze the organizational culture of a chosen company and present findings.",
-      subtasks: [],
-      timeUsed: { hours: 0, minutes: 0 },
-      plannedTime: { hours: 20, minutes: 0 },
-      actualTime: "00:00:00",
-      type: "project",
-      isMultiPhase: true,
+      description: "Write a 2000-word essay on wave functions",
+      plannedTime: { hours: 5, minutes: 0 },
       phases: [
         {
-          id: "p1",
-          title: "Company Selection & Initial Research",
-          description: "Select target company and gather preliminary data",
-          plannedTime: { hours: 4, minutes: 0 },
-          dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+          id: "3-1",
+          title: "Research",
+          description: "Gather sources and take notes",
+          plannedTime: { hours: 2, minutes: 0 },
+          dueDate: addDays(new Date(), 7),
           completed: false
         },
         {
-          id: "p2",
-          title: "Data Collection",
-          description: "Conduct interviews and surveys",
-          plannedTime: { hours: 6, minutes: 0 },
-          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          id: "3-2",
+          title: "Writing",
+          description: "Draft the essay",
+          plannedTime: { hours: 2, minutes: 0 },
+          dueDate: addDays(new Date(), 7),
           completed: false
         },
         {
-          id: "p3",
-          title: "Analysis & Findings",
-          description: "Analyze data and document findings",
-          plannedTime: { hours: 6, minutes: 0 },
-          dueDate: new Date(Date.now() + 11 * 24 * 60 * 60 * 1000),
-          completed: false
-        },
-        {
-          id: "p4",
-          title: "Presentation Preparation",
-          description: "Create and rehearse presentation",
-          plannedTime: { hours: 4, minutes: 0 },
-          dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+          id: "3-3",
+          title: "Review",
+          description: "Edit and proofread",
+          plannedTime: { hours: 1, minutes: 0 },
+          dueDate: addDays(new Date(), 7),
           completed: false
         }
       ]
