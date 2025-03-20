@@ -107,14 +107,15 @@ const CoreFeatures = () => (
 );
 
 const problemsSection = (
-  <section className="bg-gradient-to-b from-white to-pink-50 py-24">
-    <div className="container mx-auto px-4">
-      <h2 className="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+  <section className="bg-gradient-to-br from-gray-900 to-black py-24 relative overflow-hidden">
+    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5"></div>
+    <div className="container mx-auto px-4 relative">
+      <h2 className="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
         Why Students Need Refine
       </h2>
       <div className="grid md:grid-cols-2 gap-12">
         <div className="space-y-6">
-          <h3 className="text-2xl font-semibold mb-8">Without Refine:</h3>
+          <h3 className="text-2xl font-semibold mb-8 text-white">Without Refine:</h3>
           {[
             { icon: '🔍', text: 'Hard to locate assignments across Canvas, Brightspace, and Blackboard' },
             { icon: '📅', text: 'Manually tracking deadlines leads to forgotten assignments' },
@@ -125,14 +126,14 @@ const problemsSection = (
             { icon: '📱', text: 'Switching between too many different tools' },
             { icon: '😓', text: 'School stress feels unmanageable' },
           ].map((item, i) => (
-            <div key={i} className="flex items-start space-x-4 p-4 bg-white rounded-lg shadow-sm">
-              <span className="text-2xl">{item.icon}</span>
-              <p className="text-gray-700">{item.text}</p>
+            <div key={i} className="group flex items-start space-x-4 p-4 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-red-500/20 transition-all">
+              <span className="text-2xl transform transition-transform group-hover:scale-110 group-hover:-rotate-12">{item.icon}</span>
+              <p className="text-gray-300 group-hover:text-white transition-colors">{item.text}</p>
             </div>
           ))}
         </div>
         <div className="space-y-6">
-          <h3 className="text-2xl font-semibold mb-8">With Refine:</h3>
+          <h3 className="text-2xl font-semibold mb-8 text-white">With Refine:</h3>
           {[
             { icon: '✨', text: 'All your assignments automatically synced in one place' },
             { icon: '🎯', text: 'Smart deadline tracking and reminders' },
@@ -143,15 +144,15 @@ const problemsSection = (
             { icon: '🎯', text: 'Everything integrated in one powerful tool' },
             { icon: '😌', text: 'Peace of mind with an organized system' },
           ].map((item, i) => (
-            <div key={i} className="flex items-start space-x-4 p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg shadow-sm border border-pink-100">
-              <span className="text-2xl">{item.icon}</span>
-              <p className="text-gray-700">{item.text}</p>
+            <div key={i} className="group flex items-start space-x-4 p-4 bg-gradient-to-br from-pink-500/10 to-purple-500/5 backdrop-blur-sm rounded-lg border border-pink-500/20 hover:border-pink-500/40 transition-all">
+              <span className="text-2xl transform transition-transform group-hover:scale-110 group-hover:-rotate-12">{item.icon}</span>
+              <p className="text-gray-300 group-hover:text-white transition-colors">{item.text}</p>
             </div>
           ))}
         </div>
       </div>
       <div className="mt-12 text-center">
-        <button className="px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-full text-lg font-semibold hover:opacity-90 transition-opacity">
+        <button className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-lg text-lg font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-pink-500/20">
           Start Organizing Your Academic Life
         </button>
       </div>
@@ -160,17 +161,19 @@ const problemsSection = (
 );
 
 const comparisonSection = (
-  <section className="py-24 bg-white">
-    <div className="container mx-auto px-4">
+  <section className="py-24 bg-gradient-to-br from-gray-900 to-black relative overflow-hidden">
+    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5"></div>
+    <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5"></div>
+    <div className="container mx-auto px-4 relative">
       <div className="grid md:grid-cols-2 gap-16">
         {/* Manual Planning Side */}
         <div className="space-y-8">
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-2">Manually plan your schedule</h3>
-            <p className="text-gray-600">The old way is holding you back</p>
+            <h3 className="text-2xl font-bold mb-2 text-white">Manually plan your schedule</h3>
+            <p className="text-gray-400">The old way is holding you back</p>
           </div>
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <ul className="space-y-4">
+          <div className="bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-800">
+            <ul className="space-y-6">
               {[
                 { text: 'Endless to-do lists', desc: 'Never check everything off' },
                 { text: 'Manual prioritization', desc: 'Worry priorities are wrong' },
@@ -183,11 +186,11 @@ const comparisonSection = (
                 { text: 'Stress and overwhelm', desc: 'Life feels out of control' },
                 { text: 'No personal life', desc: 'What is a weekend, anyway?' },
               ].map((item, i) => (
-                <li key={i} className="flex items-start">
-                  <span className="mr-3 text-red-500">❌</span>
+                <li key={i} className="flex items-start group">
+                  <span className="mr-3 text-red-500/80 group-hover:text-red-500 transition-colors">❌</span>
                   <div>
-                    <p className="font-medium">{item.text}</p>
-                    <p className="text-sm text-gray-600">{item.desc}</p>
+                    <p className="font-medium text-white group-hover:text-red-400 transition-colors">{item.text}</p>
+                    <p className="text-sm text-gray-400">{item.desc}</p>
                   </div>
                 </li>
               ))}
@@ -198,11 +201,11 @@ const comparisonSection = (
         {/* Refine AI Side */}
         <div className="space-y-8">
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-2">Let Refine build your schedule</h3>
-            <p className="text-gray-600">AI-powered academic planning</p>
+            <h3 className="text-2xl font-bold mb-2 text-white">Let Refine build your schedule</h3>
+            <p className="text-gray-400">AI-powered academic planning</p>
           </div>
-          <div className="bg-gradient-to-br from-pink-50 to-purple-50 p-6 rounded-xl border border-pink-100">
-            <ul className="space-y-4">
+          <div className="bg-gradient-to-br from-pink-500/10 to-purple-500/5 backdrop-blur-sm p-8 rounded-2xl border border-pink-500/20">
+            <ul className="space-y-6">
               {[
                 { text: 'Complete everything', desc: 'Refine builds a schedule for you' },
                 { text: 'Stop prioritizing', desc: 'Refine automatically prioritizes work' },
@@ -215,11 +218,11 @@ const comparisonSection = (
                 { text: 'Relax', desc: "Refine's got your back" },
                 { text: 'Enjoy life', desc: 'Refine protects your weekends' },
               ].map((item, i) => (
-                <li key={i} className="flex items-start">
-                  <span className="mr-3 text-blue-500">✓</span>
+                <li key={i} className="flex items-start group">
+                  <span className="mr-3 text-pink-500/80 group-hover:text-pink-500 transition-colors">✓</span>
                   <div>
-                    <p className="font-medium">{item.text}</p>
-                    <p className="text-sm text-gray-600">{item.desc}</p>
+                    <p className="font-medium text-white group-hover:text-pink-400 transition-colors">{item.text}</p>
+                    <p className="text-sm text-gray-400">{item.desc}</p>
                   </div>
                 </li>
               ))}
