@@ -22,11 +22,11 @@ export default function DashboardLayout({
         <SidebarProvider>
           <div className="flex h-screen bg-background">
             <AppSidebar />
-            <div className="flex-1">
-              <div className="flex h-full">
-                <SidebarTrigger className="mt-4 ml-4" />
-                <main className="flex-1 overflow-y-auto p-8">{children}</main>
+            <div className="flex-1 flex flex-col">
+              <div className="flex items-center p-4 border-b">
+                <SidebarTrigger />
               </div>
+              <main className="flex-1 overflow-y-auto p-8">{children}</main>
             </div>
           </div>
           <Toaster />
