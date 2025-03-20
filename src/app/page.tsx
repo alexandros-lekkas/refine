@@ -36,31 +36,13 @@ const Hero = () => (
           Seamlessly sync with your LMS, get AI-powered study plans, and never miss a deadline. Join thousands of students transforming their academic journey.
         </p>
 
-        <div className="flex flex-col sm:flex-row justify-center gap-6 mb-16">
+        <div className="flex flex-col sm:flex-row justify-center gap-6">
           <button className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl text-lg font-normal hover:opacity-90 transition-opacity">
             Sign Up & Sync Your LMS
           </button>
           <button className="px-8 py-4 bg-white/5 text-white rounded-xl text-lg font-normal hover:bg-white/10 transition-colors border border-white/5">
             See How It Works
           </button>
-        </div>
-
-        <div className="grid sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
-            <div className="text-2xl mb-2">🎯</div>
-            <p className="text-white font-light mb-2">Smart Planning</p>
-            <p className="text-gray-400 text-sm font-light">AI-powered study schedules that adapt to your style</p>
-          </div>
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
-            <div className="text-2xl mb-2">🔄</div>
-            <p className="text-white font-light mb-2">LMS Sync</p>
-            <p className="text-gray-400 text-sm font-light">Instant sync with Canvas, Brightspace & more</p>
-          </div>
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
-            <div className="text-2xl mb-2">📊</div>
-            <p className="text-white font-light mb-2">Time Analytics</p>
-            <p className="text-gray-400 text-sm font-light">Track progress and optimize your study time</p>
-          </div>
         </div>
       </div>
     </div>
@@ -424,24 +406,28 @@ const ComparisonSection = () => (
           <div className="space-y-6">
             {[
               {
+                icon: "✕",
                 title: "Manual Task Management",
                 description: "Spend hours organizing assignments and creating study schedules"
               },
               {
+                icon: "✕",
                 title: "No LMS Integration",
                 description: "Manually copy assignments and deadlines from your LMS"
               },
               {
+                icon: "✕",
                 title: "Basic Time Tracking",
                 description: "Simple timers without insights or pattern analysis"
               },
               {
+                icon: "✕",
                 title: "Static Planning",
                 description: "Fixed schedules that don't adapt to your progress"
               }
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-4">
-                <span className="text-red-500/80 text-lg mt-1">✕</span>
+              <div key={i} className="group flex items-start gap-4 p-4 rounded-xl border border-white/5 hover:border-pink-500 backdrop-blur-sm bg-white/[0.02] transition-all">
+                <span className="text-red-500/70 text-lg mt-1">{item.icon}</span>
                 <div>
                   <h4 className="text-white font-light mb-1">{item.title}</h4>
                   <p className="text-gray-400 text-sm font-light">{item.description}</p>
@@ -456,24 +442,28 @@ const ComparisonSection = () => (
           <div className="space-y-6">
             {[
               {
+                icon: "✓",
                 title: "AI-Powered Organization",
                 description: "Automatically organize and break down tasks into optimal study blocks"
               },
               {
+                icon: "✓",
                 title: "Seamless LMS Sync",
                 description: "Auto-sync with Canvas, Brightspace, and Blackboard in real-time"
               },
               {
+                icon: "✓",
                 title: "Smart Time Analytics",
                 description: "Track study patterns and get personalized optimization tips"
               },
               {
+                icon: "✓",
                 title: "Adaptive Planning",
                 description: "AI adjusts your schedule based on progress and learning style"
               }
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-4">
-                <span className="text-green-400 text-lg mt-1">✓</span>
+              <div key={i} className="group flex items-start gap-4 p-4 rounded-xl border border-white/5 hover:border-pink-500 backdrop-blur-sm bg-white/[0.02] transition-all">
+                <span className="text-green-400 text-lg mt-1">{item.icon}</span>
                 <div>
                   <h4 className="text-white font-light mb-1">{item.title}</h4>
                   <p className="text-gray-400 text-sm font-light">{item.description}</p>
@@ -482,47 +472,6 @@ const ComparisonSection = () => (
             ))}
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-);
-
-const CoreFeatures = () => (
-  <section className="bg-gradient-to-b from-[#0B0A0F] to-black py-32 relative overflow-hidden">
-    <div className="container mx-auto px-4">
-      <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">FOR STUDENTS</p>
-      <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">Core Features.</h2>
-      <p className="text-gray-400 text-xl font-light mb-24 max-w-3xl leading-relaxed opacity-75">
-        Core features enable real-time academic planning via automated task management and smart scheduling.
-      </p>
-      
-      <div className="grid md:grid-cols-2 gap-x-32 gap-y-20">
-        {[
-          {
-            title: "Task Management",
-            description: "Automated task breakdown to reduce manual planning workload.",
-          },
-          {
-            title: "LMS Integration",
-            description: "Full course data sync to enable seamless assignment tracking.",
-          },
-          {
-            title: "Time Planning",
-            description: "Smart time allocation to ensure accurate study schedules.",
-          },
-          {
-            title: "Progress Tracking",
-            description: "Real-time progress monitoring with smart notifications.",
-          }
-        ].map((feature, i) => (
-          <div key={i} className="group border border-white/5 hover:border-white/20 rounded-xl p-8 transition-all duration-300 backdrop-blur-sm bg-white/[0.02]">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-pink-500/50 text-lg transform -translate-y-[1px]">→</span>
-              <h3 className="text-[1.75rem] text-white font-light tracking-tight leading-none">{feature.title}</h3>
-            </div>
-            <p className="text-gray-400 text-lg font-light pl-8 leading-relaxed opacity-75">{feature.description}</p>
-          </div>
-        ))}
       </div>
     </div>
   </section>
@@ -708,16 +657,6 @@ export default function Home() {
     <div className="flex flex-col bg-black">
       <Hero />
       
-      <ParallaxSection
-        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
-        speed={0.5}
-      >
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-        <div className="container mx-auto px-4 py-32">
-          <CoreFeatures />
-        </div>
-      </ParallaxSection>
-
       <ParallaxSection
         className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
         speed={0.5}
