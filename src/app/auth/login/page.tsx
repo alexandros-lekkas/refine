@@ -48,17 +48,17 @@ export default function LoginPage() {
           <div className="w-full max-w-xs">
             <form className={cn("flex flex-col gap-6")} onSubmit={handleLogin}>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Login to your account</h1>
-                <p className="text-balance text-sm text-muted-foreground">
+                <h1 className="text-2xl font-bold animate-in fade-in slide-in-from-top-4 duration-500">Login to your account</h1>
+                <p className="text-balance text-sm text-muted-foreground animate-in fade-in slide-in-from-top-4 duration-500">
                   Enter your email below to login to your account
                 </p>
               </div>
               {error && (
-                <div className="rounded-md bg-destructive/15 p-4 text-sm text-destructive">
+                <div className="rounded-md bg-destructive/15 p-4 text-sm text-destructive animate-in fade-in duration-300">
                   {error}
                 </div>
               )}
-              <div className="grid gap-6">
+              <div className="grid gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -108,7 +108,7 @@ export default function LoginPage() {
       <div className="relative hidden h-full lg:block">
         <div className="absolute inset-0 h-full w-full bg-primary" />
         <div className="relative flex h-full w-full items-center justify-center">
-          <div className="px-8 text-center text-white">
+          <div className="px-8 text-center text-white animate-in fade-in slide-in-from-right-4 duration-700">
             <h2 className="mb-4 text-3xl font-bold">Welcome to Refine</h2>
             <p className="text-lg opacity-90">
               Your personal space for growth, reflection, and transformation.
