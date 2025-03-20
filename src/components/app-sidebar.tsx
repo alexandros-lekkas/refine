@@ -56,16 +56,19 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
-      <SidebarHeader className="p-4">
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <GalleryVerticalEnd className="size-4" />
-          </div>
-          <div className="flex flex-col gap-0.5 leading-none">
-            <span className="font-semibold">Refine</span>
-            <span className="text-sm text-muted-foreground">Dashboard</span>
-          </div>
-        </Link>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton>
+              <Link href="/dashboard" className="flex items-center gap-2">
+                  <GalleryVerticalEnd className="size-4" />
+                <div className="flex flex-col gap-0.5 leading-none">
+                  <span className="font-semibold">Refine</span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -75,7 +78,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <Link href={item.url} passHref legacyBehavior>
-                    <SidebarMenuButton 
+                    <SidebarMenuButton
                       className="hover:bg-primary/10 data-[active=true]:bg-primary/20 data-[active=true]:text-primary py-5 px-4 text-lg transition-all duration-150 cursor-pointer"
                       data-active={pathname === item.url}
                     >
