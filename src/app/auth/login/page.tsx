@@ -107,14 +107,61 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      <div className="relative hidden h-full lg:block">
-        <div className="absolute inset-0 h-full w-full bg-primary" />
-        <div className="relative flex h-full w-full items-center justify-center">
-          <div className="px-8 text-center text-white animate-in fade-in slide-in-from-right-4 duration-700">
-            <h2 className="mb-4 text-3xl font-bold">Welcome to Refine</h2>
-            <p className="text-lg opacity-90">
-              Your personal space for growth, reflection, and transformation.
-            </p>
+      <div className="hidden lg:flex relative flex-col justify-center p-12 bg-[#0B0A0F] text-white overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 -right-40 w-80 h-80 bg-gradient-to-br from-[#FF3DC0] to-purple-600 rounded-full opacity-20 blur-3xl" />
+          <div className="absolute bottom-0 -left-40 w-80 h-80 bg-gradient-to-tr from-blue-600 to-[#FF3DC0] rounded-full opacity-20 blur-3xl" />
+        </div>
+        
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10" />
+        
+        <div className="relative max-w-2xl space-y-12">
+          {/* Main Heading */}
+          <div className="space-y-4">
+            <h2 className="text-[4rem] leading-none font-extralight">
+              Your Academic
+              <br />
+              Success,{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">
+                AI-Powered
+              </span>
+            </h2>
+          </div>
+          
+          {/* Benefits Cards */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-4 rounded-xl backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-colors">
+              <span className="text-2xl block mb-2">📉</span>
+              <h3 className="font-medium mb-1">Less Cramming</h3>
+              <p className="text-sm text-gray-400">Know exactly when to start working on assignments.</p>
+            </div>
+            
+            <div className="p-4 rounded-xl backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-colors">
+              <span className="text-2xl block mb-2">⏳</span>
+              <h3 className="font-medium mb-1">Less Stress</h3>
+              <p className="text-sm text-gray-400">AI plans your study schedule so you don&apos;t have to.</p>
+            </div>
+            
+            <div className="p-4 rounded-xl backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-colors">
+              <span className="text-2xl block mb-2">📅</span>
+              <h3 className="font-medium mb-1">No More Missed Dates</h3>
+              <p className="text-sm text-gray-400">Automatic LMS syncing from Canvas, Blackboard & more.</p>
+            </div>
+            
+            <div className="p-4 rounded-xl backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-colors">
+              <span className="text-2xl block mb-2">🧠</span>
+              <h3 className="font-medium mb-1">Smarter Studying</h3>
+              <p className="text-sm text-gray-400">Personalized study plans that adapt to you.</p>
+            </div>
+          </div>
+          
+          {/* Bottom CTA */}
+          <div className="text-center">
+            <div className="inline-block px-6 py-3 rounded-lg backdrop-blur-sm bg-white/10 border border-white/10 hover:bg-white/15 transition-colors">
+              <p className="text-lg font-medium">✨ Log in now and let Refine (AI) handle the planning! ✨</p>
+            </div>
           </div>
         </div>
       </div>
