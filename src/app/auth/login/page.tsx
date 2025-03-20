@@ -3,29 +3,29 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GalleryVerticalEnd } from "lucide-react";
+import { useAuth } from "@/lib/hooks/use-auth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const supabase = createClient();
+  const { logIn } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const result = await logIn(email, password);
 
-      if (error) throw error;
+      if (result?.error) {
+        throw new Error(result.error);
+      }
+      
       router.push("/dashboard");
       router.refresh();
     } catch (error) {
