@@ -14,26 +14,39 @@ import {
   CheckCircle2,
   Link as LinkIcon,
   Check,
+  Calendar,
+  Flag,
+  BarChart3,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTask } from "@/contexts/TaskContext";
 import { useEffect, useState } from "react";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
-import { format } from "date-fns";
+import { format, addDays, differenceInDays } from "date-fns";
 
-export default function TaskDetailPage({ params }: { params: { id: string } }) {
+interface PageParams {
+  params: {
+    id: string;
+  };
+}
+
+export default function TaskDetailPage({ params }: PageParams) {
   const router = useRouter();
-  const { getTask, updateTask } = useTask();
+  const { getTask, updateTask, tasks } = useTask();
   const [task, setTask] = useState(getTask(params.id));
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [selectedPhase, setSelectedPhase] = useState<string | null>(null);
 
   useEffect(() => {
     if (!task) {
       router.push("/dashboard/tasks");
     }
-  }, [task, router]);
+    if (task?.phases && task.phases.length > 0 && !selectedPhase) {
+      setSelectedPhase(task.phases[0].id);
+    }
+  }, [task, router, selectedPhase]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -44,6 +57,14 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
     }
     return () => clearInterval(interval);
   }, [isTimerRunning]);
+
+  useEffect(() => {
+    // Keep task in sync with context updates
+    const updatedTask = getTask(params.id);
+    if (updatedTask && JSON.stringify(updatedTask) !== JSON.stringify(task)) {
+      setTask(updatedTask);
+    }
+  }, [params.id, getTask, task]);
 
   if (!task) return null;
 
@@ -57,6 +78,14 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
     ) || [];
     
     updateTask(task.id, { subtasks: updatedSubtasks });
+  };
+
+  const handlePhaseChange = (phaseId: string, completed: boolean) => {
+    const updatedPhases = task.phases?.map(phase => 
+      phase.id === phaseId ? { ...phase, completed } : phase
+    ) || [];
+    
+    updateTask(task.id, { phases: updatedPhases });
   };
 
   const addSubtask = (title: string) => {
@@ -103,10 +132,31 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
     updateTask(task.id, { completed: !task.completed });
   };
 
+  const calculateDailyWorkload = () => {
+    if (!task.phases) return null;
+    
+    const totalDays = differenceInDays(task.dueDate, new Date()) + 1;
+    const totalMinutes = task.phases.reduce((acc, phase) => 
+      acc + (phase.plannedTime.hours * 60 + phase.plannedTime.minutes), 0);
+    
+    return Math.ceil(totalMinutes / totalDays);
+  };
+
+  const dailyWorkload = calculateDailyWorkload();
+
+  // Find current task index and adjacent tasks
+  const currentTaskIndex = tasks.findIndex(t => t.id === task.id);
+  const previousTask = currentTaskIndex > 0 ? tasks[currentTaskIndex - 1] : null;
+  const nextTask = currentTaskIndex < tasks.length - 1 ? tasks[currentTaskIndex + 1] : null;
+
+  const navigateToTask = (taskId: string) => {
+    router.push(`/dashboard/tasks/${taskId}`);
+  };
+
   return (
     <div className="flex h-screen">
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 overflow-y-auto">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
@@ -178,7 +228,71 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
           </div>
 
           {/* Title */}
-          <h1 className="text-2xl font-semibold mb-6">{task.title}</h1>
+          <div className="flex items-center gap-3 mb-6">
+            <h1 className="text-2xl font-semibold">{task.title}</h1>
+            <span className="px-2 py-1 text-xs rounded-full bg-gray-100">
+              {task.type}
+            </span>
+          </div>
+
+          {/* Task Roadmap for multi-phase tasks */}
+          {task.isMultiPhase && task.phases && (
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold mb-4">Task Roadmap</h2>
+              <div className="grid gap-4">
+                {task.phases.map((phase, index) => (
+                  <Card 
+                    key={phase.id}
+                    className={`p-4 border-l-4 ${
+                      phase.completed ? 'border-l-green-500 bg-green-50' :
+                      selectedPhase === phase.id ? 'border-l-blue-500' :
+                      'border-l-gray-200'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="text-sm font-medium">Phase {index + 1}</span>
+                          <h3 className="font-medium">{phase.title}</h3>
+                          <span className="text-sm text-muted-foreground">
+                            {format(phase.dueDate, "MMM d")}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-3">{phase.description}</p>
+                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-4 w-4" />
+                            <span>{phase.plannedTime.hours}h {phase.plannedTime.minutes}m</span>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handlePhaseChange(phase.id, !phase.completed)}
+                            className={`flex items-center gap-2 ${phase.completed ? 'text-green-600' : ''}`}
+                          >
+                            <Check className="h-4 w-4" />
+                            {phase.completed ? 'Completed' : 'Mark Complete'}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+
+              {dailyWorkload && (
+                <Card className="mt-4 p-4 bg-blue-50">
+                  <div className="flex items-center gap-2 text-blue-600">
+                    <BarChart3 className="h-5 w-5" />
+                    <span className="font-medium">Recommended Daily Schedule</span>
+                  </div>
+                  <p className="mt-2 text-sm text-blue-600">
+                    To complete this task on time, plan to work approximately {Math.floor(dailyWorkload / 60)} hours and {dailyWorkload % 60} minutes each day.
+                  </p>
+                </Card>
+              )}
+            </div>
+          )}
 
           {/* Description Editor */}
           <div className="space-y-4">
@@ -285,11 +399,23 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
           <div>
             <h3 className="text-sm font-medium mb-2">Navigation</h3>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="flex-1">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex-1"
+                onClick={() => previousTask && navigateToTask(previousTask.id)}
+                disabled={!previousTask}
+              >
                 <ChevronLeft className="h-4 w-4 mr-1" />
                 Previous
               </Button>
-              <Button variant="outline" size="sm" className="flex-1">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex-1"
+                onClick={() => nextTask && navigateToTask(nextTask.id)}
+                disabled={!nextTask}
+              >
                 Next
                 <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
