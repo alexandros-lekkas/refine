@@ -159,11 +159,23 @@ html {
   height: 100%;
 }
 
-.min-h-screen {
+/* Apply snap to all full-height sections */
+.min-h-screen,
+section,
+[class*="ParallaxSection"],
+main > section,
+main > div,
+.h-screen,
+[class*="h-[100vh]"] {
   scroll-snap-align: start;
   scroll-snap-stop: always;
   min-height: 100vh;
   position: relative;
+}
+
+/* Ensure proper snapping for nested sections */
+.container {
+  scroll-snap-align: none;
 }
 
 /* Custom Scrollbar */
