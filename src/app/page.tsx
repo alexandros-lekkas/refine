@@ -22,7 +22,7 @@ const Hero = () => (
           <button className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl text-lg font-normal hover:opacity-90 transition-opacity">
             Sign Up & Sync Your LMS
           </button>
-          <button className="px-8 py-4 bg-white/5 text-white rounded-xl text-lg font-normal hover:bg-white/10 transition-colors border border-white/10">
+          <button className="px-8 py-4 bg-white/5 text-white rounded-xl text-lg font-normal hover:bg-white/10 transition-colors border border-white/5">
             See How It Works
           </button>
         </div>
@@ -78,40 +78,92 @@ const Hero = () => (
 );
 
 const FeatureGrid = () => (
-  <div className="grid md:grid-cols-2 gap-8 mt-16">
+  <div className="grid md:grid-cols-3 gap-8">
     {[
       {
-        icon: "🎯",
-        title: "Error Prevention",
-        description: "Catch assignment issues before submission to prevent missed deadlines"
+        icon: "📚",
+        title: "Smart Task Organization",
+        description: "Automatically organize and prioritize your assignments. Break down complex projects into manageable subtasks.",
+        features: [
+          "Auto-categorization by due date",
+          "Smart priority assignment",
+          "Subtask management",
+          "Progress tracking"
+        ]
+      },
+      {
+        icon: "🔄",
+        title: "LMS Integration",
+        description: "Seamlessly sync with your university's learning management system. Never miss an assignment or deadline.",
+        features: [
+          "Canvas integration",
+          "Brightspace sync",
+          "Blackboard support",
+          "Real-time updates"
+        ]
+      },
+      {
+        icon: "🤖",
+        title: "AI Study Planning",
+        description: "Let AI handle your study schedule. Get personalized plans based on your learning style and workload.",
+        features: [
+          "Smart time allocation",
+          "Adaptive scheduling",
+          "Focus time optimization",
+          "Study pattern analysis"
+        ]
+      },
+      {
+        icon: "⏱️",
+        title: "Time Tracking",
+        description: "Track your study time and optimize your productivity. Understand where your time goes and improve focus.",
+        features: [
+          "Focus session tracking",
+          "Progress analytics",
+          "Study pattern insights",
+          "Break reminders"
+        ]
       },
       {
         icon: "📊",
-        title: "Predictive Analytics",
-        description: "Understand how much time each task will take before you start"
+        title: "Progress Analytics",
+        description: "Visualize your academic progress with detailed analytics. Stay motivated with clear progress indicators.",
+        features: [
+          "Completion rate tracking",
+          "Time usage analysis",
+          "Performance trends",
+          "Goal achievement stats"
+        ]
       },
       {
-        icon: "📱",
-        title: "Task Status",
-        description: "Get real-time updates on assignments and progress tracking"
-      },
-      {
-        icon: "⚡️",
-        title: "Smart Management",
-        description: "Get instant insights for better academic performance"
+        icon: "🎯",
+        title: "Smart Reminders",
+        description: "Get intelligent reminders based on your study patterns and deadlines. Stay on track without the stress.",
+        features: [
+          "AI-powered notifications",
+          "Priority alerts",
+          "Study streak tracking",
+          "Break reminders"
+        ]
       }
     ].map((feature, i) => (
-      <div 
-        key={i} 
-        className="group relative p-8 rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.02]"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-90"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div className="absolute inset-0 border border-gray-800 group-hover:border-pink-500/30 rounded-2xl transition-colors"></div>
-        <div className="relative">
-          <span className="text-3xl mb-4 block transform transition-transform group-hover:scale-110 group-hover:-rotate-12">{feature.icon}</span>
-          <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-pink-400 transition-colors">{feature.title}</h3>
-          <p className="text-gray-400">{feature.description}</p>
+      <div key={i} className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/5">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
+            <span className="text-2xl">{feature.icon}</span>
+          </div>
+          <h3 className="text-xl text-white font-light">{feature.title}</h3>
+        </div>
+        <p className="text-gray-400 font-light mb-6 leading-relaxed">
+          {feature.description}
+        </p>
+        <div className="space-y-3">
+          {feature.features.map((item, j) => (
+            <div key={j} className="flex items-center gap-3">
+              <span className="text-pink-500/60">→</span>
+              <span className="text-gray-400 font-light text-sm">{item}</span>
+            </div>
+          ))}
         </div>
       </div>
     ))}
@@ -248,7 +300,7 @@ const AIAssistantPreview = () => (
       <div>
         <div className="bg-white/5 rounded-xl p-6 mb-6">
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
               <span className="text-xl">🤖</span>
             </div>
             <div>
@@ -355,7 +407,7 @@ const AIAssistantPreview = () => (
               "Take a 15-minute break every 2 hours of study",
               "Review material from previous sessions before starting new topics"
             ].map((suggestion, i) => (
-              <div key={i} className="flex items-start gap-3">
+              <div key={i} className="flex items-center gap-3">
                 <span className="text-pink-500 mt-1">→</span>
                 <p className="text-gray-400 text-sm font-light">{suggestion}</p>
               </div>
@@ -368,53 +420,73 @@ const AIAssistantPreview = () => (
 );
 
 const ComparisonSection = () => (
-  <section className="bg-gradient-to-br from-gray-900 to-black py-24 relative overflow-hidden">
-    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5"></div>
-    <div className="container mx-auto px-4">
-      <div className="grid md:grid-cols-2 gap-8">
+  <section className="relative">
+    <div className="max-w-4xl">
+      <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">WHY REFINE</p>
+      <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">The Smart Choice.</h2>
+      <p className="text-gray-400 text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
+        See how Refine transforms your academic planning experience with AI-powered features and seamless LMS integration.
+      </p>
+
+      <div className="grid md:grid-cols-2 gap-16">
         <div>
-          <h3 className="text-2xl text-white font-normal mb-2">Without Refine</h3>
-          <p className="text-gray-500 text-sm mb-8">The old way is holding you back</p>
-          <div className="space-y-4">
+          <h3 className="text-2xl text-white font-light mb-8">Traditional Planning</h3>
+          <div className="space-y-6">
             {[
-              { title: "Hard to locate assignments", desc: "Scattered across Canvas, Brightspace, and Blackboard" },
-              { title: "Manual deadline tracking", desc: "Leads to forgotten assignments" },
-              { title: "No clear starting point", desc: "Big projects feel overwhelming" },
-              { title: "Time estimation guesswork", desc: "Guessing how much time assignments will take" },
-              { title: "No smart prioritization", desc: "Tasks pile up with no clear order" },
-              { title: "Manual schedule adjustments", desc: "Constant manual schedule adjustments" },
-              { title: "Tool overload", desc: "Switching between too many different tools" },
-              { title: "Stress and overwhelm", desc: "School stress feels unmanageable" }
+              {
+                title: "Manual Task Management",
+                description: "Spend hours organizing assignments and creating study schedules"
+              },
+              {
+                title: "No LMS Integration",
+                description: "Manually copy assignments and deadlines from your LMS"
+              },
+              {
+                title: "Basic Time Tracking",
+                description: "Simple timers without insights or pattern analysis"
+              },
+              {
+                title: "Static Planning",
+                description: "Fixed schedules that don't adapt to your progress"
+              }
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3 p-4 bg-gray-900/50 backdrop-blur-sm rounded-xl">
-                <span className="text-red-500 font-normal shrink-0">✕</span>
+              <div key={i} className="flex items-start gap-4">
+                <span className="text-red-500/80 text-lg mt-1">✕</span>
                 <div>
-                  <p className="text-gray-200 font-normal">{item.title}</p>
-                  <p className="text-gray-500 text-sm">{item.desc}</p>
+                  <h4 className="text-white font-light mb-1">{item.title}</h4>
+                  <p className="text-gray-400 text-sm font-light">{item.description}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
+
         <div>
-          <h3 className="text-2xl text-white font-normal mb-2">With Refine</h3>
-          <p className="text-gray-500 text-sm mb-8">AI-powered academic planning</p>
-          <div className="space-y-4">
+          <h3 className="text-2xl text-white font-light mb-8">Refine AI Assistant</h3>
+          <div className="space-y-6">
             {[
-              { title: "Automatic assignment sync", desc: "All your assignments automatically synced in one place" },
-              { title: "Smart deadline tracking", desc: "Smart deadline tracking and reminders" },
-              { title: "AI project breakdown", desc: "AI breaks down big projects into manageable steps" },
-              { title: "Intelligent estimates", desc: "Intelligent time estimates based on your work style" },
-              { title: "Automated prioritization", desc: "Automated task prioritization and scheduling" },
-              { title: "Dynamic rescheduling", desc: "Dynamic rescheduling when things change" },
-              { title: "One unified tool", desc: "Everything integrated in one powerful tool" },
-              { title: "Peace of mind", desc: "Peace of mind with an organized system" }
+              {
+                title: "AI-Powered Organization",
+                description: "Automatically organize and break down tasks into optimal study blocks"
+              },
+              {
+                title: "Seamless LMS Sync",
+                description: "Auto-sync with Canvas, Brightspace, and Blackboard in real-time"
+              },
+              {
+                title: "Smart Time Analytics",
+                description: "Track study patterns and get personalized optimization tips"
+              },
+              {
+                title: "Adaptive Planning",
+                description: "AI adjusts your schedule based on progress and learning style"
+              }
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3 p-4 bg-[#1a1625] backdrop-blur-sm rounded-xl">
-                <span className="text-pink-500 font-normal shrink-0">✓</span>
+              <div key={i} className="flex items-start gap-4">
+                <span className="text-green-400 text-lg mt-1">✓</span>
                 <div>
-                  <p className="text-gray-200 font-normal">{item.title}</p>
-                  <p className="text-gray-500 text-sm">{item.desc}</p>
+                  <h4 className="text-white font-light mb-1">{item.title}</h4>
+                  <p className="text-gray-400 text-sm font-light">{item.description}</p>
                 </div>
               </div>
             ))}
@@ -504,7 +576,7 @@ const Testimonials = () => (
           }
         ].map((testimonial, i) => (
           <div key={i} className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/5">
-            <div className="flex items-start gap-4 mb-6">
+            <div className="flex items-center gap-4 mb-6">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
                 <span className="text-2xl">{"👤"}</span>
               </div>
@@ -527,33 +599,144 @@ const Testimonials = () => (
   </section>
 );
 
+const CTASection = () => (
+  <section className="bg-gradient-to-b from-[#0B0A0F] to-black py-32 relative overflow-hidden">
+    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+    <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5"></div>
+    
+    <div className="container mx-auto px-4">
+      <div className="max-w-4xl mx-auto text-center">
+        <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">
+          Ready to Transform Your
+          <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent block mt-2">
+            Academic Journey?
+          </span>
+        </h2>
+        <p className="text-gray-400 text-xl font-light mb-12 leading-relaxed opacity-75">
+          Join thousands of students who are already using Refine to excel in their studies. Get started in minutes with our seamless LMS integration.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row justify-center gap-6 mb-16">
+          <button className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl text-lg font-normal hover:opacity-90 transition-opacity">
+            Sign Up & Sync Your LMS
+          </button>
+          <button className="px-8 py-4 bg-white/5 text-white rounded-xl text-lg font-normal hover:bg-white/10 transition-colors border border-white/5">
+            Schedule Demo
+          </button>
+        </div>
+
+        <div className="grid sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
+            <div className="text-2xl mb-2">⚡️</div>
+            <p className="text-white font-light mb-2">2-Minute Setup</p>
+            <p className="text-gray-400 text-sm font-light">Quick LMS sync with Canvas, Brightspace & Blackboard</p>
+          </div>
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
+            <div className="text-2xl mb-2">🔒</div>
+            <p className="text-white font-light mb-2">Secure & Private</p>
+            <p className="text-gray-400 text-sm font-light">Your academic data is always safe and protected</p>
+          </div>
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
+            <div className="text-2xl mb-2">💬</div>
+            <p className="text-white font-light mb-2">24/7 Support</p>
+            <p className="text-gray-400 text-sm font-light">Get help anytime you need assistance</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const Footer = () => (
+  <footer className="bg-[#0B0A0F] border-t border-white/5 py-24 relative overflow-hidden">
+    <div className="container mx-auto px-4">
+      <div className="grid md:grid-cols-5 gap-12">
+        <div className="md:col-span-2">
+          <h3 className="text-2xl text-white font-light mb-6">Refine</h3>
+          <p className="text-gray-400 font-light mb-8 leading-relaxed max-w-sm">
+            AI-powered academic planning that helps students excel. Seamlessly integrate with your LMS and transform your study experience.
+          </p>
+          <div className="flex gap-4">
+            <button className="p-2 bg-white/5 text-white rounded-lg hover:bg-white/10 transition-colors">
+              <span className="text-xl">📱</span>
+            </button>
+            <button className="p-2 bg-white/5 text-white rounded-lg hover:bg-white/10 transition-colors">
+              <span className="text-xl">💻</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h4 className="text-white font-light mb-6">Features</h4>
+          <ul className="space-y-4">
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">Task Management</a></li>
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">AI Planning</a></li>
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">Time Tracking</a></li>
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">Progress Analytics</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-white font-light mb-6">Integrations</h4>
+          <ul className="space-y-4">
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">Canvas</a></li>
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">Brightspace</a></li>
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">Blackboard</a></li>
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">More LMS</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-white font-light mb-6">Support</h4>
+          <ul className="space-y-4">
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">Help Center</a></li>
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">Documentation</a></li>
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">Contact Us</a></li>
+            <li><a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="mt-16 pt-8 border-t border-white/5">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-gray-400 font-light text-sm">
+            &copy; 2024 Refine. All rights reserved.
+          </p>
+          <div className="flex gap-6">
+            <a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light text-sm">Terms</a>
+            <a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light text-sm">Privacy</a>
+            <a href="#" className="text-gray-400 hover:text-pink-500 transition-colors font-light text-sm">Cookies</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+);
+
 export default function Home() {
   return (
     <div className="flex flex-col bg-black">
       <Hero />
       
       <ParallaxSection
-        className="relative bg-gradient-to-br from-gray-900 to-black overflow-hidden"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
         speed={0.5}
       >
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-        <div className="container mx-auto px-4 py-32 relative">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+        <div className="container mx-auto px-4 py-32">
           <CoreFeatures />
         </div>
       </ParallaxSection>
 
       <ParallaxSection
-        className="relative bg-gradient-to-br from-gray-900 to-black overflow-hidden"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
         speed={0.5}
       >
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-        <div className="container mx-auto px-4 py-32 relative">
-          <p className="text-pink-500 font-medium mb-4">TASK MANAGEMENT</p>
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Your tasks, organized<br />
-            <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">automatically.</span>
-          </h2>
-          <p className="text-gray-400 mb-8 max-w-2xl">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+        <div className="container mx-auto px-4 py-32">
+          <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">TASK MANAGEMENT</p>
+          <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">Your Tasks, Organized.</h2>
+          <p className="text-gray-400 text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
             See all your assignments at a glance. Refine automatically organizes your tasks by due date and priority.
           </p>
           <TaskPreview />
@@ -561,27 +744,14 @@ export default function Home() {
       </ParallaxSection>
 
       <ParallaxSection
-        className="relative bg-gradient-to-br from-gray-900 to-black overflow-hidden"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
         speed={0.5}
       >
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-        <div className="container mx-auto px-4 py-32 relative">
-          <ComparisonSection />
-        </div>
-      </ParallaxSection>
-
-      <ParallaxSection
-        className="relative bg-gradient-to-br from-gray-900 to-black overflow-hidden"
-        speed={0.5}
-      >
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-        <div className="container mx-auto px-4 py-32 relative">
-          <p className="text-pink-500 font-medium mb-4">AI ASSISTANT</p>
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Study smarter with<br />
-            <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">AI-powered planning.</span>
-          </h2>
-          <p className="text-gray-400 mb-8 max-w-2xl">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+        <div className="container mx-auto px-4 py-32">
+          <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">AI ASSISTANT</p>
+          <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">Study Smarter.</h2>
+          <p className="text-gray-400 text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
             Get personalized study plans, time estimates, and smart suggestions based on your learning style.
           </p>
           <AIAssistantPreview />
@@ -589,29 +759,42 @@ export default function Home() {
       </ParallaxSection>
 
       <ParallaxSection
-        className="relative bg-gradient-to-br from-gray-900 to-black overflow-hidden"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
         speed={0.5}
       >
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-        <div className="container mx-auto px-4 py-32 relative">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+        <div className="container mx-auto px-4 py-32">
+          <ComparisonSection />
+        </div>
+      </ParallaxSection>
+
+      <ParallaxSection
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
+        speed={0.5}
+      >
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+        <div className="container mx-auto px-4 py-32">
           <Testimonials />
         </div>
       </ParallaxSection>
 
       <ParallaxSection
-        className="relative bg-gradient-to-br from-gray-900 to-black overflow-hidden"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
         speed={0.5}
       >
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-        <div className="container mx-auto px-4 py-32 relative">
-          <p className="text-pink-500 font-medium mb-4">FEATURES</p>
-          <h2 className="text-4xl font-bold text-white mb-8">
-            Bringing speed and intelligence<br />
-            <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">to academic planning</span>
-          </h2>
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+        <div className="container mx-auto px-4 py-32">
+          <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">FEATURES</p>
+          <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">Everything You Need.</h2>
+          <p className="text-gray-400 text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
+            A complete suite of tools designed to transform your academic planning experience.
+          </p>
           <FeatureGrid />
         </div>
       </ParallaxSection>
+
+      <CTASection />
+      <Footer />
     </div>
   );
 }
