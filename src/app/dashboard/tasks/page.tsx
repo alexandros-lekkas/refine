@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
+import { Plus, ChevronLeft, ChevronRight, ArrowUpRight, Check } from "lucide-react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useTask } from "@/contexts/TaskContext";
@@ -16,6 +16,7 @@ interface Task {
   dueTime: string;
   startMar: number;
   status: "due-today" | "due-soon" | "start-soon";
+  completed: boolean;
 }
 
 export default function TasksPage() {
@@ -59,7 +60,9 @@ export default function TasksPage() {
                 .map((task) => (
                   <Card 
                     key={task.id} 
-                    className="p-4 cursor-pointer hover:shadow-md transition-shadow"
+                    className={`p-4 cursor-pointer hover:shadow-md transition-shadow ${
+                      task.completed ? 'bg-green-50' : ''
+                    }`}
                     onClick={() => handleTaskClick(task.id)}
                   >
                     <div className="flex items-start justify-between">
@@ -69,7 +72,10 @@ export default function TasksPage() {
                           <span className="text-gray-300">•</span>
                           <span className="truncate">{task.courseTitle}</span>
                         </div>
-                        <div className="font-medium mb-1">{task.title}</div>
+                        <div className="font-medium mb-1 flex items-center gap-2">
+                          <span className={task.completed ? 'text-green-600' : ''}>{task.title}</span>
+                          {task.completed && <Check className="h-4 w-4 text-green-600" />}
+                        </div>
                         <div className="text-sm text-gray-500">
                           Due: Mar {task.startMar}, {task.dueTime}
                         </div>
@@ -92,7 +98,9 @@ export default function TasksPage() {
                 .map((task) => (
                   <Card 
                     key={task.id} 
-                    className="p-4 cursor-pointer hover:shadow-md transition-shadow"
+                    className={`p-4 cursor-pointer hover:shadow-md transition-shadow ${
+                      task.completed ? 'bg-green-50' : ''
+                    }`}
                     onClick={() => handleTaskClick(task.id)}
                   >
                     <div className="flex items-start justify-between">
@@ -102,7 +110,10 @@ export default function TasksPage() {
                           <span className="text-gray-300">•</span>
                           <span className="truncate">{task.courseTitle}</span>
                         </div>
-                        <div className="font-medium mb-1">{task.title}</div>
+                        <div className="font-medium mb-1 flex items-center gap-2">
+                          <span className={task.completed ? 'text-green-600' : ''}>{task.title}</span>
+                          {task.completed && <Check className="h-4 w-4 text-green-600" />}
+                        </div>
                         <div className="text-sm text-gray-500">
                           Due: Mar {task.startMar}, {task.dueTime}
                         </div>
@@ -125,7 +136,9 @@ export default function TasksPage() {
                 .map((task) => (
                   <Card 
                     key={task.id} 
-                    className="p-4 cursor-pointer hover:shadow-md transition-shadow"
+                    className={`p-4 cursor-pointer hover:shadow-md transition-shadow ${
+                      task.completed ? 'bg-green-50' : ''
+                    }`}
                     onClick={() => handleTaskClick(task.id)}
                   >
                     <div className="flex items-start justify-between">
@@ -135,7 +148,10 @@ export default function TasksPage() {
                           <span className="text-gray-300">•</span>
                           <span className="truncate">{task.courseTitle}</span>
                         </div>
-                        <div className="font-medium mb-1">{task.title}</div>
+                        <div className="font-medium mb-1 flex items-center gap-2">
+                          <span className={task.completed ? 'text-green-600' : ''}>{task.title}</span>
+                          {task.completed && <Check className="h-4 w-4 text-green-600" />}
+                        </div>
                         <div className="text-sm text-gray-500">
                           Due: Mar {task.startMar}, {task.dueTime}
                         </div>

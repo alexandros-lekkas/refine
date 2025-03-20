@@ -51,10 +51,11 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
         <select 
           className="text-sm border rounded px-2 py-1 bg-transparent"
           onChange={e => {
-            if (e.target.value === 'paragraph') {
+            const value = e.target.value;
+            if (value === 'paragraph') {
               editor.chain().focus().setParagraph().run();
             } else {
-              editor.chain().focus().toggleHeading({ level: parseInt(e.target.value) }).run();
+              editor.chain().focus().toggleHeading({ level: parseInt(value) as 1 | 2 | 3 }).run();
             }
           }}
           value={editor.isActive('heading', { level: 1 }) ? '1' : 

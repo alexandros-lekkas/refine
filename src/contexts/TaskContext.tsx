@@ -11,6 +11,7 @@ export interface Task {
   dueTime: string;
   startMar: number;
   status: "due-today" | "due-soon" | "start-soon";
+  completed: boolean;
   description?: string;
   subtasks?: { id: string; title: string; completed: boolean }[];
   assignments?: { title: string; url: string }[];
@@ -39,6 +40,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       dueTime: "11:59pm",
       startMar: 4,
       status: "due-today",
+      completed: false,
+      description: "",
       subtasks: [],
       timeUsed: { hours: 0, minutes: 0 },
       plannedTime: { hours: 1, minutes: 0 },
@@ -53,6 +56,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       dueTime: "11:59pm",
       startMar: 5,
       status: "due-soon",
+      completed: false,
+      description: "",
       subtasks: [],
       timeUsed: { hours: 0, minutes: 0 },
       plannedTime: { hours: 1, minutes: 0 },
@@ -62,11 +67,13 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       id: "3",
       courseCode: "ENGS-11",
       courseTitle: "Cultural Studies and the Body",
-      title: "Perusal #4",
+      title: "Cultural Analysis Essay",
       dueDate: new Date(),
       dueTime: "11:59pm",
       startMar: 3,
       status: "due-soon",
+      completed: false,
+      description: "",
       subtasks: [],
       timeUsed: { hours: 0, minutes: 0 },
       plannedTime: { hours: 1, minutes: 0 },
@@ -74,13 +81,15 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     },
     {
       id: "4",
-      courseCode: "ENGS-11",
-      courseTitle: "Cultural Studies and the Body",
-      title: "Perusal #4",
+      courseCode: "FI118-14",
+      courseTitle: "Introduction to Finance",
+      title: "Financial Markets Quiz",
       dueDate: new Date(),
       dueTime: "11:59pm",
       startMar: 5,
       status: "due-soon",
+      completed: false,
+      description: "",
       subtasks: [],
       timeUsed: { hours: 0, minutes: 0 },
       plannedTime: { hours: 1, minutes: 0 },
@@ -95,6 +104,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       dueTime: "10:00pm",
       startMar: 5,
       status: "start-soon",
+      completed: false,
+      description: "",
       subtasks: [],
       timeUsed: { hours: 0, minutes: 0 },
       plannedTime: { hours: 1, minutes: 0 },
