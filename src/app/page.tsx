@@ -119,165 +119,245 @@ const FeatureGrid = () => (
 );
 
 const TaskPreview = () => (
-  <div className="grid md:grid-cols-3 gap-6 mt-16">
-    {[
-      {
-        title: "Due Today",
-        status: "due-today",
-        tasks: [
-          {
-            courseCode: "CS401",
-            title: "Neural Networks Project",
-            date: "Mar 20",
-            subtasks: ["Data preprocessing", "Model architecture"]
-          }
-        ]
-      },
-      {
-        title: "Due Soon",
-        status: "due-soon",
-        tasks: [
-          {
-            courseCode: "MATH302",
-            title: "Linear Algebra Assignment",
-            date: "Mar 23",
-            subtasks: ["Matrix operations", "Eigenvalues"]
-          }
-        ]
-      },
-      {
-        title: "Start Soon",
-        status: "start-soon",
-        tasks: [
-          {
-            courseCode: "PHYS201",
-            title: "Lab Report Analysis",
-            date: "Mar 28",
-            subtasks: ["Data visualization", "Error analysis"]
-          }
-        ]
-      }
-    ].map((column) => (
-      <div key={column.title} className="space-y-4">
-        <h3 className="text-lg font-semibold text-white">{column.title}</h3>
-        {column.tasks.map((task) => (
-          <div key={task.title} className="group bg-gray-900/50 backdrop-blur-sm p-4 rounded-xl border border-gray-800 hover:border-pink-500/20 transition-all">
-            <div className="flex items-center justify-between mb-2">
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                column.status === "due-today" ? "bg-red-500/20 text-red-300" :
-                column.status === "due-soon" ? "bg-blue-500/20 text-blue-300" :
-                "bg-gray-500/20 text-gray-300"
-              }`}>
-                {task.date}
-              </span>
-              <span className="text-pink-500/80 text-sm">{task.courseCode}</span>
-            </div>
-            <h4 className="text-white font-medium mb-2 group-hover:text-pink-400 transition-colors">{task.title}</h4>
-            <div className="space-y-1">
-              {task.subtasks.map((subtask) => (
-                <div key={subtask} className="flex items-center text-sm">
-                  <span className="w-4 h-4 mr-2 rounded border border-gray-700 group-hover:border-pink-500/30 transition-colors"></span>
-                  <span className="text-gray-400">{subtask}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    ))}
-  </div>
-);
-
-const AIAssistantPreview = () => (
-  <div className="grid md:grid-cols-2 gap-12 items-center mt-16">
-    <div className="space-y-6">
-      <div className="bg-gray-900/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-800">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center">
-            <span className="text-lg">🤖</span>
-          </div>
-          <span className="text-pink-400 font-medium">AI Assistant</span>
+  <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/5 p-8">
+    <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center gap-4">
+        <div className="flex gap-2">
+          <button className="px-4 py-2 bg-pink-500 text-white rounded-lg text-sm font-normal">All Tasks</button>
+          <button className="px-4 py-2 bg-white/5 text-white rounded-lg text-sm font-normal">Calendar</button>
         </div>
-        <div className="space-y-4">
-          <p className="text-gray-300">Here's your personalized study plan for the Neural Networks project:</p>
-          <div className="space-y-3">
-            {[
-              { time: "1.5h", task: "Data Preprocessing", desc: "Clean and normalize dataset" },
-              { time: "2h", task: "Model Architecture", desc: "Design neural network layers" },
-              { time: "1h", task: "Training Setup", desc: "Configure hyperparameters" },
-              { time: "1.5h", task: "Evaluation", desc: "Test and validate results" }
-            ].map((item, i) => (
-              <div key={i} className="flex items-start group">
-                <div className="w-16 shrink-0">
-                  <span className="text-pink-500/80 text-sm font-medium">{item.time}</span>
+        <div className="h-6 w-px bg-white/10"></div>
+        <div className="flex gap-2">
+          <button className="px-4 py-2 bg-white/5 text-white rounded-lg text-sm font-normal">Today</button>
+          <button className="px-4 py-2 bg-white/5 text-white rounded-lg text-sm font-normal">Week</button>
+          <button className="px-4 py-2 bg-white/5 text-white rounded-lg text-sm font-normal">Month</button>
+        </div>
+      </div>
+      <button className="px-4 py-2 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-lg text-sm font-normal">
+        + Add Task
+      </button>
+    </div>
+
+    <div className="grid grid-cols-3 gap-8">
+      {[
+        {
+          title: "Due Today",
+          color: "bg-red-500/10",
+          textColor: "text-red-400",
+          tasks: [
+            {
+              course: "CS 101",
+              title: "Algorithm Analysis Assignment",
+              time: "Due in 3 hours",
+              progress: 80,
+              subtasks: "4/5 completed"
+            },
+            {
+              course: "MATH 201",
+              title: "Linear Algebra Quiz",
+              time: "Due in 5 hours",
+              progress: 60,
+              subtasks: "3/5 completed"
+            }
+          ]
+        },
+        {
+          title: "Due Soon",
+          color: "bg-blue-500/10",
+          textColor: "text-blue-400",
+          tasks: [
+            {
+              course: "PHYS 202",
+              title: "Lab Report: Wave Motion",
+              time: "Due tomorrow",
+              progress: 40,
+              subtasks: "2/6 completed"
+            },
+            {
+              course: "ENG 301",
+              title: "Research Paper Draft",
+              time: "Due in 2 days",
+              progress: 20,
+              subtasks: "1/4 completed"
+            }
+          ]
+        },
+        {
+          title: "Start Soon",
+          color: "bg-gray-500/10",
+          textColor: "text-gray-400",
+          tasks: [
+            {
+              course: "BIO 301",
+              title: "Genetics Project",
+              time: "Due next week",
+              progress: 0,
+              subtasks: "0/5 planned"
+            },
+            {
+              course: "CHEM 202",
+              title: "Lab Experiment Report",
+              time: "Due in 10 days",
+              progress: 0,
+              subtasks: "0/4 planned"
+            }
+          ]
+        }
+      ].map((column, i) => (
+        <div key={i} className={`${column.color} rounded-xl p-6`}>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className={`${column.textColor} font-light text-lg`}>{column.title}</h3>
+            <span className="text-white/60 text-sm">{column.tasks.length} tasks</span>
+          </div>
+          <div className="space-y-4">
+            {column.tasks.map((task, j) => (
+              <div key={j} className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/5">
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <p className="text-white/60 text-sm mb-1">{task.course}</p>
+                    <p className="text-white font-light">{task.title}</p>
+                  </div>
+                  <div className="bg-white/5 px-2 py-1 rounded text-sm text-white/60">
+                    {task.time}
+                  </div>
                 </div>
-                <div>
-                  <p className="text-white group-hover:text-pink-400 transition-colors font-medium">{item.task}</p>
-                  <p className="text-sm text-gray-400">{item.desc}</p>
+                <div className="space-y-2">
+                  <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full"
+                      style={{ width: `${task.progress}%` }}
+                    ></div>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-white/60">{task.subtasks}</span>
+                    <span className="text-white/60">{task.progress}%</span>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="pt-4 border-t border-gray-800">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-400">Total estimated time:</span>
-              <span className="text-pink-400 font-medium">6 hours</span>
-            </div>
-          </div>
         </div>
-      </div>
-      <div className="bg-gray-900/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-800">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center">
-            <span className="text-lg">📊</span>
-          </div>
-          <span className="text-pink-400 font-medium">Time Analytics</span>
-        </div>
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <span className="text-gray-300">Focus time today</span>
-            <span className="text-white font-medium">2.5h / 6h</span>
-          </div>
-          <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-            <div className="h-full w-[42%] bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"></div>
-          </div>
-          <div className="grid grid-cols-3 gap-2 pt-2">
-            <div className="text-center p-2 rounded-lg bg-gray-800/50">
-              <p className="text-pink-400 font-medium">85%</p>
-              <p className="text-xs text-gray-400">Focus rate</p>
-            </div>
-            <div className="text-center p-2 rounded-lg bg-gray-800/50">
-              <p className="text-pink-400 font-medium">3</p>
-              <p className="text-xs text-gray-400">Tasks done</p>
-            </div>
-            <div className="text-center p-2 rounded-lg bg-gray-800/50">
-              <p className="text-pink-400 font-medium">2</p>
-              <p className="text-xs text-gray-400">To go</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      ))}
     </div>
-    <div className="space-y-6">
-      <div className="bg-gray-900/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-800">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center">
-            <span className="text-lg">✨</span>
+  </div>
+);
+
+const AIAssistantPreview = () => (
+  <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/5 p-8">
+    <div className="grid grid-cols-2 gap-8">
+      <div>
+        <div className="bg-white/5 rounded-xl p-6 mb-6">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
+              <span className="text-xl">🤖</span>
+            </div>
+            <div>
+              <p className="text-white font-light">AI Assistant</p>
+              <p className="text-gray-400 text-sm">Analyzing your workload...</p>
+            </div>
           </div>
-          <span className="text-pink-400 font-medium">Smart Suggestions</span>
+          <div className="space-y-4">
+            <div className="bg-white/5 rounded-lg p-4">
+              <p className="text-white font-light mb-2">Project Breakdown</p>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-gray-400">Research Phase</span>
+                    <span className="text-pink-500">4 hours</span>
+                  </div>
+                  <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full" style={{ width: '40%' }}></div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-gray-400">Data Analysis</span>
+                    <span className="text-pink-500">3 hours</span>
+                  </div>
+                  <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full" style={{ width: '30%' }}></div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-gray-400">Report Writing</span>
+                    <span className="text-pink-500">3 hours</span>
+                  </div>
+                  <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full" style={{ width: '30%' }}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/5 rounded-lg p-4">
+              <p className="text-white font-light mb-3">Suggested Schedule</p>
+              <div className="space-y-3">
+                {[
+                  { day: "Monday", tasks: ["Research: Literature Review", "Data Collection"] },
+                  { day: "Tuesday", tasks: ["Data Analysis", "Initial Findings"] },
+                  { day: "Wednesday", tasks: ["Report Writing", "Final Review"] }
+                ].map((day, i) => (
+                  <div key={i} className="flex gap-4">
+                    <div className="text-gray-400 text-sm w-24">{day.day}</div>
+                    <div className="flex-1">
+                      {day.tasks.map((task, j) => (
+                        <div key={j} className="text-white/80 text-sm mb-1 font-light">{task}</div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="space-y-4">
-          <p className="text-gray-300">Based on your study patterns and deadlines:</p>
+      </div>
+
+      <div className="space-y-6">
+        <div className="bg-white/5 rounded-xl p-6">
+          <p className="text-white font-light mb-4">Time Usage Analytics</p>
+          <div className="space-y-6">
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <p className="text-gray-400 text-sm">Weekly Study Hours</p>
+                <p className="text-white font-light">32h</p>
+              </div>
+              <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full" style={{ width: '80%' }}></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <p className="text-gray-400 text-sm">Task Completion Rate</p>
+                <p className="text-white font-light">98%</p>
+              </div>
+              <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full" style={{ width: '98%' }}></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <p className="text-gray-400 text-sm">Focus Time</p>
+                <p className="text-white font-light">5.2h/day</p>
+              </div>
+              <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full" style={{ width: '85%' }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white/5 rounded-xl p-6">
+          <p className="text-white font-light mb-4">AI Suggestions</p>
           <div className="space-y-3">
             {[
-              "Schedule deep work session for Neural Networks project tomorrow morning",
-              "Take a 15min break after completing Data Preprocessing",
-              "Review Linear Algebra concepts before starting the assignment",
-              "Consider starting Lab Report early to avoid weekend work"
+              "Schedule deep work sessions in the morning for better focus",
+              "Break down large assignments into 45-minute chunks",
+              "Take a 15-minute break every 2 hours of study",
+              "Review material from previous sessions before starting new topics"
             ].map((suggestion, i) => (
-              <div key={i} className="flex items-start gap-3 group">
-                <span className="text-pink-500/80">•</span>
-                <p className="text-gray-300 group-hover:text-white transition-colors">{suggestion}</p>
+              <div key={i} className="flex items-start gap-3">
+                <span className="text-pink-500 mt-1">→</span>
+                <p className="text-gray-400 text-sm font-light">{suggestion}</p>
               </div>
             ))}
           </div>
