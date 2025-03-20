@@ -3,6 +3,7 @@
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
+import { TaskProvider } from "@/contexts/TaskContext";
 
 export default function DashboardLayout({
   children,
@@ -16,11 +17,13 @@ export default function DashboardLayout({
       enableSystem
       disableTransitionOnChange
     >
-      <div className="flex h-screen">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto p-8">{children}</main>
-      </div>
-      <Toaster />
+      <TaskProvider>
+        <div className="flex h-screen">
+          <Sidebar />
+          <main className="flex-1 overflow-y-auto p-8">{children}</main>
+        </div>
+        <Toaster />
+      </TaskProvider>
     </ThemeProvider>
   );
-} 
+}

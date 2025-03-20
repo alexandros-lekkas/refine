@@ -3,8 +3,9 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
-import { useState } from "react";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
+import { useTask } from "@/contexts/TaskContext";
 
 interface Task {
   id: string;
@@ -18,58 +19,12 @@ interface Task {
 }
 
 export default function TasksPage() {
-  const [tasks] = useState<Task[]>([
-    {
-      id: "1",
-      courseCode: "MATH-21",
-      courseTitle: "Mathematical Foundations for D...",
-      title: "Solving LP & Sensitivity with Duality",
-      dueDate: new Date(),
-      dueTime: "11:59pm",
-      startMar: 4,
-      status: "due-today"
-    },
-    {
-      id: "2",
-      courseCode: "ENGS-11",
-      courseTitle: "Cultural Studies and the Body",
-      title: "Perusal #4",
-      dueDate: new Date(),
-      dueTime: "11:59pm",
-      startMar: 5,
-      status: "due-soon"
-    },
-    {
-      id: "3",
-      courseCode: "ENGS-11",
-      courseTitle: "Cultural Studies and the Body",
-      title: "Perusal #4",
-      dueDate: new Date(),
-      dueTime: "11:59pm",
-      startMar: 3,
-      status: "due-soon"
-    },
-    {
-      id: "4",
-      courseCode: "ENGS-11",
-      courseTitle: "Cultural Studies and the Body",
-      title: "Perusal #4",
-      dueDate: new Date(),
-      dueTime: "11:59pm",
-      startMar: 5,
-      status: "due-soon"
-    },
-    {
-      id: "5",
-      courseCode: "HGHR-11",
-      courseTitle: "Human Dynamics in Organizations",
-      title: "Milestone 3: Mid Semester Peer Evaluation",
-      dueDate: new Date(),
-      dueTime: "10:00pm",
-      startMar: 5,
-      status: "start-soon"
-    }
-  ]);
+  const router = useRouter();
+  const { tasks } = useTask();
+
+  const handleTaskClick = (taskId: string) => {
+    router.push(`/dashboard/tasks/${taskId}`);
+  };
 
   return (
     <main className="container mx-auto p-4">
@@ -102,7 +57,11 @@ export default function TasksPage() {
               {tasks
                 .filter((task) => task.status === "due-today")
                 .map((task) => (
-                  <Card key={task.id} className="p-4 cursor-pointer hover:shadow-md transition-shadow">
+                  <Card 
+                    key={task.id} 
+                    className="p-4 cursor-pointer hover:shadow-md transition-shadow"
+                    onClick={() => handleTaskClick(task.id)}
+                  >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="text-sm text-gray-600 mb-1 flex items-center gap-2">
@@ -131,7 +90,11 @@ export default function TasksPage() {
               {tasks
                 .filter((task) => task.status === "due-soon")
                 .map((task) => (
-                  <Card key={task.id} className="p-4 cursor-pointer hover:shadow-md transition-shadow">
+                  <Card 
+                    key={task.id} 
+                    className="p-4 cursor-pointer hover:shadow-md transition-shadow"
+                    onClick={() => handleTaskClick(task.id)}
+                  >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="text-sm text-gray-600 mb-1 flex items-center gap-2">
@@ -160,7 +123,11 @@ export default function TasksPage() {
               {tasks
                 .filter((task) => task.status === "start-soon")
                 .map((task) => (
-                  <Card key={task.id} className="p-4 cursor-pointer hover:shadow-md transition-shadow">
+                  <Card 
+                    key={task.id} 
+                    className="p-4 cursor-pointer hover:shadow-md transition-shadow"
+                    onClick={() => handleTaskClick(task.id)}
+                  >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="text-sm text-gray-600 mb-1 flex items-center gap-2">
