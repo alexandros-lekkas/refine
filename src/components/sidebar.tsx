@@ -6,6 +6,7 @@ import {
   Calendar,
   CheckSquare,
   Settings,
+  PieChart,
 } from "lucide-react";
 
 const routes = [
@@ -23,6 +24,11 @@ const routes = [
     label: "Calendar",
     icon: Calendar,
     href: "/dashboard/calendar",
+  },
+  {
+    label: "Insights",
+    icon: PieChart,
+    href: "/dashboard/calendar/insights",
   },
   {
     label: "Settings",
