@@ -15,7 +15,7 @@ import {
   BarChart2,
 } from "lucide-react";
 import Link from "next/link";
-import { useTask } from "@/lib/contexts/TaskContext";
+import { useTask } from "@/lib/providers/tasks";
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {

@@ -2,7 +2,7 @@
 
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
-import { TaskProvider } from "@/lib/contexts/TaskContext";
+import { TaskProvider } from "@/lib/providers/tasks";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 

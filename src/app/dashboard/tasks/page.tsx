@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, ChevronLeft, ChevronRight, ArrowUpRight, Check, Clock, BarChart3 } from "lucide-react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
-import { useTask } from "@/lib/contexts/TaskContext";
+import { useTask } from "@/lib/providers/tasks";
 import { cn } from "@/lib/utils";
 
 interface Phase {

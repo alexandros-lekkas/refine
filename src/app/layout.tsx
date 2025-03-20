@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
+import { TaskProvider } from "@/lib/providers/tasks";
 
 const figtree = Figtree({ subsets: ["latin"] });
 
@@ -26,18 +27,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn(figtree.className, "min-h-screen")}>
         <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+          <TaskProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
               <div className="min-h-screen flex flex-col">
                 <main className="flex-1">{children}</main>
               </div>
 
               <Toaster />
-          </ThemeProvider>
+            </ThemeProvider>
+          </TaskProvider>
         </AuthProvider>
       </body>
     </html>

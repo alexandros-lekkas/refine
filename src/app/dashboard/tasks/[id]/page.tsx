@@ -1,6 +1,6 @@
 "use client";
 
-import { useTask } from "@/lib/contexts/TaskContext";
+import { useTask } from "@/lib/providers/tasks";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
