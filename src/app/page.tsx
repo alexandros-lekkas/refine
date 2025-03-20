@@ -1,74 +1,110 @@
-"use client";
+import { ParallaxSection } from '../components/parallax-section';
 
-import { RainbowButton } from "@/components/magicui/rainbow-button";
-import { Card } from "@/components/ui/card";
-import { ArrowRight, CheckSquare, Calendar, Settings, Brain } from "lucide-react";
-import Link from "next/link";
-import { ParallaxSection } from "@/components/parallax-section";
-import { useTask } from "@/lib/contexts/TaskContext";
-import { format } from "date-fns";
-
-function TaskPreview() {
-  const { tasks } = useTask();
-
-  return (
-    <div className="space-y-4">
-      {tasks.slice(0, 3).map((task) => (
-        <Card key={task.id} className="bg-black/40 backdrop-blur-sm border-white/10">
-          <div className="p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div>
-                <span className="text-sm font-medium text-primary">{task.courseCode}</span>
-                <h3 className="text-lg font-semibold text-white">{task.title}</h3>
-              </div>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                task.status === "due-today" ? "bg-red-500/20 text-red-300" :
-                task.status === "due-soon" ? "bg-blue-500/20 text-blue-300" :
-                "bg-gray-500/20 text-gray-300"
-              }`}>
-                {format(task.dueDate, "MMM d")}
-              </span>
-            </div>
-            <div className="text-sm text-gray-400">
-              {task.phases && task.phases.length > 0 && (
-                <div className="mt-2 space-y-1">
-                  {task.phases.slice(0, 2).map((phase) => (
-                    <div key={phase.id} className="flex items-center">
-                      <CheckSquare className="h-4 w-4 mr-2 text-primary/60" />
-                      <span>{phase.title}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
-}
-
-function AIWritingPreview() {
-  return (
-    <div className="space-y-4">
-      <div className="bg-black/40 backdrop-blur-sm border-white/10 rounded-lg p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <Brain className="h-5 w-5 text-primary" />
-          <span className="text-primary font-medium">AI Assistant</span>
-        </div>
-        <div className="space-y-2 text-gray-300">
-          <p>Based on your task, here's a suggested study plan:</p>
-          <ul className="list-disc list-inside space-y-1 text-sm">
-            <li>Break down the neural network implementation into modules</li>
-            <li>Start with data preprocessing (1.5 hours)</li>
-            <li>Focus on model architecture (2 hours)</li>
-            <li>Test and validate results (1 hour)</li>
-          </ul>
-        </div>
+const Hero = () => (
+  <section className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white relative overflow-hidden">
+    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20"></div>
+    <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-purple-500/10"></div>
+    <div className="container mx-auto px-4 py-32 relative z-10">
+      <div className="max-w-4xl">
+        <p className="text-pink-500 font-medium mb-4">FOR STUDENTS</p>
+        <h1 className="text-6xl font-bold mb-6">
+          Academic Success.
+          <br />
+          <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Lightning fast planning.</span>
+        </h1>
+        <p className="text-xl text-gray-400 mb-8 max-w-2xl">
+          Refine enables smart academic planning and task management for both students and educators
+        </p>
+        <button className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg text-lg font-medium hover:opacity-90 transition-all shadow-lg shadow-pink-500/20">
+          Get early access
+        </button>
       </div>
     </div>
-  );
-}
+  </section>
+);
+
+const FeatureGrid = () => (
+  <div className="grid md:grid-cols-2 gap-8 mt-16">
+    {[
+      {
+        icon: "🎯",
+        title: "Error Prevention",
+        description: "Catch assignment issues before submission to prevent missed deadlines"
+      },
+      {
+        icon: "📊",
+        title: "Predictive Analytics",
+        description: "Understand how much time each task will take before you start"
+      },
+      {
+        icon: "📱",
+        title: "Task Status",
+        description: "Get real-time updates on assignments and progress tracking"
+      },
+      {
+        icon: "⚡️",
+        title: "Smart Management",
+        description: "Get instant insights for better academic performance"
+      }
+    ].map((feature, i) => (
+      <div 
+        key={i} 
+        className="group relative p-8 rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.02]"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 opacity-90"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div className="absolute inset-0 border border-gray-800 group-hover:border-pink-500/30 rounded-2xl transition-colors"></div>
+        <div className="relative">
+          <span className="text-3xl mb-4 block transform transition-transform group-hover:scale-110 group-hover:-rotate-12">{feature.icon}</span>
+          <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-pink-400 transition-colors">{feature.title}</h3>
+          <p className="text-gray-400">{feature.description}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+const CoreFeatures = () => (
+  <section className="bg-gradient-to-br from-gray-900 to-black text-white py-32 relative overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5"></div>
+    <div className="container mx-auto px-4 relative">
+      <p className="text-pink-500 font-medium mb-4">FOR STUDENTS</p>
+      <h2 className="text-4xl font-bold mb-4">Core Features.</h2>
+      <p className="text-gray-400 mb-12 max-w-2xl">
+        Core features enable real-time academic planning via automated task management and smart scheduling.
+      </p>
+      
+      <div className="grid md:grid-cols-2 gap-16">
+        {[
+          {
+            title: "Task Management",
+            description: "Automated task breakdown to reduce manual planning workload.",
+          },
+          {
+            title: "LMS Integration",
+            description: "Full course data sync to enable seamless assignment tracking.",
+          },
+          {
+            title: "Time Planning",
+            description: "Smart time allocation to ensure accurate study schedules.",
+          },
+          {
+            title: "Progress Tracking",
+            description: "Real-time progress monitoring with smart notifications.",
+          }
+        ].map((feature, i) => (
+          <div key={i} className="group">
+            <h3 className="text-xl font-semibold mb-4 flex items-center">
+              <span className="mr-3 text-pink-500 opacity-60 group-hover:opacity-100 transition-opacity">→</span>
+              <span className="group-hover:text-pink-400 transition-colors">{feature.title}</span>
+            </h3>
+            <p className="text-gray-400 pl-8">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 const problemsSection = (
   <section className="bg-gradient-to-b from-white to-pink-50 py-24">
@@ -197,67 +233,33 @@ const comparisonSection = (
 
 export default function Home() {
   return (
-    <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="w-full min-h-[80vh] flex items-center justify-center text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-primary/5 to-background" />
-        <div className="container mx-auto px-4 relative">
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 animate-in fade-in slide-in-from-top-4 duration-1000">
-            STUDY SMARTER,{" "}
-            <span className="animate-in fade-in slide-in-from-bottom-4 duration-1000 bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-pink-500">
-              LEARN BETTER
-            </span>
-          </h1>
-          <p className="text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
-            Your AI-powered academic companion. Organize tasks, optimize study time, and excel in your courses.
-          </p>
-          <div className="flex flex-col items-center gap-8">
-            <Link href="/dashboard">
-              <RainbowButton>
-                Join Early Access
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </RainbowButton>
-            </Link>
-            <div className="flex gap-8 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <CheckSquare className="h-4 w-4 text-primary" />
-                <span>50+ Universities</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-primary" />
-                <span>Limited Spots</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Settings className="h-4 w-4 text-primary" />
-                <span>2,000+ Students</span>
-              </div>
-            </div>
-          </div>
+    <div className="flex flex-col bg-black">
+      <Hero />
+      
+      <ParallaxSection
+        className="relative bg-gradient-to-br from-gray-900 to-black overflow-hidden"
+        speed={0.5}
+      >
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
+        <div className="container mx-auto px-4 py-32 relative">
+          <p className="text-pink-500 font-medium mb-4">FEATURES</p>
+          <h2 className="text-4xl font-bold text-white mb-8">
+            Bringing speed and intelligence<br />
+            <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">to academic planning</span>
+          </h2>
+          <FeatureGrid />
         </div>
-      </section>
-
-      {/* Task Management Section */}
-      <ParallaxSection
-        title="SYNC ALL YOUR COURSES SEAMLESSLY"
-        description="Overwhelmed by multiple courses? Now all your assignments and deadlines are in one place."
-        imageSide="left"
-      >
-        <TaskPreview />
       </ParallaxSection>
 
-      {/* AI Writing Section */}
       <ParallaxSection
-        title="AI-POWERED STUDY ASSISTANCE FROM START TO FINISH"
-        description="Get personalized study plans, task breakdowns, and time estimates powered by AI."
-        imageSide="right"
+        className="relative bg-black overflow-hidden"
+        speed={0.3}
       >
-        <AIWritingPreview />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5"></div>
+        <CoreFeatures />
       </ParallaxSection>
 
-      {/* Problems Section */}
       {problemsSection}
-
-      {/* Comparison Section */}
       {comparisonSection}
     </div>
   );
