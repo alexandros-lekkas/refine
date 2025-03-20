@@ -19,7 +19,7 @@ export default function Home() {
           </h1>
           <p className="text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
             Your personal productivity companion. Organize tasks, manage your
-            calendar, and stay focused on what matters most.
+            calendar, and stay focused on what matters most. Hope you enjoy. 
           </p>
           <Link href="/dashboard">
             <RainbowButton>
