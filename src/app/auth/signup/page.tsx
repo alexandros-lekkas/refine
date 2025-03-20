@@ -166,19 +166,17 @@ export default function SignUpPage() {
         {/* Grid Pattern */}
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10" />
         
-        <div className="relative max-w-2xl space-y-12">
+        <div className="relative max-w-2xl mx-auto text-center">
           {/* Main Heading */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-[#FF3DC0] font-medium">
+            <p className="text-[#FF3DC0] font-medium flex items-center justify-center gap-2">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
                 <path d="M14 5L21 12M21 12L14 19M21 12H3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               <span>3x faster project completion</span>
-            </div>
+            </p>
             <h2 className="text-[4rem] leading-none font-extralight">
-              Your Academic
-              <br />
-              Success,{" "}
+              Your Academic Success,{" "}
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">
                 AI-Powered
               </span>
@@ -186,7 +184,7 @@ export default function SignUpPage() {
           </div>
 
           {/* KPIs */}
-          <div className="flex justify-between items-center gap-8 mb-12">
+          <div className="grid grid-cols-3 gap-8 mt-12 mb-12">
             <div className="text-center space-y-2">
               <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">87%</div>
               <p className="text-sm text-gray-400">Average Time Saved on Planning</p>
@@ -202,7 +200,7 @@ export default function SignUpPage() {
           </div>
           
           {/* Sign-up Prompt */}
-          <div className="mt-16 text-center">
+          <div className="mt-16">
             <div className="inline-block px-6 py-3 rounded-lg backdrop-blur-sm bg-white/10 border border-white/10 hover:bg-white/15 transition-colors">
               <p className="text-lg font-medium">✨ Sign up now and let Refine (AI) handle the planning! ✨</p>
             </div>
