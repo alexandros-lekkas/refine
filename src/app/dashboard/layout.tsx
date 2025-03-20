@@ -3,7 +3,7 @@
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
-import { TaskProvider } from "@/contexts/TaskContext";
+import { TaskProvider } from "@/lib/contexts/TaskContext";
 
 export default function DashboardLayout({
   children,
