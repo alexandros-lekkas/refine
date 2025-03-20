@@ -1,24 +1,32 @@
 import { ParallaxSection } from '../components/parallax-section';
 
 const Hero = () => (
-  <section className="bg-gradient-to-b from-[#0B0A0F] to-black min-h-screen flex items-center relative overflow-hidden">
+  <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
+    <div className="absolute inset-0 bg-[#0B0A0F]"></div>
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
     <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5"></div>
     
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-b from-pink-500/20 to-transparent rounded-full blur-3xl"></div>
+    
     <div className="container mx-auto px-4 py-32 relative">
-      <div className="max-w-4xl">
-        <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">AI-POWERED ACADEMIC PLANNING</p>
-        <h1 className="text-6xl font-light text-white mb-6 leading-tight">
-          Study smarter with
+      <div className="max-w-4xl mx-auto text-center">
+        <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full mb-8 border border-white/5">
+          <span className="text-pink-500 font-light">New</span>
+          <span className="text-gray-400 font-light">AI Study Planning Now Available</span>
+        </div>
+
+        <h1 className="text-[5rem] text-white font-extralight tracking-tight mb-8 leading-[1.1]">
+          Your Academic Success,
           <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent block mt-2">
-            AI-powered planning
+            AI-Powered
           </span>
         </h1>
-        <p className="text-gray-400 text-xl font-light mb-12 leading-relaxed max-w-2xl opacity-75">
-          Let AI handle your deadlines and study planning. Automatically sync assignments from your LMS, get smart breakdowns of big projects, and never miss a deadline again.
+
+        <p className="text-gray-400 text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto opacity-75">
+          Seamlessly sync with your LMS, get AI-powered study plans, and never miss a deadline. Join thousands of students transforming their academic journey.
         </p>
-        
-        <div className="flex flex-col sm:flex-row gap-6">
+
+        <div className="flex flex-col sm:flex-row justify-center gap-6 mb-16">
           <button className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl text-lg font-normal hover:opacity-90 transition-opacity">
             Sign Up & Sync Your LMS
           </button>
@@ -27,50 +35,22 @@ const Hero = () => (
           </button>
         </div>
 
-        <div className="mt-16 grid grid-cols-3 gap-8 border-t border-white/5 pt-16">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <span className="text-3xl text-white font-light">3x</span>
-              <span className="text-pink-500">↑</span>
-            </div>
-            <p className="text-gray-400 font-light">Study Efficiency</p>
+        <div className="grid sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
+            <div className="text-2xl mb-2">🎯</div>
+            <p className="text-white font-light mb-2">Smart Planning</p>
+            <p className="text-gray-400 text-sm font-light">AI-powered study schedules that adapt to your style</p>
           </div>
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <span className="text-3xl text-white font-light">98%</span>
-              <span className="text-pink-500">✓</span>
-            </div>
-            <p className="text-gray-400 font-light">Assignment Completion</p>
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
+            <div className="text-2xl mb-2">🔄</div>
+            <p className="text-white font-light mb-2">LMS Sync</p>
+            <p className="text-gray-400 text-sm font-light">Instant sync with Canvas, Brightspace & more</p>
           </div>
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <span className="text-3xl text-white font-light">2h</span>
-              <span className="text-pink-500">↓</span>
-            </div>
-            <p className="text-gray-400 font-light">Daily Time Saved</p>
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
+            <div className="text-2xl mb-2">📊</div>
+            <p className="text-white font-light mb-2">Time Analytics</p>
+            <p className="text-gray-400 text-sm font-light">Track progress and optimize your study time</p>
           </div>
-        </div>
-
-        <div className="mt-16 grid sm:grid-cols-3 gap-6">
-          {[
-            {
-              title: "Smart Sync",
-              description: "Auto-sync with Canvas, Brightspace & Blackboard"
-            },
-            {
-              title: "AI Planning",
-              description: "Get personalized study schedules and task breakdowns"
-            },
-            {
-              title: "Time Tracking",
-              description: "Track progress and optimize your study patterns"
-            }
-          ].map((feature, i) => (
-            <div key={i} className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
-              <h3 className="text-white font-light text-lg mb-2">{feature.title}</h3>
-              <p className="text-gray-400 font-light text-sm opacity-75">{feature.description}</p>
-            </div>
-          ))}
         </div>
       </div>
     </div>
