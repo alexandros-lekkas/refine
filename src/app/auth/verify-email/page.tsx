@@ -9,20 +9,20 @@ export default function VerifyEmailPage() {
     <div className="flex min-h-svh items-center justify-center bg-background">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <div className="flex justify-center gap-2">
+          <div className="flex justify-center gap-2 animate-in fade-in slide-in-from-top-4 duration-500">
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GalleryVerticalEnd className="size-4" />
             </div>
             <span className="font-medium">Refine</span>
           </div>
-          <h2 className="text-2xl font-bold text-center">Check your email</h2>
-          <p className="text-sm text-muted-foreground text-center">
+          <h2 className="text-2xl font-bold text-center animate-in fade-in slide-in-from-top-4 duration-500">Check your email</h2>
+          <p className="text-sm text-muted-foreground text-center animate-in fade-in slide-in-from-top-4 duration-500">
             We've sent you a verification link. Please check your email to
             verify your account.
           </p>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          <div className="text-center text-sm">
+          <div className="text-center text-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
             <Link
               href="/auth/login"
               className="text-primary hover:text-primary/90 underline underline-offset-4"
