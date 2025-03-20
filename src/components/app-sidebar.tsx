@@ -1,7 +1,13 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { LayoutDashboard, Calendar, CheckSquare, Settings, PieChart } from "lucide-react"
+import Link from "next/link";
+import {
+  LayoutDashboard,
+  Calendar,
+  CheckSquare,
+  Settings,
+  PieChart,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -12,7 +18,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 const items = [
   {
@@ -40,11 +46,11 @@ const items = [
     url: "/dashboard/settings",
     icon: Settings,
   },
-]
+];
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon" variant="sidebar">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
@@ -65,5 +71,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
-} 
+  );
+}
