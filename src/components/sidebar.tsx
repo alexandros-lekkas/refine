@@ -7,7 +7,11 @@ import {
   CheckSquare,
   Settings,
   PieChart,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const routes = [
   {
@@ -39,13 +43,34 @@ const routes = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="space-y-4 py-4 flex flex-col h-full bg-background border-r">
+    <div 
+      className={cn(
+        "space-y-4 py-4 flex flex-col h-full bg-background border-r transition-all duration-300",
+        isCollapsed ? "w-[80px]" : "w-[240px]"
+      )}
+      style={{ width: isCollapsed ? "80px" : "240px" }}
+    >
       <div className="px-3 py-2 flex-1">
-        <Link href="/" className="flex items-center pl-3 mb-14">
-          <h1 className="text-2xl font-bold hover:text-primary transition-colors">Refine</h1>
-        </Link>
+        <div className="flex items-center justify-between pl-3 mb-14">
+          {!isCollapsed && (
+            <h1 className="text-2xl font-bold hover:text-primary transition-colors">Refine</h1>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          >
+            {isCollapsed ? (
+              <ChevronRight className="h-4 w-4" />
+            ) : (
+              <ChevronLeft className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
         <div className="space-y-1">
           {routes.map((route) => (
             <Link
@@ -59,8 +84,10 @@ export function Sidebar() {
               )}
             >
               <div className="flex items-center flex-1">
-                <route.icon className="h-5 w-5 mr-3" />
-                {route.label}
+                <route.icon className="h-5 w-5" />
+                {!isCollapsed && (
+                  <span className="ml-3">{route.label}</span>
+                )}
               </div>
             </Link>
           ))}
