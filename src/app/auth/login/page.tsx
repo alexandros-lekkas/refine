@@ -26,7 +26,7 @@ export default function LoginPage() {
       });
 
       if (error) throw error;
-      router.push("/dashboard");
+      router.replace("/dashboard");
       router.refresh();
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred");
@@ -48,7 +48,9 @@ export default function LoginPage() {
           <div className="w-full max-w-xs">
             <form className={cn("flex flex-col gap-6")} onSubmit={handleLogin}>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold animate-in fade-in slide-in-from-top-4 duration-500">Login to your account</h1>
+                <h1 className="text-2xl font-bold animate-in fade-in slide-in-from-top-4 duration-500">
+                  Login to your account
+                </h1>
                 <p className="text-balance text-sm text-muted-foreground animate-in fade-in slide-in-from-top-4 duration-500">
                   Enter your email below to login to your account
                 </p>

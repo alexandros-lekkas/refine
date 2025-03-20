@@ -3,19 +3,25 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { getUserId } from "./server";
 
 export async function checkAuth(supabase: SupabaseClient): Promise<boolean> {
+  console.log("Checking auth...");
+  
   const {
-    data: { user },
+    data: { session },
     error,
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getSession();
 
-  if (user) {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    return true;
-  } else {
+  if (error) {
+    console.error("Error checking auth:", error.message);
     return false;
   }
+
+  console.log("Session state:", {
+    hasSession: !!session,
+    sessionExpiresAt: session?.expires_at,
+    sessionUser: session?.user?.email
+  });
+
+  return !!session;
 }
 
 export async function checkRole(
