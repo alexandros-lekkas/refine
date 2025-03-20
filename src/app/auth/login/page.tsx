@@ -106,7 +106,7 @@ export default function LoginPage() {
         </div>
       </div>
       <div className="relative hidden h-full lg:block">
-        <div className="absolute inset-0 h-full w-full bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500" />
+        <div className="absolute inset-0 h-full w-full bg-primary" />
         <div className="relative flex h-full w-full items-center justify-center">
           <div className="px-8 text-center text-white">
             <h2 className="mb-4 text-3xl font-bold">Welcome to Refine</h2>
