@@ -64,48 +64,6 @@ const FeatureGrid = () => (
   </div>
 );
 
-const CoreFeatures = () => (
-  <section className="bg-gradient-to-br from-gray-900 to-black text-white py-32 relative overflow-hidden">
-    <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5"></div>
-    <div className="container mx-auto px-4 relative">
-      <p className="text-pink-500 font-medium mb-4">FOR STUDENTS</p>
-      <h2 className="text-4xl font-bold mb-4">Core Features.</h2>
-      <p className="text-gray-400 mb-12 max-w-2xl">
-        Core features enable real-time academic planning via automated task management and smart scheduling.
-      </p>
-      
-      <div className="grid md:grid-cols-2 gap-16">
-        {[
-          {
-            title: "Task Management",
-            description: "Automated task breakdown to reduce manual planning workload.",
-          },
-          {
-            title: "LMS Integration",
-            description: "Full course data sync to enable seamless assignment tracking.",
-          },
-          {
-            title: "Time Planning",
-            description: "Smart time allocation to ensure accurate study schedules.",
-          },
-          {
-            title: "Progress Tracking",
-            description: "Real-time progress monitoring with smart notifications.",
-          }
-        ].map((feature, i) => (
-          <div key={i} className="group">
-            <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <span className="mr-3 text-pink-500 opacity-60 group-hover:opacity-100 transition-opacity">→</span>
-              <span className="group-hover:text-pink-400 transition-colors">{feature.title}</span>
-            </h3>
-            <p className="text-gray-400 pl-8">{feature.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-);
-
 const TaskPreview = () => (
   <div className="grid md:grid-cols-3 gap-6 mt-16">
     {[
@@ -275,127 +233,57 @@ const AIAssistantPreview = () => (
   </div>
 );
 
-const problemsSection = (
+const ComparisonSection = () => (
   <section className="bg-gradient-to-br from-gray-900 to-black py-24 relative overflow-hidden">
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5"></div>
-    <div className="container mx-auto px-4 relative">
-      <h2 className="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-        Why Students Need Refine
-      </h2>
-      <div className="grid md:grid-cols-2 gap-12">
-        <div className="space-y-6">
-          <h3 className="text-2xl font-semibold mb-8 text-white">Without Refine:</h3>
-          {[
-            { icon: '🔍', text: 'Hard to locate assignments across Canvas, Brightspace, and Blackboard' },
-            { icon: '📅', text: 'Manually tracking deadlines leads to forgotten assignments' },
-            { icon: '😰', text: 'No clear starting point for big projects' },
-            { icon: '⏰', text: 'Guessing how much time assignments will take' },
-            { icon: '📚', text: 'Tasks pile up with no smart prioritization' },
-            { icon: '🔄', text: 'Constant manual schedule adjustments' },
-            { icon: '📱', text: 'Switching between too many different tools' },
-            { icon: '😓', text: 'School stress feels unmanageable' },
-          ].map((item, i) => (
-            <div key={i} className="group flex items-start space-x-4 p-4 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-red-500/20 transition-all">
-              <span className="text-2xl transform transition-transform group-hover:scale-110 group-hover:-rotate-12">{item.icon}</span>
-              <p className="text-gray-300 group-hover:text-white transition-colors">{item.text}</p>
-            </div>
-          ))}
-        </div>
-        <div className="space-y-6">
-          <h3 className="text-2xl font-semibold mb-8 text-white">With Refine:</h3>
-          {[
-            { icon: '✨', text: 'All your assignments automatically synced in one place' },
-            { icon: '🎯', text: 'Smart deadline tracking and reminders' },
-            { icon: '🤖', text: 'AI breaks down big projects into manageable steps' },
-            { icon: '⚡️', text: 'Intelligent time estimates based on your work style' },
-            { icon: '📊', text: 'Automated task prioritization and scheduling' },
-            { icon: '🔄', text: 'Dynamic rescheduling when things change' },
-            { icon: '🎯', text: 'Everything integrated in one powerful tool' },
-            { icon: '😌', text: 'Peace of mind with an organized system' },
-          ].map((item, i) => (
-            <div key={i} className="group flex items-start space-x-4 p-4 bg-gradient-to-br from-pink-500/10 to-purple-500/5 backdrop-blur-sm rounded-lg border border-pink-500/20 hover:border-pink-500/40 transition-all">
-              <span className="text-2xl transform transition-transform group-hover:scale-110 group-hover:-rotate-12">{item.icon}</span>
-              <p className="text-gray-300 group-hover:text-white transition-colors">{item.text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="mt-12 text-center">
-        <button className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-lg text-lg font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-pink-500/20">
-          Start Organizing Your Academic Life
-        </button>
-      </div>
-    </div>
-  </section>
-);
-
-const comparisonSection = (
-  <section className="py-24 bg-gradient-to-br from-gray-900 to-black relative overflow-hidden">
-    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5"></div>
-    <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5"></div>
-    <div className="container mx-auto px-4 relative">
-      <div className="grid md:grid-cols-2 gap-16">
-        {/* Manual Planning Side */}
-        <div className="space-y-8">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold mb-2 text-white">Manually plan your schedule</h3>
-            <p className="text-gray-400">The old way is holding you back</p>
-          </div>
-          <div className="bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-800">
-            <ul className="space-y-6">
-              {[
-                { text: 'Endless to-do lists', desc: 'Never check everything off' },
-                { text: 'Manual prioritization', desc: 'Worry priorities are wrong' },
-                { text: 'Constant replanning', desc: 'Interruptions wreck your plans' },
-                { text: 'Overambitious deadlines', desc: 'Work weekends to meet them' },
-                { text: 'Forgotten tasks', desc: 'Things slip through the cracks' },
-                { text: 'Too many meetings', desc: "It's hard to get anything done" },
-                { text: 'Context switching', desc: 'No time to focus' },
-                { text: 'Too many tools', desc: 'Calendars, to-do lists, and spreadsheets' },
-                { text: 'Stress and overwhelm', desc: 'Life feels out of control' },
-                { text: 'No personal life', desc: 'What is a weekend, anyway?' },
-              ].map((item, i) => (
-                <li key={i} className="flex items-start group">
-                  <span className="mr-3 text-red-500/80 group-hover:text-red-500 transition-colors">❌</span>
-                  <div>
-                    <p className="font-medium text-white group-hover:text-red-400 transition-colors">{item.text}</p>
-                    <p className="text-sm text-gray-400">{item.desc}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+    <div className="container mx-auto px-4">
+      <div className="grid md:grid-cols-2 gap-8">
+        <div>
+          <h3 className="text-2xl text-white font-normal mb-2">Without Refine</h3>
+          <p className="text-gray-500 text-sm mb-8">The old way is holding you back</p>
+          <div className="space-y-4">
+            {[
+              { title: "Hard to locate assignments", desc: "Scattered across Canvas, Brightspace, and Blackboard" },
+              { title: "Manual deadline tracking", desc: "Leads to forgotten assignments" },
+              { title: "No clear starting point", desc: "Big projects feel overwhelming" },
+              { title: "Time estimation guesswork", desc: "Guessing how much time assignments will take" },
+              { title: "No smart prioritization", desc: "Tasks pile up with no clear order" },
+              { title: "Manual schedule adjustments", desc: "Constant manual schedule adjustments" },
+              { title: "Tool overload", desc: "Switching between too many different tools" },
+              { title: "Stress and overwhelm", desc: "School stress feels unmanageable" }
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3 p-4 bg-gray-900/50 backdrop-blur-sm rounded-xl">
+                <span className="text-red-500 font-normal shrink-0">✕</span>
+                <div>
+                  <p className="text-gray-200 font-normal">{item.title}</p>
+                  <p className="text-gray-500 text-sm">{item.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Refine AI Side */}
-        <div className="space-y-8">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold mb-2 text-white">Let Refine build your schedule</h3>
-            <p className="text-gray-400">AI-powered academic planning</p>
-          </div>
-          <div className="bg-gradient-to-br from-pink-500/10 to-purple-500/5 backdrop-blur-sm p-8 rounded-2xl border border-pink-500/20">
-            <ul className="space-y-6">
-              {[
-                { text: 'Complete everything', desc: 'Refine builds a schedule for you' },
-                { text: 'Stop prioritizing', desc: 'Refine automatically prioritizes work' },
-                { text: 'No replanning', desc: 'Refine reschedules undone work' },
-                { text: 'Finish early', desc: 'Refine ensures you meet deadlines' },
-                { text: 'Forget nothing', desc: 'Refine tracks all your priorities' },
-                { text: 'Meet less', desc: 'Refine limits meetings' },
-                { text: 'Focus', desc: 'Refine guards time for uninterrupted work' },
-                { text: 'One tool', desc: 'Everything in 1 place' },
-                { text: 'Relax', desc: "Refine's got your back" },
-                { text: 'Enjoy life', desc: 'Refine protects your weekends' },
-              ].map((item, i) => (
-                <li key={i} className="flex items-start group">
-                  <span className="mr-3 text-pink-500/80 group-hover:text-pink-500 transition-colors">✓</span>
-                  <div>
-                    <p className="font-medium text-white group-hover:text-pink-400 transition-colors">{item.text}</p>
-                    <p className="text-sm text-gray-400">{item.desc}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+        <div>
+          <h3 className="text-2xl text-white font-normal mb-2">With Refine</h3>
+          <p className="text-gray-500 text-sm mb-8">AI-powered academic planning</p>
+          <div className="space-y-4">
+            {[
+              { title: "Automatic assignment sync", desc: "All your assignments automatically synced in one place" },
+              { title: "Smart deadline tracking", desc: "Smart deadline tracking and reminders" },
+              { title: "AI project breakdown", desc: "AI breaks down big projects into manageable steps" },
+              { title: "Intelligent estimates", desc: "Intelligent time estimates based on your work style" },
+              { title: "Automated prioritization", desc: "Automated task prioritization and scheduling" },
+              { title: "Dynamic rescheduling", desc: "Dynamic rescheduling when things change" },
+              { title: "One unified tool", desc: "Everything integrated in one powerful tool" },
+              { title: "Peace of mind", desc: "Peace of mind with an organized system" }
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3 p-4 bg-[#1a1625] backdrop-blur-sm rounded-xl">
+                <span className="text-pink-500 font-normal shrink-0">✓</span>
+                <div>
+                  <p className="text-gray-200 font-normal">{item.title}</p>
+                  <p className="text-gray-500 text-sm">{item.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -432,6 +320,16 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
         <div className="container mx-auto px-4 py-32 relative">
+          <ComparisonSection />
+        </div>
+      </ParallaxSection>
+
+      <ParallaxSection
+        className="relative bg-gradient-to-br from-gray-900 to-black overflow-hidden"
+        speed={0.5}
+      >
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
+        <div className="container mx-auto px-4 py-32 relative">
           <p className="text-pink-500 font-medium mb-4">AI ASSISTANT</p>
           <h2 className="text-4xl font-bold text-white mb-4">
             Study smarter with<br />
@@ -458,17 +356,6 @@ export default function Home() {
           <FeatureGrid />
         </div>
       </ParallaxSection>
-
-      <ParallaxSection
-        className="relative bg-black overflow-hidden"
-        speed={0.3}
-      >
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5"></div>
-        <CoreFeatures />
-      </ParallaxSection>
-
-      {problemsSection}
-      {comparisonSection}
     </div>
   );
 }
