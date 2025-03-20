@@ -184,7 +184,7 @@ export default function SignUpPage() {
               </span>
             </h2>
           </div>
-          
+
           {/* KPIs */}
           <div className="flex justify-between items-center gap-8 mb-12">
             <div className="text-center space-y-2">

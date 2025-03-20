@@ -133,9 +133,9 @@ export default function LoginPage() {
               </span>
             </h2>
           </div>
-          
+
           {/* KPIs */}
-          <div className="grid grid-cols-3 gap-6">
+          <div className="flex justify-between items-center gap-8 mb-12">
             <div className="text-center space-y-2">
               <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">87%</div>
               <p className="text-sm text-gray-400">Average Time Saved on Planning</p>
@@ -150,34 +150,10 @@ export default function LoginPage() {
             </div>
           </div>
           
-          {/* Core Features Bubbles */}
-          <div className="relative h-48">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div className="absolute left-0 -translate-x-full -translate-y-1/2 p-4 rounded-full backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-all hover:scale-110">
-                <div className="w-16 h-16 flex flex-col items-center justify-center text-center">
-                  <span className="text-2xl">🎯</span>
-                  <span className="text-xs mt-1">Smart Planning</span>
-                </div>
-              </div>
-              <div className="absolute p-4 rounded-full backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-all hover:scale-110">
-                <div className="w-16 h-16 flex flex-col items-center justify-center text-center">
-                  <span className="text-2xl">🔄</span>
-                  <span className="text-xs mt-1">LMS Sync</span>
-                </div>
-              </div>
-              <div className="absolute right-0 translate-x-full -translate-y-1/2 p-4 rounded-full backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-all hover:scale-110">
-                <div className="w-16 h-16 flex flex-col items-center justify-center text-center">
-                  <span className="text-2xl">📊</span>
-                  <span className="text-xs mt-1">Analytics</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Bottom CTA */}
-          <div className="text-center">
+          {/* Login Prompt */}
+          <div className="mt-16 text-center">
             <div className="inline-block px-6 py-3 rounded-lg backdrop-blur-sm bg-white/10 border border-white/10 hover:bg-white/15 transition-colors">
-              <p className="text-lg font-medium">✨ Log in now and let Refine (AI) handle the planning! ✨</p>
+              <p className="text-lg font-medium"> Log in now and let Refine (AI) handle the planning! </p>
             </div>
           </div>
         </div>
