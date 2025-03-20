@@ -59,14 +59,14 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
+            <Link href={"/dashboard"} passHref legacyBehavior>
             <SidebarMenuButton
               className="bg-secondary text-foreground py-6 px-4 text-lg transition-all duration-150 cursor-pointer"
             >
-              <Link href="/dashboard" className="flex items-center gap-2">
                 <GalleryVerticalEnd className="h-4 w-4" />
                 <span className="text-base font-semibold">Refine</span>
-              </Link>
-            </SidebarMenuButton>
+              </SidebarMenuButton>
+            </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
