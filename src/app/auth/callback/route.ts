@@ -7,6 +7,10 @@ export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
 
+  console.log("Callback URL:", requestUrl.toString());
+  console.log("All search params:", Object.fromEntries(requestUrl.searchParams));
+  console.log("Code:", code);
+
   if (code) {
     const supabase = createRouteHandlerClient({ cookies });
     const adminClient = createAdminClient();
