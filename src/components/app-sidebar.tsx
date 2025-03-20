@@ -7,6 +7,7 @@ import {
   CheckSquare,
   Settings,
   PieChart,
+  GalleryVerticalEnd,
 } from "lucide-react";
 
 import {
@@ -18,6 +19,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarHeader,
 } from "@/components/ui/sidebar";
 
 const items = [
@@ -50,7 +52,15 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar collapsible="icon" variant="sidebar">
+    <Sidebar collapsible="icon" variant="sidebar" className="bg-background">
+      <SidebarHeader className="p-4">
+        <Link href="/dashboard" className="flex items-center gap-2 font-medium">
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
+            <GalleryVerticalEnd className="size-4" />
+          </div>
+          <span className="text-primary">Refine</span>
+        </Link>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
@@ -59,7 +69,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <Link href={item.url} passHref legacyBehavior>
-                    <SidebarMenuButton>
+                    <SidebarMenuButton className="hover:bg-primary/10 data-[active=true]:bg-primary/20 text-primary">
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
                     </SidebarMenuButton>
