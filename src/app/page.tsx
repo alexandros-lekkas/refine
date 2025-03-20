@@ -10,9 +10,19 @@ const Hero = () => (
     
     <div className="container mx-auto px-4 py-32 relative">
       <div className="max-w-4xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full mb-8 border border-white/5">
-          <span className="text-pink-500 font-light">New</span>
-          <span className="text-gray-400 font-light">AI Study Planning Now Available</span>
+        <div className="grid grid-cols-3 gap-8 mb-12">
+          <div className="text-center space-y-2">
+            <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">87%</div>
+            <p className="text-sm text-gray-400">Average Time Saved on Planning</p>
+          </div>
+          <div className="text-center space-y-2">
+            <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">2.5x</div>
+            <p className="text-sm text-gray-400">Improved Study Efficiency</p>
+          </div>
+          <div className="text-center space-y-2">
+            <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">100%</div>
+            <p className="text-sm text-gray-400">Assignment Coverage</p>
+          </div>
         </div>
 
         <h1 className="text-[5rem] text-white font-extralight tracking-tight mb-8 leading-[1.1]">
@@ -141,7 +151,7 @@ const FeatureGrid = () => (
           {feature.features.map((item, j) => (
             <div key={j} className="flex items-center gap-3">
               <span className="text-pink-500/60">→</span>
-              <span className="text-gray-400 font-light text-sm">{item}</span>
+              <span className="text-gray-400 font-light text-sm hover:text-pink-500 transition-colors">{item}</span>
             </div>
           ))}
         </div>
@@ -294,7 +304,7 @@ const AIAssistantPreview = () => (
               <div className="space-y-3">
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-400">Research Phase</span>
+                    <span className="text-gray-400 hover:text-pink-500 transition-colors">Research Phase</span>
                     <span className="text-pink-500">4 hours</span>
                   </div>
                   <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
@@ -303,7 +313,7 @@ const AIAssistantPreview = () => (
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-400">Data Analysis</span>
+                    <span className="text-gray-400 hover:text-pink-500 transition-colors">Data Analysis</span>
                     <span className="text-pink-500">3 hours</span>
                   </div>
                   <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
@@ -312,7 +322,7 @@ const AIAssistantPreview = () => (
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-400">Report Writing</span>
+                    <span className="text-gray-400 hover:text-pink-500 transition-colors">Report Writing</span>
                     <span className="text-pink-500">3 hours</span>
                   </div>
                   <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
@@ -333,7 +343,7 @@ const AIAssistantPreview = () => (
                     <div className="text-gray-400 text-sm w-24">{day.day}</div>
                     <div className="flex-1">
                       {day.tasks.map((task, j) => (
-                        <div key={j} className="text-white/80 text-sm mb-1 font-light">{task}</div>
+                        <div key={j} className="text-white/80 text-sm mb-1 font-light hover:text-pink-500 transition-colors">{task}</div>
                       ))}
                     </div>
                   </div>
@@ -350,7 +360,7 @@ const AIAssistantPreview = () => (
           <div className="space-y-6">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <p className="text-gray-400 text-sm">Weekly Study Hours</p>
+                <p className="text-gray-400 hover:text-pink-500 transition-colors">Weekly Study Hours</p>
                 <p className="text-white font-light">32h</p>
               </div>
               <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
@@ -359,7 +369,7 @@ const AIAssistantPreview = () => (
             </div>
             <div>
               <div className="flex justify-between items-center mb-2">
-                <p className="text-gray-400 text-sm">Task Completion Rate</p>
+                <p className="text-gray-400 hover:text-pink-500 transition-colors">Task Completion Rate</p>
                 <p className="text-white font-light">98%</p>
               </div>
               <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
@@ -368,7 +378,7 @@ const AIAssistantPreview = () => (
             </div>
             <div>
               <div className="flex justify-between items-center mb-2">
-                <p className="text-gray-400 text-sm">Focus Time</p>
+                <p className="text-gray-400 hover:text-pink-500 transition-colors">Focus Time</p>
                 <p className="text-white font-light">5.2h/day</p>
               </div>
               <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
@@ -389,7 +399,7 @@ const AIAssistantPreview = () => (
             ].map((suggestion, i) => (
               <div key={i} className="flex items-center gap-3">
                 <span className="text-pink-500 mt-1">→</span>
-                <p className="text-gray-400 text-sm font-light">{suggestion}</p>
+                <p className="text-gray-400 font-light hover:text-pink-500 transition-colors">{suggestion}</p>
               </div>
             ))}
           </div>
@@ -505,7 +515,7 @@ const CoreFeatures = () => (
             description: "Real-time progress monitoring with smart notifications.",
           }
         ].map((feature, i) => (
-          <div key={i} className="group">
+          <div key={i} className="group border border-white/5 hover:border-white/20 rounded-xl p-8 transition-all duration-300 backdrop-blur-sm bg-white/[0.02]">
             <div className="flex items-center gap-3 mb-4">
               <span className="text-pink-500/50 text-lg transform -translate-y-[1px]">→</span>
               <h3 className="text-[1.75rem] text-white font-light tracking-tight leading-none">{feature.title}</h3>

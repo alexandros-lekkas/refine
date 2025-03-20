@@ -26,7 +26,7 @@ export default function LoginPage() {
       });
 
       if (error) throw error;
-      router.replace("/dashboard");
+      router.push("/dashboard");
       router.refresh();
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred");
@@ -48,9 +48,7 @@ export default function LoginPage() {
           <div className="w-full max-w-xs">
             <form className={cn("flex flex-col gap-6")} onSubmit={handleLogin}>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold animate-in fade-in slide-in-from-top-4 duration-500">
-                  Login to your account
-                </h1>
+                <h1 className="text-2xl font-bold animate-in fade-in slide-in-from-top-4 duration-500">Login to your account</h1>
                 <p className="text-balance text-sm text-muted-foreground animate-in fade-in slide-in-from-top-4 duration-500">
                   Enter your email below to login to your account
                 </p>
@@ -120,6 +118,12 @@ export default function LoginPage() {
         <div className="relative max-w-2xl space-y-12">
           {/* Main Heading */}
           <div className="space-y-4">
+            <div className="flex items-center gap-2 text-[#FF3DC0] font-medium">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                <path d="M14 5L21 12M21 12L14 19M21 12H3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <span>3x faster project completion</span>
+            </div>
             <h2 className="text-[4rem] leading-none font-extralight">
               Your Academic
               <br />
@@ -130,30 +134,43 @@ export default function LoginPage() {
             </h2>
           </div>
           
-          {/* Benefits Cards */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-colors">
-              <span className="text-2xl block mb-2">📉</span>
-              <h3 className="font-medium mb-1">Less Cramming</h3>
-              <p className="text-sm text-gray-400">Know exactly when to start working on assignments.</p>
+          {/* KPIs */}
+          <div className="grid grid-cols-3 gap-6">
+            <div className="text-center space-y-2">
+              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">87%</div>
+              <p className="text-sm text-gray-400">Average Time Saved on Planning</p>
             </div>
-            
-            <div className="p-4 rounded-xl backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-colors">
-              <span className="text-2xl block mb-2">⏳</span>
-              <h3 className="font-medium mb-1">Less Stress</h3>
-              <p className="text-sm text-gray-400">AI plans your study schedule so you don&apos;t have to.</p>
+            <div className="text-center space-y-2">
+              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">2.5x</div>
+              <p className="text-sm text-gray-400">Improved Study Efficiency</p>
             </div>
-            
-            <div className="p-4 rounded-xl backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-colors">
-              <span className="text-2xl block mb-2">📅</span>
-              <h3 className="font-medium mb-1">No More Missed Dates</h3>
-              <p className="text-sm text-gray-400">Automatic LMS syncing from Canvas, Blackboard & more.</p>
+            <div className="text-center space-y-2">
+              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">100%</div>
+              <p className="text-sm text-gray-400">Assignment Coverage</p>
             </div>
-            
-            <div className="p-4 rounded-xl backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-colors">
-              <span className="text-2xl block mb-2">🧠</span>
-              <h3 className="font-medium mb-1">Smarter Studying</h3>
-              <p className="text-sm text-gray-400">Personalized study plans that adapt to you.</p>
+          </div>
+          
+          {/* Core Features Bubbles */}
+          <div className="relative h-48">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div className="absolute left-0 -translate-x-full -translate-y-1/2 p-4 rounded-full backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-all hover:scale-110">
+                <div className="w-16 h-16 flex flex-col items-center justify-center text-center">
+                  <span className="text-2xl">🎯</span>
+                  <span className="text-xs mt-1">Smart Planning</span>
+                </div>
+              </div>
+              <div className="absolute p-4 rounded-full backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-all hover:scale-110">
+                <div className="w-16 h-16 flex flex-col items-center justify-center text-center">
+                  <span className="text-2xl">🔄</span>
+                  <span className="text-xs mt-1">LMS Sync</span>
+                </div>
+              </div>
+              <div className="absolute right-0 translate-x-full -translate-y-1/2 p-4 rounded-full backdrop-blur-sm bg-white/5 border border-white/10 hover:border-white/20 transition-all hover:scale-110">
+                <div className="w-16 h-16 flex flex-col items-center justify-center text-center">
+                  <span className="text-2xl">📊</span>
+                  <span className="text-xs mt-1">Analytics</span>
+                </div>
+              </div>
             </div>
           </div>
           
