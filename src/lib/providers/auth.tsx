@@ -14,6 +14,7 @@ export const AuthContext = React.createContext<
       user: Database["public"]["Tables"]["users"]["Row"] | undefined;
       isAuthenticated: boolean;
       loading: boolean;
+      error: string | null;
       logIn: (email: string, password: string) => any;
       logOut: () => any;
       refreshUser: () => any;
@@ -29,37 +30,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     Database["public"]["Tables"]["users"]["Row"] | undefined
   >(undefined);
   const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
   const initAuthUser = async () => {
-    setLoading(true);
+    try {
+      setError(null);
+      setLoading(true);
+      const supabase = createClient();
+      const { data: { user: fetchedAuthUser }, error: initError } = await supabase.auth.getUser();
+      
+      if (initError) {
+        setError("Authentication failed. Please try signing in again.");
+        console.error("Failed to initialize auth:", initError);
+        setAuthUser(undefined);
+        return;
+      }
 
-    const supabase = createClient();
-
-    const {
-      data: { user: fetchedAuthUser },
-    } = await supabase.auth.getUser();
-    setAuthUser(fetchedAuthUser || undefined);
-
-    setLoading(false);
+      setAuthUser(fetchedAuthUser || undefined);
+    } catch (error) {
+      setError("An unexpected error occurred. Please refresh the page.");
+      console.error("Error during auth initialization:", error);
+      setAuthUser(undefined);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchUser = async () => {
-    if (!authUser?.id) return;
-
-    const supabase = createClient();
-
-    const { data: fetchedUser, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", authUser.id)
-      .single();
-
-    if (error) {
-      console.error("Failed to fetch user:", error);
+    if (!authUser?.id) {
+      setUser(undefined);
       return;
     }
 
-    setUser(fetchedUser || undefined);
+    try {
+      setError(null);
+      const supabase = createClient();
+      const { data: fetchedUser, error: fetchError } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", authUser.id)
+        .single();
+
+      if (fetchError) {
+        setError("Failed to load user data. Please refresh the page.");
+        console.error("Failed to fetch user:", fetchError);
+        setUser(undefined);
+        return;
+      }
+
+      setUser(fetchedUser || undefined);
+    } catch (error) {
+      setError("An unexpected error occurred while loading user data.");
+      console.error("Error fetching user data:", error);
+      setUser(undefined);
+    } finally {
+      setLoading(false);
+    }
   };
 
   React.useEffect(() => {
@@ -90,18 +116,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logIn = async (email: string, password: string) => {
+    setError(null);
     setLoading(true);
 
     const supabase = createClient();
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error: loginError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
+    if (loginError) {
+      setError("Invalid email or password. Please try again.");
       setLoading(false);
-      return { error: error.message };
+      return { error: loginError.message };
     }
 
     setAuthUser(data.user);
@@ -110,6 +138,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logOut = async () => {
+    setError(null);
     setLoading(true);
 
     const supabase = createClient();
@@ -124,18 +153,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const isAuthenticated = !!authUser;
 
+  const value = React.useMemo(
+    () => ({
+      authUser,
+      user,
+      isAuthenticated,
+      loading,
+      error,
+      logIn,
+      logOut,
+      refreshUser: fetchUser,
+    }),
+    [user, authUser, loading, error, isAuthenticated]
+  );
+
   return (
-    <AuthContext.Provider
-      value={{
-        authUser,
-        user,
-        isAuthenticated,
-        loading,
-        logIn,
-        logOut,
-        refreshUser: fetchUser,
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { ParallaxSection } from '../components/parallax-section';
+import { BubbleNav } from "@/components/bubble-nav";
 
 const Hero = () => {
   const scrollToTasks = () => {
@@ -666,8 +667,12 @@ const Footer = () => (
 
 export default function Home() {
   return (
-    <div className="flex flex-col bg-black">
-      <Hero />
+    <div className="flex flex-col bg-black relative">
+      <BubbleNav />
+      
+      <section id="hero">
+        <Hero />
+      </section>
       
       <ParallaxSection
         id="tasks"
