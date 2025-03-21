@@ -1,22 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useState } from "react";
 import { format } from "date-fns";
 
@@ -28,6 +15,7 @@ interface CreateEventDialogProps {
     start: Date;
     end: Date;
     color: string;
+    courseCode: string;
   }) => void;
   date: Date;
   hour: number;
@@ -43,12 +31,9 @@ const DURATIONS = [
 ];
 
 const COLORS = [
-  { value: "blue", label: "Blue" },
-  { value: "green", label: "Green" },
-  { value: "red", label: "Red" },
-  { value: "purple", label: "Purple" },
-  { value: "orange", label: "Orange" },
-  { value: "yellow", label: "Yellow" },
+  { value: "#34D399", label: "Green" },
+  { value: "#F87171", label: "Red" },
+  { value: "#60A5FA", label: "Blue" },
 ];
 
 export function CreateEventDialog({
@@ -59,8 +44,9 @@ export function CreateEventDialog({
   hour,
 }: CreateEventDialogProps) {
   const [title, setTitle] = useState("");
+  const [courseCode, setCourseCode] = useState("");
   const [duration, setDuration] = useState("1");
-  const [color, setColor] = useState("blue");
+  const [color, setColor] = useState("#60A5FA");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,13 +57,15 @@ export function CreateEventDialog({
 
     onSubmit({
       title,
+      courseCode,
       start,
       end,
       color,
     });
     setTitle("");
+    setCourseCode("");
     setDuration("1");
-    setColor("blue");
+    setColor("#60A5FA");
     onClose();
   };
 
@@ -87,20 +75,29 @@ export function CreateEventDialog({
         <DialogHeader>
           <DialogTitle>Create New Event</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="title">Event Title</Label>
+        <div className="p-6">
+          <h2 className="text-lg font-medium mb-4">Create New Event</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label className="block text-sm font-medium mb-1">Course Code</Label>
               <Input
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter event title"
+                value={courseCode}
+                onChange={(e) => setCourseCode(e.target.value)}
+                placeholder="e.g. CS101"
                 required
               />
             </div>
-            <div className="grid gap-2">
-              <Label>Date & Time</Label>
+            <div>
+              <Label className="block text-sm font-medium mb-1">Event Title</Label>
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Event title"
+                required
+              />
+            </div>
+            <div>
+              <Label className="block text-sm font-medium mb-1">Date & Time</Label>
               <Input
                 value={`${format(date, "MMMM d, yyyy")} at ${format(
                   new Date().setHours(hour),
@@ -109,45 +106,50 @@ export function CreateEventDialog({
                 disabled
               />
             </div>
-            <div className="grid gap-2">
-              <Label>Duration</Label>
-              <Select value={duration} onValueChange={setDuration}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select duration" />
-                </SelectTrigger>
-                <SelectContent>
-                  {DURATIONS.map((d) => (
-                    <SelectItem key={d.value} value={d.value}>
-                      {d.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div>
+              <Label className="block text-sm font-medium mb-1">Duration</Label>
+              <select
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                className="block w-full p-2 pl-10 text-sm text-gray-700 rounded-lg border-gray-200 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {DURATIONS.map((d) => (
+                  <option key={d.value} value={d.value}>
+                    {d.label}
+                  </option>
+                ))}
+              </select>
             </div>
-            <div className="grid gap-2">
-              <Label>Color</Label>
-              <Select value={color} onValueChange={setColor}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select color" />
-                </SelectTrigger>
-                <SelectContent>
-                  {COLORS.map((c) => (
-                    <SelectItem key={c.value} value={c.value}>
-                      {c.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div>
+              <Label className="block text-sm font-medium mb-1">Color</Label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className={`w-8 h-8 rounded-full ${color === "#34D399" ? "ring-2 ring-offset-2" : ""}`}
+                  style={{ backgroundColor: "#34D399" }}
+                  onClick={() => setColor("#34D399")}
+                />
+                <button
+                  type="button"
+                  className={`w-8 h-8 rounded-full ${color === "#F87171" ? "ring-2 ring-offset-2" : ""}`}
+                  style={{ backgroundColor: "#F87171" }}
+                  onClick={() => setColor("#F87171")}
+                />
+                <button
+                  type="button"
+                  className={`w-8 h-8 rounded-full ${color === "#60A5FA" ? "ring-2 ring-offset-2" : ""}`}
+                  style={{ backgroundColor: "#60A5FA" }}
+                  onClick={() => setColor("#60A5FA")}
+                />
+              </div>
             </div>
-          </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button type="submit">Create Event</Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter>
+              <Button variant="outline" onClick={onClose}>Cancel</Button>
+              <Button type="submit">Create Event</Button>
+            </DialogFooter>
+          </form>
+        </div>
       </DialogContent>
     </Dialog>
   );
-} 
+}

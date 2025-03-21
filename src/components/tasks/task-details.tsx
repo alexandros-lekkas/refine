@@ -3,146 +3,153 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
-import { ChevronRight, Clock, CheckCircle2 } from "lucide-react";
+import { ChevronRight, Clock, CheckCircle2, Timer } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
-interface TaskDetailsProps {
-  task: {
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+  courseCode: string;
+  courseTitle: string;
+  completed: boolean;
+  dueDate: string;
+  plannedTime: string;
+  type: "Assignment" | "Project" | "Exam";
+  currentPhase: number;
+  phaseProgress: number[];
+  subtasks: {
     id: string;
     title: string;
-    description: string;
-    courseCode: string;
-    courseTitle: string;
     completed: boolean;
-    dueDate?: string;
-    plannedTime?: string;
-    actualTime?: string;
-    type: "Exam" | "Assignment" | "Project";
-    subtasks?: Array<{
-      id: string;
-      title: string;
-      completed: boolean;
-    }>;
-  };
-  onClose: () => void;
-  onComplete: (taskId: string) => void;
+  }[];
 }
 
-export function TaskDetails({ task, onClose, onComplete }: TaskDetailsProps) {
-  const [activePhase, setActivePhase] = React.useState<number>(0);
-  const [elapsedTime, setElapsedTime] = React.useState<number>(0);
-  const [isTimerRunning, setIsTimerRunning] = React.useState<boolean>(false);
-  const [phaseProgress, setPhaseProgress] = React.useState<number[]>([]);
+interface TaskDetailsProps {
+  task: Task;
+  onClose: () => void;
+  onComplete: (taskId: string) => void;
+  onPhaseUpdate: (phaseIndex: number, progress: number) => void;
+  onSubtaskToggle: (subtaskId: string) => void;
+}
+
+interface Phase {
+  title: string;
+  description: string;
+  tips: string[];
+  estimatedTime: string;
+}
+
+const phases: Record<Task['type'], Phase[]> = {
+  Assignment: [
+    {
+      title: "Understanding",
+      description: "Review assignment requirements and understand the objectives",
+      tips: ["Read through the entire assignment", "Note down key requirements", "Identify deliverables"],
+      estimatedTime: "1-2 hours"
+    },
+    {
+      title: "Research",
+      description: "Gather necessary information and resources",
+      tips: ["Find relevant sources", "Take detailed notes", "Organize research materials"],
+      estimatedTime: "2-3 hours"
+    },
+    {
+      title: "Initial Draft",
+      description: "Create the first version of your work",
+      tips: ["Follow assignment structure", "Include all main points", "Add supporting evidence"],
+      estimatedTime: "2-3 hours"
+    },
+    {
+      title: "Review & Revision",
+      description: "Refine and improve your work",
+      tips: ["Check against requirements", "Improve clarity and flow", "Add missing elements"],
+      estimatedTime: "1-2 hours"
+    },
+    {
+      title: "Final Check",
+      description: "Polish and finalize your work",
+      tips: ["Proofread thoroughly", "Format correctly", "Verify citations"],
+      estimatedTime: "1 hour"
+    }
+  ],
+  Project: [
+    {
+      title: "Planning",
+      description: "Define project scope and requirements",
+      tips: ["Create timeline", "Set milestones", "Identify resources needed"],
+      estimatedTime: "2-3 hours"
+    },
+    {
+      title: "Research",
+      description: "Collect necessary information and resources",
+      tips: ["Study documentation", "Review similar projects", "Take detailed notes"],
+      estimatedTime: "3-4 hours"
+    },
+    {
+      title: "Development",
+      description: "Build core components and features",
+      tips: ["Follow best practices", "Document as you go", "Regular testing"],
+      estimatedTime: "8-10 hours"
+    },
+    {
+      title: "Testing",
+      description: "Verify functionality and fix issues",
+      tips: ["Create test cases", "Debug thoroughly", "Get user feedback"],
+      estimatedTime: "2-3 hours"
+    },
+    {
+      title: "Finalization",
+      description: "Polish and prepare for submission",
+      tips: ["Final testing", "Complete documentation", "Prepare presentation"],
+      estimatedTime: "1-2 hours"
+    }
+  ],
+  Exam: [
+    {
+      title: "Topic Review",
+      description: "Review key concepts and materials",
+      tips: ["Create study guide", "Review past exams", "Identify weak areas"],
+      estimatedTime: "2-3 hours"
+    },
+    {
+      title: "Practice",
+      description: "Work through sample problems and exercises",
+      tips: ["Time yourself", "Simulate exam conditions", "Review mistakes"],
+      estimatedTime: "2-3 hours"
+    },
+    {
+      title: "Final Review",
+      description: "Quick review of challenging topics",
+      tips: ["Focus on weak areas", "Use active recall", "Stay calm and confident"],
+      estimatedTime: "1-2 hours"
+    }
+  ]
+};
+
+export function TaskDetails({
+  task,
+  onClose,
+  onComplete,
+  onPhaseUpdate,
+  onSubtaskToggle
+}: TaskDetailsProps) {
+  const [isTimerRunning, setIsTimerRunning] = React.useState(false);
+  const [elapsedTime, setElapsedTime] = React.useState(0);
   const timerRef = React.useRef<NodeJS.Timeout>();
 
-  const phases = React.useMemo(() => {
-    switch (task.type) {
-      case "Assignment":
-        return [
-          {
-            title: "Understanding",
-            description: "Review assignment requirements and understand objectives",
-            tips: ["Read instructions carefully", "Note key requirements", "List any questions"],
-            duration: "1-2 hours"
-          },
-          {
-            title: "Research",
-            description: "Gather necessary information and resources",
-            tips: ["Find relevant materials", "Take organized notes", "Identify key concepts"],
-            duration: "2-3 hours"
-          },
-          {
-            title: "Initial Draft",
-            description: "Create first version focusing on main concepts",
-            tips: ["Follow outline", "Focus on content", "Keep track of sources"],
-            duration: "2-3 hours"
-          },
-          {
-            title: "Review & Revision",
-            description: "Check for errors and improve quality",
-            tips: ["Check against rubric", "Get peer feedback", "Improve clarity"],
-            duration: "1-2 hours"
-          },
-          {
-            title: "Final Check",
-            description: "Polish and ensure all requirements are met",
-            tips: ["Verify formatting", "Check citations", "Proofread thoroughly"],
-            duration: "1 hour"
-          }
-        ];
-      case "Project":
-        return [
-          {
-            title: "Planning",
-            description: "Define project scope and requirements",
-            tips: ["Create timeline", "Set milestones", "Identify resources needed"],
-            duration: "2-3 hours"
-          },
-          {
-            title: "Research",
-            description: "Collect necessary information and resources",
-            tips: ["Study documentation", "Review similar projects", "Take detailed notes"],
-            duration: "3-4 hours"
-          },
-          {
-            title: "Development",
-            description: "Build core components and features",
-            tips: ["Follow best practices", "Document as you go", "Regular testing"],
-            duration: "8-10 hours"
-          },
-          {
-            title: "Testing",
-            description: "Verify functionality and fix issues",
-            tips: ["Create test cases", "Debug thoroughly", "Get user feedback"],
-            duration: "2-3 hours"
-          },
-          {
-            title: "Finalization",
-            description: "Polish and prepare for submission",
-            tips: ["Final testing", "Complete documentation", "Prepare presentation"],
-            duration: "1-2 hours"
-          }
-        ];
-      case "Exam":
-        return [
-          {
-            title: "Topic Review",
-            description: "Review key concepts and materials",
-            tips: ["Create study guide", "Review past exams", "Identify weak areas"],
-            duration: "2-3 hours"
-          },
-          {
-            title: "Practice",
-            description: "Work through sample problems and exercises",
-            tips: ["Time yourself", "Simulate exam conditions", "Review mistakes"],
-            duration: "2-3 hours"
-          },
-          {
-            title: "Final Review",
-            description: "Quick review of challenging topics",
-            tips: ["Focus on weak areas", "Use active recall", "Stay calm and confident"],
-            duration: "1-2 hours"
-          }
-        ];
-      default:
-        return [];
-    }
-  }, [task.type]);
-
-  React.useEffect(() => {
-    setPhaseProgress(new Array(phases.length).fill(0));
-  }, [phases.length]);
-
-  const progress = React.useMemo(() => {
-    if (!task.subtasks?.length) return 0;
-    const completed = task.subtasks.filter(st => st.completed).length;
-    return Math.round((completed / task.subtasks.length) * 100);
-  }, [task.subtasks]);
+  const taskPhases = phases[task.type] || [];
+  const overallProgress = task.phaseProgress.reduce((sum, p) => sum + p, 0) / (task.phaseProgress.length || 1);
 
   React.useEffect(() => {
     if (isTimerRunning) {
       timerRef.current = setInterval(() => {
         setElapsedTime(prev => prev + 1);
       }, 1000);
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
     }
     return () => {
       if (timerRef.current) {
@@ -158,161 +165,121 @@ export function TaskDetails({ task, onClose, onComplete }: TaskDetailsProps) {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  const handlePhaseProgress = (index: number, value: number) => {
-    setPhaseProgress(prev => {
-      const newProgress = [...prev];
-      newProgress[index] = Math.min(100, Math.max(0, value));
-      return newProgress;
-    });
-  };
-
   return (
-    <Card className="p-6 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex justify-between items-start">
+    <div className="space-y-6">
+      {/* Description */}
+      <Card className="p-6">
+        <h2 className="text-lg font-semibold mb-4">Assignment Description</h2>
+        <p className="text-gray-600">{task.description}</p>
+      </Card>
+
+      {/* Progress and Timer */}
+      <Card className="p-6">
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">{task.title}</h2>
-            <p className="text-sm text-gray-500">{task.courseCode} - {task.courseTitle}</p>
+            <h2 className="text-lg font-semibold mb-2">Overall Progress</h2>
+            <div className="flex items-center gap-4 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                <span>Planned: {task.plannedTime}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Timer className="w-4 h-4" />
+                <span>Elapsed: {formatTime(elapsedTime)}</span>
+              </div>
+            </div>
           </div>
           <Button
-            variant={task.completed ? "outline" : "default"}
-            className={cn(
-              "transition-colors",
-              task.completed && "bg-green-50 text-green-600 hover:bg-green-100"
-            )}
-            onClick={() => onComplete(task.id)}
+            variant={isTimerRunning ? "destructive" : "default"}
+            size="sm"
+            onClick={() => setIsTimerRunning(!isTimerRunning)}
+            className={isTimerRunning ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}
           >
-            <CheckCircle2 className="w-4 h-4 mr-2" />
-            {task.completed ? "Completed" : "Mark Complete"}
+            {isTimerRunning ? "Stop Timer" : "Start Timer"}
           </Button>
         </div>
-
-        {/* Task Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <h3 className="font-medium">Description</h3>
-            <p className="text-sm text-gray-600">{task.description}</p>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-medium mb-2">Progress</h3>
-              <Progress value={progress} className="h-2" />
-              <p className="text-sm text-gray-500 mt-1">{progress}% Complete</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-gray-500" />
-                <span className="text-sm font-medium">{formatTime(elapsedTime)}</span>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsTimerRunning(!isTimerRunning)}
-              >
-                {isTimerRunning ? "Pause" : "Start"} Timer
-              </Button>
-            </div>
-          </div>
-        </div>
+        <Progress value={overallProgress} className="h-2 mb-8" />
 
         {/* Phases */}
-        <div className="space-y-4">
-          <h3 className="font-medium">Study Plan</h3>
-          <div className="space-y-2">
-            {phases.map((phase, index) => (
-              <div
-                key={phase.title}
-                className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                onClick={() => setActivePhase(activePhase === index ? -1 : index)}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-medium">{phase.title}</h4>
-                        <Progress 
-                          value={phaseProgress[index]} 
-                          className="w-24 h-1.5" 
-                        />
-                        <span className="text-xs text-gray-500">{phaseProgress[index]}%</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="text-xs text-gray-500">{phase.duration}</div>
-                        <ChevronRight className={cn(
-                          "w-4 h-4 transition-transform",
-                          activePhase === index && "rotate-90"
-                        )} />
-                      </div>
-                    </div>
+        <div className="space-y-8">
+          {taskPhases.map((phase, index) => (
+            <div key={phase.title} className="space-y-4">
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <h3 className="font-medium">{phase.title}</h3>
+                    <span className="text-sm text-gray-500">({phase.estimatedTime})</span>
+                    {task.phaseProgress[index] === 100 && (
+                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    )}
                   </div>
+                  <p className="text-sm text-gray-600">{phase.description}</p>
                 </div>
-                {activePhase === index && (
-                  <div className="mt-4 space-y-4">
-                    <p className="text-sm text-gray-600">{phase.description}</p>
-                    <div className="space-y-2">
-                      <h5 className="text-sm font-medium">Tips:</h5>
-                      <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
-                        {phase.tips.map((tip, i) => (
-                          <li key={i}>{tip}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={phaseProgress[index]}
-                        onChange={(e) => handlePhaseProgress(index, parseInt(e.target.value))}
-                        className="flex-1"
-                      />
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handlePhaseProgress(index, 100);
-                        }}
-                      >
-                        Complete Phase
-                      </Button>
-                    </div>
-                  </div>
-                )}
+                <span className="text-sm font-medium">{task.phaseProgress[index]}%</span>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Subtasks */}
-        {task.subtasks && task.subtasks.length > 0 && (
-          <div className="space-y-4">
-            <h3 className="font-medium">Subtasks</h3>
-            <div className="space-y-2">
-              {task.subtasks.map(subtask => (
-                <div
-                  key={subtask.id}
-                  className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded-lg"
-                >
-                  <input
-                    type="checkbox"
-                    checked={subtask.completed}
-                    onChange={() => {}}
-                    className="rounded border-gray-300"
-                  />
-                  <span className={cn(
-                    "text-sm",
-                    subtask.completed && "line-through text-gray-500"
-                  )}>
-                    {subtask.title}
-                  </span>
+              <div className="space-y-2">
+                <Progress 
+                  value={task.phaseProgress[index]} 
+                  className="h-2.5 cursor-pointer hover:h-3 transition-all"
+                  onClick={(e: React.MouseEvent) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const percentage = Math.round((x / rect.width) * 100);
+                    onPhaseUpdate(index, Math.min(100, Math.max(0, percentage)));
+                  }}
+                />
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-[#c026d3]" />
+                    <span className="text-sm text-gray-600">Click progress bar to update</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs hover:text-[#c026d3] hover:border-[#c026d3]"
+                    onClick={(e: React.MouseEvent) => {
+                      e.stopPropagation();
+                      onPhaseUpdate(index, 100);
+                    }}
+                  >
+                    Mark Phase Complete
+                  </Button>
                 </div>
-              ))}
+              </div>
+              <div className="pl-4 border-l-2 border-gray-200">
+                <h4 className="text-sm font-medium mb-2">Tips:</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  {phase.tips.map((tip, i) => (
+                    <li key={i}>{tip}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    </Card>
+          ))}
+        </div>
+      </Card>
+
+      {/* Subtasks */}
+      <Card className="p-6">
+        <h2 className="text-lg font-semibold mb-4">Subtasks</h2>
+        <div className="space-y-3">
+          {task.subtasks.map((subtask) => (
+            <div key={subtask.id} className="flex items-center gap-3">
+              <Checkbox
+                id={subtask.id}
+                checked={subtask.completed}
+                onCheckedChange={() => onSubtaskToggle(subtask.id)}
+              />
+              <label
+                htmlFor={subtask.id}
+                className={`text-sm ${subtask.completed ? "text-gray-500 line-through" : ""}`}
+              >
+                {subtask.title}
+              </label>
+            </div>
+          ))}
+        </div>
+      </Card>
+    </div>
   );
 }
