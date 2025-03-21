@@ -227,7 +227,22 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                     {date ? format(date, "MMM d, yyyy") : "Due date"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
+                <PopoverContent className="p-0 w-auto bg-white rounded-lg shadow-md" align="start">
+                  <div className="flex items-center justify-between px-3 py-2 border-b">
+                    <div className="flex items-center gap-2">
+                      <CalendarIcon className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm font-medium">{format(date || new Date(), "MMM yyyy")}</span>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        setDate(new Date())
+                        setCalendarOpen(false)
+                      }}
+                      className="text-sm text-[#c026d3] hover:text-[#c026d3]/90 font-medium"
+                    >
+                      Today
+                    </button>
+                  </div>
                   <Calendar
                     mode="single"
                     selected={date}
@@ -235,6 +250,9 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                       setDate(date)
                       setCalendarOpen(false)
                     }}
+                    defaultMonth={date || new Date()}
+                    initialFocus
+                    className="border-0"
                   />
                 </PopoverContent>
               </Popover>
