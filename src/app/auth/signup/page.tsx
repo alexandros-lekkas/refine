@@ -77,8 +77,8 @@ export default function SignUpPage() {
           <div className="w-full max-w-xs">
             <form className={cn("flex flex-col gap-6")} onSubmit={handleSignUp}>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold text-gray-900 animate-in fade-in slide-in-from-top-4 duration-500">Create your account</h1>
-                <p className="text-balance text-sm text-gray-500 animate-in fade-in slide-in-from-top-4 duration-500">
+                <h1 className="text-4xl font-bold text-gray-900 animate-in fade-in slide-in-from-top-4 duration-500">Create your account</h1>
+                <p className="text-balance text-base text-gray-500 animate-in fade-in slide-in-from-top-4 duration-500">
                   Enter your details below to create your account
                 </p>
               </div>
@@ -96,63 +96,61 @@ export default function SignUpPage() {
               <div className="grid gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="firstName" className="text-gray-700">First name</Label>
+                    <Label htmlFor="firstName" className="text-gray-700 text-base">First name</Label>
                     <Input
                       id="firstName"
                       type="text"
-                      required
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
-                      className="bg-white border-gray-200 focus:border-primary focus:ring-primary"
+                      required
+                      className="h-12 text-base"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="lastName" className="text-gray-700">Last name</Label>
+                    <Label htmlFor="lastName" className="text-gray-700 text-base">Last name</Label>
                     <Input
                       id="lastName"
                       type="text"
-                      required
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
-                      className="bg-white border-gray-200 focus:border-primary focus:ring-primary"
+                      required
+                      className="h-12 text-base"
                     />
                   </div>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="email" className="text-gray-700">Email</Label>
+                  <Label htmlFor="email" className="text-gray-700 text-base">Email</Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
-                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="bg-white border-gray-200 focus:border-primary focus:ring-primary"
+                    required
+                    className="h-12 text-base"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="password" className="text-gray-700">Password</Label>
+                  <Label htmlFor="password" className="text-gray-700 text-base">Password</Label>
                   <Input
                     id="password"
                     type="password"
-                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-white border-gray-200 focus:border-primary focus:ring-primary"
+                    required
+                    className="h-12 text-base"
                   />
                 </div>
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white">
+                <Button type="submit" className="w-full h-12 text-base font-medium">
                   Sign Up
                 </Button>
               </div>
-              <div className="text-center text-sm text-gray-600">
-                Already have an account?{" "}
-                <Link
-                  href="/auth/login"
-                  className="text-primary hover:text-primary/90 underline underline-offset-4"
-                >
-                  Log in
-                </Link>
+              <div className="text-center">
+                <p className="text-base text-gray-600">
+                  Already have an account?{" "}
+                  <Link href="/auth/login" className="text-primary hover:underline font-medium">
+                    Log in
+                  </Link>
+                </p>
               </div>
             </form>
           </div>

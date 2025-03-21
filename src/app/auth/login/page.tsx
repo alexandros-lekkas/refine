@@ -48,8 +48,8 @@ export default function LoginPage() {
           <div className="w-full max-w-xs">
             <form className={cn("flex flex-col gap-6")} onSubmit={handleLogin}>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold text-gray-900 animate-in fade-in slide-in-from-top-4 duration-500">Login to your account</h1>
-                <p className="text-balance text-sm text-gray-500 animate-in fade-in slide-in-from-top-4 duration-500">
+                <h1 className="text-4xl font-bold text-gray-900 animate-in fade-in slide-in-from-top-4 duration-500">Login to your account</h1>
+                <p className="text-balance text-base text-gray-500 animate-in fade-in slide-in-from-top-4 duration-500">
                   Enter your email below to login to your account
                 </p>
               </div>
@@ -60,23 +60,22 @@ export default function LoginPage() {
               )}
               <div className="grid gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="grid gap-2">
-                  <Label htmlFor="email" className="text-gray-700">Email</Label>
+                  <Label htmlFor="email" className="text-gray-700 text-base">Email</Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="bg-white border-gray-200 focus:border-primary focus:ring-primary"
+                    className="h-12 text-base"
                   />
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center">
-                    <Label htmlFor="password" className="text-gray-700">Password</Label>
+                    <Label htmlFor="password" className="text-gray-700 text-base">Password</Label>
                     <Link
                       href="/auth/reset-password"
-                      className="ml-auto text-sm text-primary hover:text-primary/90 underline-offset-4 hover:underline"
+                      className="ml-auto text-base text-primary hover:text-primary/90 hover:underline font-medium"
                     >
                       Forgot your password?
                     </Link>
@@ -87,21 +86,20 @@ export default function LoginPage() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-white border-gray-200 focus:border-primary focus:ring-primary"
+                    className="h-12 text-base"
                   />
                 </div>
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white">
+                <Button type="submit" className="w-full h-12 text-base font-medium">
                   Login
                 </Button>
               </div>
-              <div className="text-center text-sm text-gray-600">
-                Don&apos;t have an account?{" "}
-                <Link
-                  href="/auth/signup"
-                  className="text-primary hover:text-primary/90 underline underline-offset-4"
-                >
-                  Sign up
-                </Link>
+              <div className="text-center">
+                <p className="text-base text-gray-600">
+                  Don&apos;t have an account?{" "}
+                  <Link href="/auth/signup" className="text-primary hover:underline font-medium">
+                    Sign up
+                  </Link>
+                </p>
               </div>
             </form>
           </div>
