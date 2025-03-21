@@ -313,13 +313,59 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                     {time || "Time"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-2" align="start">
-                  <Input
-                    type="time"
-                    className="w-32 text-sm"
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                  />
+                <PopoverContent className="w-auto p-2 bg-white rounded-lg" align="start">
+                  <div className="flex items-center gap-2">
+                    <select
+                      className="w-16 p-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#c026d3] bg-white"
+                      value={time ? time.split(":")[0] : ""}
+                      onChange={(e) => {
+                        const hour = e.target.value.padStart(2, "0");
+                        const minute = time ? time.split(":")[1] : "00";
+                        setTime(`${hour}:${minute}`);
+                      }}
+                    >
+                      {Array.from({ length: 12 }, (_, i) => (
+                        <option key={i} value={String(i + 1).padStart(2, "0")}>
+                          {String(i + 1).padStart(2, "0")}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      className="w-16 p-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#c026d3] bg-white"
+                      value={time ? time.split(":")[1] : ""}
+                      onChange={(e) => {
+                        const hour = time ? time.split(":")[0] : "12";
+                        setTime(`${hour}:${e.target.value}`);
+                      }}
+                    >
+                      {["00", "15", "30", "45"].map((minute) => (
+                        <option key={minute} value={minute}>
+                          {minute}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      className="w-20 p-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#c026d3] bg-white"
+                      value={time && parseInt(time.split(":")[0]) >= 12 ? "PM" : "AM"}
+                      onChange={(e) => {
+                        if (!time) return;
+                        const [hour, minute] = time.split(":");
+                        const hourNum = parseInt(hour);
+                        if (e.target.value === "AM") {
+                          if (hourNum >= 12) {
+                            setTime(`${String(hourNum - 12).padStart(2, "0")}:${minute}`);
+                          }
+                        } else {
+                          if (hourNum < 12) {
+                            setTime(`${String(hourNum + 12).padStart(2, "0")}:${minute}`);
+                          }
+                        }
+                      }}
+                    >
+                      <option value="AM">AM</option>
+                      <option value="PM">PM</option>
+                    </select>
+                  </div>
                 </PopoverContent>
               </Popover>
               <Button variant="outline" size="sm" className="text-xs py-1.5">
