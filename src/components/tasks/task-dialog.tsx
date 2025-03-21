@@ -229,13 +229,14 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                 </PopoverTrigger>
                 <PopoverContent className="p-0 w-auto bg-white rounded-lg shadow-md" align="start">
                   <div className="flex items-center justify-between px-3 py-2 border-b">
-                    <div className="flex items-center gap-2">
-                      <CalendarIcon className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm font-medium">{format(date || new Date(), "MMM yyyy")}</span>
+                    <div className="flex-1 flex items-center justify-center">
+                      <CalendarIcon className="w-4 h-4 text-gray-500 mr-2" />
+                      <span className="text-sm font-medium">{format(date || new Date(), "MMMM yyyy")}</span>
                     </div>
                     <button 
                       onClick={() => {
-                        setDate(new Date())
+                        const today = new Date()
+                        setDate(today)
                         setCalendarOpen(false)
                       }}
                       className="text-sm text-[#c026d3] hover:text-[#c026d3]/90 font-medium"
@@ -243,17 +244,19 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                       Today
                     </button>
                   </div>
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={(date) => {
-                      setDate(date)
-                      setCalendarOpen(false)
-                    }}
-                    defaultMonth={date || new Date()}
-                    initialFocus
-                    className="border-0"
-                  />
+                  <div className="p-0">
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={(date) => {
+                        setDate(date)
+                        setCalendarOpen(false)
+                      }}
+                      defaultMonth={date || new Date()}
+                      initialFocus
+                      className="border-0"
+                    />
+                  </div>
                 </PopoverContent>
               </Popover>
               <Popover>
