@@ -1,11 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Calendar as CalendarIcon, Clock, Flag, MessageSquare, X, Sparkles } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, Flag, MessageSquare, X, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -192,7 +191,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                 onClick={() => setTaskType("Exam")}
                 className={cn(
                   "flex-1 text-xs rounded-full py-1.5",
-                  taskType === "Exam" ? "bg-[#c026d3] hover:bg-[#c026d3]/90 text-white" : ""
+                  taskType === "Exam" ? "bg-[#c026d3] text-white" : ""
                 )}
               >
                 Exam
@@ -202,7 +201,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                 onClick={() => setTaskType("Assignment")}
                 className={cn(
                   "flex-1 text-xs rounded-full py-1.5",
-                  taskType === "Assignment" ? "bg-[#c026d3] hover:bg-[#c026d3]/90 text-white" : ""
+                  taskType === "Assignment" ? "bg-[#c026d3] text-white" : ""
                 )}
               >
                 Assignment
@@ -212,7 +211,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                 onClick={() => setTaskType("Project")}
                 className={cn(
                   "flex-1 text-xs rounded-full py-1.5",
-                  taskType === "Project" ? "bg-[#c026d3] hover:bg-[#c026d3]/90 text-white" : ""
+                  taskType === "Project" ? "bg-[#c026d3] text-white" : ""
                 )}
               >
                 Project
@@ -227,35 +226,83 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                     {date ? format(date, "MMM d, yyyy") : "Due date"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="p-0 w-auto bg-white rounded-lg shadow-md" align="start">
+                <PopoverContent className="w-auto p-0 bg-white rounded-lg shadow-md" align="start" sideOffset={4}>
                   <div className="flex items-center justify-between px-3 py-2 border-b">
-                    <div className="flex-1 flex items-center justify-center">
-                      <CalendarIcon className="w-4 h-4 text-gray-500 mr-2" />
-                      <span className="text-sm font-medium">{format(date || new Date(), "MMMM yyyy")}</span>
-                    </div>
                     <button 
                       onClick={() => {
-                        const today = new Date()
-                        setDate(today)
-                        setCalendarOpen(false)
+                        const currentMonth = date || new Date()
+                        setDate(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))
                       }}
-                      className="text-sm text-[#c026d3] hover:text-[#c026d3]/90 font-medium"
+                      className="h-7 w-7 bg-transparent p-0 opacity-50"
                     >
-                      Today
+                      <ChevronLeft className="h-4 w-4" />
                     </button>
+                    <span className="text-sm font-medium flex-1 text-center">{format(date || new Date(), "MMMM yyyy")}</span>
+                    <div className="flex items-center">
+                      <button 
+                        onClick={() => {
+                          const currentMonth = date || new Date()
+                          setDate(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))
+                        }}
+                        className="h-7 w-7 bg-transparent p-0 opacity-50 mr-2"
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                      <button 
+                        onClick={() => {
+                          const today = new Date()
+                          setDate(today)
+                          setCalendarOpen(false)
+                        }}
+                        className="text-sm text-[#c026d3] font-medium"
+                      >
+                        Today
+                      </button>
+                    </div>
                   </div>
-                  <div className="p-0">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={(date) => {
-                        setDate(date)
-                        setCalendarOpen(false)
-                      }}
-                      defaultMonth={date || new Date()}
-                      initialFocus
-                      className="border-0"
-                    />
+                  <div className="grid grid-cols-7 gap-0 px-3 pt-3 pb-2 text-[13px] font-normal text-gray-500">
+                    <div className="text-center">S</div>
+                    <div className="text-center">M</div>
+                    <div className="text-center">T</div>
+                    <div className="text-center">W</div>
+                    <div className="text-center">T</div>
+                    <div className="text-center">F</div>
+                    <div className="text-center">S</div>
+                  </div>
+                  <div className="grid grid-cols-7 gap-0 px-3 pb-3 text-[13px] font-normal">
+                    {Array.from({ length: 42 }, (_, i) => {
+                      const currentDate = date || new Date();
+                      const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+                      const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+                      const startPadding = firstDay.getDay();
+                      const day = i - startPadding + 1;
+                      const isCurrentMonth = day > 0 && day <= lastDay.getDate();
+                      const isSelected = date && day === date.getDate() && currentDate.getMonth() === date.getMonth() && currentDate.getFullYear() === date.getFullYear();
+                      const isToday = day === new Date().getDate() && currentDate.getMonth() === new Date().getMonth() && currentDate.getFullYear() === new Date().getFullYear();
+                      
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            if (isCurrentMonth) {
+                              const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+                              setDate(newDate);
+                              setCalendarOpen(false);
+                            }
+                          }}
+                          className={cn(
+                            "h-8 w-8 p-0 flex items-center justify-center",
+                            isSelected && "relative before:absolute before:inset-0 before:rounded-full before:bg-[#c026d3] before:opacity-5 text-[#c026d3] font-normal",
+                            isToday && !isSelected && "text-[#c026d3] font-normal",
+                            !isCurrentMonth && "text-gray-300/5",
+                            isCurrentMonth && !isSelected && !isToday && "text-gray-300/60 font-light"
+                          )}
+                          disabled={!isCurrentMonth}
+                        >
+                          {isCurrentMonth ? day : ""}
+                        </button>
+                      );
+                    })}
                   </div>
                 </PopoverContent>
               </Popover>
@@ -284,7 +331,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start text-xs font-normal hover:bg-gray-50 py-2"
+              className="w-full justify-start text-xs font-normal py-2"
               onClick={() => setShowStudyPlan(!showStudyPlan)}
             >
               <MessageSquare className="w-3.5 h-3.5 mr-1.5 text-[#c026d3]" />
@@ -330,9 +377,9 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                             {phase.resources.map((resource, i) => (
                               <span 
                                 key={i}
-                                className="group inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white hover:bg-[#c026d3]/5 text-[10px] text-gray-600 hover:text-[#c026d3] border border-gray-200 hover:border-[#c026d3]/20 transition-colors duration-150"
+                                className="group inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white text-[10px] text-gray-600 border border-gray-200"
                               >
-                                <div className="w-1 h-1 rounded-full bg-[#c026d3]/30 group-hover:bg-[#c026d3]" />
+                                <div className="w-1 h-1 rounded-full bg-[#c026d3]/30" />
                                 {resource}
                               </span>
                             ))}
@@ -405,7 +452,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
           <Button 
             size="sm"
             onClick={() => onOpenChange(false)}
-            className="bg-[#c026d3] hover:bg-[#c026d3]/90 text-white px-3 py-1.5 text-xs rounded-xl"
+            className="bg-[#c026d3] text-white px-3 py-1.5 text-xs rounded-xl"
             disabled={!title || !course || !date}
           >
             Create Task
