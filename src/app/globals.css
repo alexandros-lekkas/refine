@@ -157,7 +157,6 @@
 html {
   scroll-snap-type: y mandatory;
   height: 100%;
-  scroll-behavior: smooth;
 }
 
 /* Apply snap to all full-height sections */
