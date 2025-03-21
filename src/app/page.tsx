@@ -1,121 +1,100 @@
 "use client";
 
-import { Footer } from "@/components/layout/footer";
+import * as React from "react";
+import { cn } from "@/lib/utils";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 import { AuroraText } from "@/components/magicui/aurora-text";
 
-const HeroSection = () => {
-  const scrollToTasks = () => {
-    const element = document.getElementById("tasks");
-    element?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  return (
-    <section
-      id="hero"
-      className="min-h-screen relative flex items-center justify-center overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-background"></div>
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]"></div>
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5"></div>
-<<<<<<< HEAD
-
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-b from-primary/20 to-transparent rounded-full blur-3xl"></div>
-
-=======
-      
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-b from-primary/10 to-transparent rounded-full blur-3xl"></div>
-      
->>>>>>> 3959f4c (feat: FG)
-      <div className="container mx-auto px-4 py-32 relative">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="grid grid-cols-3 gap-8 mb-12">
-            <div className="text-center space-y-2">
-              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-                87%
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Average Time Saved on Planning
-              </p>
+const HeroSection = () => (
+  <section
+    id="hero"
+    className="min-h-screen snap-start relative flex items-center justify-center overflow-hidden"
+  >
+    <div className="absolute inset-0 bg-background"></div>
+    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]"></div>
+    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5"></div>
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-b from-primary/20 to-transparent rounded-full blur-3xl"></div>
+    <div className="container mx-auto px-4 scale-[0.85] origin-top py-16 relative">
+      <div className="max-w-4xl mx-auto text-center">
+        <div className="grid grid-cols-3 gap-8 mb-12">
+          <div className="text-center space-y-2">
+            <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+              87%
             </div>
-            <div className="text-center space-y-2">
-              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-                2.5x
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Improved Study Efficiency
-              </p>
-            </div>
-            <div className="text-center space-y-2">
-              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-                100%
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Assignment Coverage
-              </p>
-            </div>
+            <p className="text-sm text-muted-foreground">
+              Average Time Saved on Planning
+            </p>
           </div>
-
-          <h1 className="text-[5rem] text-foreground font-semibold tracking-tight mb-8 leading-[1.1]">
-            Your Academic Success,
-<<<<<<< HEAD
-            <AuroraText
-              colors={[
-                "#FF3DC0",
-                "#FF1A8D",
-                "#FF69B4",
-                "#DA70D6",
-                "#BA55D3",
-                "#9932CC",
-                "#8B008B",
-                "#FF00FF",
-                "#FF69B4",
-                "#FF1493",
-              ]}
-            >
-              AI Powered
-            </AuroraText>
-=======
-            <AuroraText colors={["#FF3DC0", "#FF1A8D", "#FF69B4", "#DA70D6", "#BA55D3", "#9932CC", "#8B008B", "#FF00FF", "#FF69B4", "#FF1493"]}>AI-Powered</AuroraText>
->>>>>>> 3959f4c (feat: FG)
-          </h1>
-
-          <p className="text-muted-foreground text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto opacity-75">
-            Seamlessly sync with your LMS, get AI-powered study plans, and never
-            miss a deadline. Join thousands of students transforming their
-            academic journey.
-          </p>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-6">
-            <button className="px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-xl text-lg font-normal hover:opacity-90 transition-opacity">
-              Sign Up & Sync Your LMS
-            </button>
-            <button
-              onClick={scrollToTasks}
-              className="px-8 py-4 bg-secondary text-secondary-foreground rounded-xl text-lg font-normal hover:bg-secondary/80 transition-colors border border-border"
-            >
-<<<<<<< HEAD
-              <AnimatedShinyText>See How It Works</AnimatedShinyText>
-=======
-              <AnimatedShinyText>
-                See How It Works
-              </AnimatedShinyText>
->>>>>>> 3959f4c (feat: FG)
-            </button>
+          <div className="text-center space-y-2">
+            <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+              2.5x
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Improved Study Efficiency
+            </p>
+          </div>
+          <div className="text-center space-y-2">
+            <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+              100%
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Assignment Coverage
+            </p>
           </div>
         </div>
+
+        <h1 className="text-[5rem] text-foreground font-semibold tracking-tight mb-8 leading-[1.1]">
+          Your Academic Success,{" "}
+          <AuroraText
+            colors={[
+              "#FF3DC0",
+              "#FF1A8D",
+              "#FF69B4",
+              "#DA70D6",
+              "#BA55D3",
+              "#9932CC",
+              "#8B008B",
+              "#FF00FF",
+              "#FF69B4",
+              "#FF1493",
+            ]}
+          >
+            AI-Powered
+          </AuroraText>
+        </h1>
+
+        <p className="text-muted-foreground text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto opacity-75">
+          Seamlessly sync with your LMS, get AI-powered study plans, and never
+          miss a deadline. Join thousands of students transforming their
+          academic journey.
+        </p>
+
+        <div className="flex flex-col sm:flex-row justify-center gap-6">
+          <button className="px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-xl text-lg font-normal hover:opacity-90 transition-opacity">
+            Sign Up & Sync Your LMS
+          </button>
+          <button
+            onClick={() => {
+              const element = document.getElementById("tasks");
+              element?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="px-8 py-4 bg-secondary text-secondary-foreground rounded-xl text-lg font-normal hover:bg-secondary/80 transition-colors border border-border"
+          >
+            <AnimatedShinyText>See How It Works</AnimatedShinyText>
+          </button>
+        </div>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 const TaskPreview = () => (
   <section
     id="tasks"
-    className="relative bg-gradient-to-b from-background to-background/90 overflow-hidden py-32"
+    className="min-h-screen snap-start relative bg-gradient-to-b from-background to-background/90 overflow-hidden flex items-center justify-center"
   >
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]"></div>
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 scale-[0.85] origin-top py-16">
       <p className="text-primary font-normal text-sm uppercase tracking-wide mb-2">
         TASK MANAGEMENT
       </p>
@@ -232,14 +211,7 @@ const TaskPreview = () => (
               </div>
               <div className="space-y-4">
                 {column.tasks.map((task, j) => (
-<<<<<<< HEAD
-                  <div
-                    key={j}
-                    className="bg-card/5 backdrop-blur-sm rounded-lg p-4 border border-border"
-                  >
-=======
                   <div key={j} className="bg-card shadow-sm rounded-lg p-4 border border-border">
->>>>>>> 3959f4c (feat: FG)
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <p className="text-muted-foreground text-sm mb-1">
@@ -283,10 +255,10 @@ const TaskPreview = () => (
 const AIAssistantPreview = () => (
   <section
     id="ai-assistant"
-    className="min-h-screen relative bg-gradient-to-b from-background to-background/90 overflow-hidden flex items-center justify-center"
+    className="min-h-screen snap-start relative bg-gradient-to-b from-background to-background/90 overflow-hidden flex items-center justify-center"
   >
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]"></div>
-    <div className="container mx-auto px-4 scale-[0.85] origin-top">
+    <div className="container mx-auto px-4 scale-[0.85] origin-top py-16">
       <p className="text-primary font-normal text-sm uppercase tracking-wide mb-2">
         AI ASSISTANT
       </p>
@@ -313,15 +285,8 @@ const AIAssistantPreview = () => (
                 </div>
               </div>
               <div className="space-y-4">
-<<<<<<< HEAD
-                <div className="bg-card/5 rounded-lg p-4">
-                  <p className="text-foreground font-light mb-2">
-                    Project Breakdown
-                  </p>
-=======
                 <div className="bg-card shadow-sm rounded-lg p-4">
                   <p className="text-foreground font-light mb-2">Project Breakdown</p>
->>>>>>> 3959f4c (feat: FG)
                   <div className="space-y-3">
                     <div>
                       <div className="flex justify-between text-sm mb-1">
@@ -330,16 +295,8 @@ const AIAssistantPreview = () => (
                         </span>
                         <span className="text-primary">4 hours</span>
                       </div>
-<<<<<<< HEAD
-                      <div className="w-full h-1 bg-secondary rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full"
-                          style={{ width: "40%" }}
-                        ></div>
-=======
                       <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full" style={{ width: '40%' }}></div>
->>>>>>> 3959f4c (feat: FG)
                       </div>
                     </div>
                     <div>
@@ -349,16 +306,8 @@ const AIAssistantPreview = () => (
                         </span>
                         <span className="text-primary">3 hours</span>
                       </div>
-<<<<<<< HEAD
-                      <div className="w-full h-1 bg-secondary rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full"
-                          style={{ width: "30%" }}
-                        ></div>
-=======
                       <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full" style={{ width: '30%' }}></div>
->>>>>>> 3959f4c (feat: FG)
                       </div>
                     </div>
                     <div>
@@ -368,29 +317,14 @@ const AIAssistantPreview = () => (
                         </span>
                         <span className="text-primary">3 hours</span>
                       </div>
-<<<<<<< HEAD
-                      <div className="w-full h-1 bg-secondary rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full"
-                          style={{ width: "30%" }}
-                        ></div>
-=======
                       <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full" style={{ width: '30%' }}></div>
->>>>>>> 3959f4c (feat: FG)
                       </div>
                     </div>
                   </div>
                 </div>
-<<<<<<< HEAD
-                <div className="bg-card/5 rounded-lg p-4">
-                  <p className="text-foreground font-light mb-3">
-                    Suggested Schedule
-                  </p>
-=======
                 <div className="bg-card shadow-sm rounded-lg p-4">
                   <p className="text-foreground font-light mb-3">Suggested Schedule</p>
->>>>>>> 3959f4c (feat: FG)
                   <div className="space-y-3">
                     {[
                       {
@@ -437,68 +371,35 @@ const AIAssistantPreview = () => (
               <div className="space-y-6">
                 <div>
                   <div className="flex justify-between items-center mb-2">
-<<<<<<< HEAD
-                    <p className="text-gray-400 hover:text-pink-500 transition-colors">
+                    <p className="text-muted-foreground hover:text-primary transition-colors">
                       Weekly Study Hours
                     </p>
-                    <p className="text-white font-light">32h</p>
-                  </div>
-                  <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full"
-                      style={{ width: "80%" }}
-                    ></div>
-=======
-                    <p className="text-muted-foreground hover:text-primary transition-colors">Weekly Study Hours</p>
                     <p className="text-foreground font-light">32h</p>
                   </div>
                   <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full" style={{ width: '80%' }}></div>
->>>>>>> 3959f4c (feat: FG)
                   </div>
                 </div>
                 <div>
                   <div className="flex justify-between items-center mb-2">
-<<<<<<< HEAD
-                    <p className="text-gray-400 hover:text-pink-500 transition-colors">
+                    <p className="text-muted-foreground hover:text-primary transition-colors">
                       Task Completion Rate
                     </p>
-                    <p className="text-white font-light">98%</p>
-                  </div>
-                  <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full"
-                      style={{ width: "98%" }}
-                    ></div>
-=======
-                    <p className="text-muted-foreground hover:text-primary transition-colors">Task Completion Rate</p>
                     <p className="text-foreground font-light">98%</p>
                   </div>
                   <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full" style={{ width: '98%' }}></div>
->>>>>>> 3959f4c (feat: FG)
                   </div>
                 </div>
                 <div>
                   <div className="flex justify-between items-center mb-2">
-<<<<<<< HEAD
-                    <p className="text-gray-400 hover:text-pink-500 transition-colors">
+                    <p className="text-muted-foreground hover:text-primary transition-colors">
                       Focus Time
                     </p>
-                    <p className="text-white font-light">5.2h/day</p>
-                  </div>
-                  <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full"
-                      style={{ width: "85%" }}
-                    ></div>
-=======
-                    <p className="text-muted-foreground hover:text-primary transition-colors">Focus Time</p>
                     <p className="text-foreground font-light">5.2h/day</p>
                   </div>
                   <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full" style={{ width: '85%' }}></div>
->>>>>>> 3959f4c (feat: FG)
                   </div>
                 </div>
               </div>
@@ -514,15 +415,8 @@ const AIAssistantPreview = () => (
                   "Review material from previous sessions before starting new topics",
                 ].map((suggestion, i) => (
                   <div key={i} className="flex items-center gap-3">
-<<<<<<< HEAD
-                    <span className="text-pink-500 mt-1">→</span>
-                    <p className="text-gray-400 font-light hover:text-pink-500 transition-colors">
-                      {suggestion}
-                    </p>
-=======
                     <span className="text-primary mt-1">→</span>
                     <p className="text-muted-foreground font-light hover:text-primary transition-colors">{suggestion}</p>
->>>>>>> 3959f4c (feat: FG)
                   </div>
                 ))}
               </div>
@@ -537,117 +431,115 @@ const AIAssistantPreview = () => (
 const ComparisonSection = () => (
   <section
     id="comparison"
-    className="min-h-screen relative bg-gradient-to-b from-background to-background/90 overflow-hidden flex items-center justify-center"
+    className="min-h-screen snap-start relative bg-gradient-to-b from-background to-background/90 overflow-hidden flex items-center justify-center"
   >
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]"></div>
-    <div className="container mx-auto px-4 scale-[0.85] origin-top">
-      <div className="max-w-4xl">
-        <p className="text-primary font-normal text-base uppercase tracking-wide mb-4">
-          WHY REFINE
-        </p>
-        <h2 className="text-[4rem] text-foreground font-extralight tracking-tight mb-6">
-          The Smart Choice.
-        </h2>
-        <p className="text-muted-foreground text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
-          See how Refine transforms your academic planning experience with
-          AI-powered features and seamless LMS integration.
-        </p>
+    <div className="container mx-auto px-4 scale-[0.85] origin-top py-16">
+      <p className="text-primary font-normal text-sm uppercase tracking-wide mb-2">
+        WHY REFINE
+      </p>
+      <h2 className="text-[3rem] text-foreground font-extralight tracking-tight mb-4">
+        The Smart Choice.
+      </h2>
+      <p className="text-muted-foreground text-base font-light mb-6 max-w-2xl leading-relaxed opacity-75">
+        See how Refine transforms your academic planning experience with
+        AI-powered features and seamless LMS integration.
+      </p>
 
-        <div className="grid md:grid-cols-2 gap-16">
-          <div>
-            <h3 className="text-2xl text-foreground font-light mb-8">
-              Traditional Planning
-            </h3>
-            <div className="space-y-6">
-              {[
-                {
-                  icon: "✕",
-                  title: "Manual Task Management",
-                  description:
-                    "Spend hours organizing assignments and creating study schedules",
-                },
-                {
-                  icon: "✕",
-                  title: "No LMS Integration",
-                  description:
-                    "Manually copy assignments and deadlines from your LMS",
-                },
-                {
-                  icon: "✕",
-                  title: "Basic Time Tracking",
-                  description:
-                    "Simple timers without insights or pattern analysis",
-                },
-                {
-                  icon: "✕",
-                  title: "Static Planning",
-                  description:
-                    "Fixed schedules that don't adapt to your progress",
-                },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary backdrop-blur-sm bg-card shadow-sm transition-all"
-                >
-                  <span className="text-destructive/70 text-lg mt-1">
-                    {item.icon}
-                  </span>
-                  <div>
-                    <h4 className="text-foreground font-light mb-1">{item.title}</h4>
-                    <p className="text-muted-foreground text-sm font-light">
-                      {item.description}
-                    </p>
-                  </div>
+      <div className="grid md:grid-cols-2 gap-16">
+        <div>
+          <h3 className="text-2xl text-foreground font-light mb-8">
+            Traditional Planning
+          </h3>
+          <div className="space-y-6">
+            {[
+              {
+                icon: "✕",
+                title: "Manual Task Management",
+                description:
+                  "Spend hours organizing assignments and creating study schedules",
+              },
+              {
+                icon: "✕",
+                title: "No LMS Integration",
+                description:
+                  "Manually copy assignments and deadlines from your LMS",
+              },
+              {
+                icon: "✕",
+                title: "Basic Time Tracking",
+                description:
+                  "Simple timers without insights or pattern analysis",
+              },
+              {
+                icon: "✕",
+                title: "Static Planning",
+                description:
+                  "Fixed schedules that don't adapt to your progress",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary backdrop-blur-sm bg-card shadow-sm transition-all"
+              >
+                <span className="text-destructive/70 text-lg mt-1">
+                  {item.icon}
+                </span>
+                <div>
+                  <h4 className="text-foreground font-light mb-1">{item.title}</h4>
+                  <p className="text-muted-foreground text-sm font-light">
+                    {item.description}
+                  </p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
+        </div>
 
-          <div>
-            <h3 className="text-2xl text-foreground font-light mb-8">
-              Refine AI Assistant
-            </h3>
-            <div className="space-y-6">
-              {[
-                {
-                  icon: "✓",
-                  title: "AI-Powered Organization",
-                  description:
-                    "Automatically organize and break down tasks into optimal study blocks",
-                },
-                {
-                  icon: "✓",
-                  title: "Seamless LMS Sync",
-                  description:
-                    "Auto-sync with Canvas, Brightspace, and Blackboard in real-time",
-                },
-                {
-                  icon: "✓",
-                  title: "Smart Time Analytics",
-                  description:
-                    "Track study patterns and get personalized optimization tips",
-                },
-                {
-                  icon: "✓",
-                  title: "Adaptive Planning",
-                  description:
-                    "AI adjusts your schedule based on progress and learning style",
-                },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary backdrop-blur-sm bg-card shadow-sm transition-all"
-                >
-                  <span className="text-primary text-lg mt-1">{item.icon}</span>
-                  <div>
-                    <h4 className="text-foreground font-light mb-1">{item.title}</h4>
-                    <p className="text-muted-foreground text-sm font-light">
-                      {item.description}
-                    </p>
-                  </div>
+        <div>
+          <h3 className="text-2xl text-foreground font-light mb-8">
+            Refine AI Assistant
+          </h3>
+          <div className="space-y-6">
+            {[
+              {
+                icon: "✓",
+                title: "AI-Powered Organization",
+                description:
+                  "Automatically organize and break down tasks into optimal study blocks",
+              },
+              {
+                icon: "✓",
+                title: "Seamless LMS Sync",
+                description:
+                  "Auto-sync with Canvas, Brightspace, and Blackboard in real-time",
+              },
+              {
+                icon: "✓",
+                title: "Smart Time Analytics",
+                description:
+                  "Track study patterns and get personalized optimization tips",
+              },
+              {
+                icon: "✓",
+                title: "Adaptive Planning",
+                description:
+                  "AI adjusts your schedule based on progress and learning style",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary backdrop-blur-sm bg-card shadow-sm transition-all"
+              >
+                <span className="text-primary text-lg mt-1">{item.icon}</span>
+                <div>
+                  <h4 className="text-foreground font-light mb-1">{item.title}</h4>
+                  <p className="text-muted-foreground text-sm font-light">
+                    {item.description}
+                  </p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -658,10 +550,10 @@ const ComparisonSection = () => (
 const FeatureGrid = () => (
   <section
     id="features"
-    className="min-h-screen relative bg-gradient-to-b from-background to-background/90 overflow-hidden flex items-center justify-center"
+    className="min-h-screen snap-start relative bg-gradient-to-b from-background to-background/90 overflow-hidden flex items-center justify-center"
   >
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]"></div>
-    <div className="container mx-auto px-4 scale-[0.85] origin-top">
+    <div className="container mx-auto px-4 scale-[0.85] origin-top py-16">
       <p className="text-primary font-normal text-sm uppercase tracking-wide mb-2">
         FEATURES
       </p>
@@ -747,14 +639,7 @@ const FeatureGrid = () => (
             ],
           },
         ].map((feature, i) => (
-<<<<<<< HEAD
-          <div
-            key={i}
-            className="bg-card/5 backdrop-blur-sm rounded-lg p-4 border border-border"
-          >
-=======
           <div key={i} className="bg-card shadow-sm backdrop-blur-sm rounded-lg p-4 border border-border">
->>>>>>> 3959f4c (feat: FG)
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
                 <span className="text-lg">{feature.icon}</span>
@@ -783,154 +668,13 @@ const FeatureGrid = () => (
   </section>
 );
 
-<<<<<<< HEAD
-const ComparisonSection = () => (
-  <section
-    id="comparison"
-    className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden py-32"
-  >
-    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-    <div className="container mx-auto px-4">
-      <div className="max-w-4xl">
-        <p className="text-primary font-normal text-base uppercase tracking-wide mb-4">
-          WHY REFINE
-        </p>
-        <h2 className="text-[4rem] text-foreground font-extralight tracking-tight mb-6">
-          The Smart Choice.
-        </h2>
-        <p className="text-muted-foreground text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
-          See how Refine transforms your academic planning experience with
-          AI-powered features and seamless LMS integration.
-        </p>
-
-        <div className="grid md:grid-cols-2 gap-16">
-          <div>
-            <h3 className="text-2xl text-foreground font-light mb-8">
-              Traditional Planning
-            </h3>
-            <div className="space-y-6">
-              {[
-                {
-                  icon: "✕",
-                  title: "Manual Task Management",
-                  description:
-                    "Spend hours organizing assignments and creating study schedules",
-                },
-                {
-                  icon: "✕",
-                  title: "No LMS Integration",
-                  description:
-                    "Manually copy assignments and deadlines from your LMS",
-                },
-                {
-                  icon: "✕",
-                  title: "Basic Time Tracking",
-                  description:
-                    "Simple timers without insights or pattern analysis",
-                },
-                {
-                  icon: "✕",
-                  title: "Static Planning",
-                  description:
-                    "Fixed schedules that don't adapt to your progress",
-                },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary backdrop-blur-sm bg-card/[0.02] transition-all"
-                >
-                  <span className="text-destructive/70 text-lg mt-1">
-                    {item.icon}
-                  </span>
-                  <div>
-                    <h4 className="text-foreground font-light mb-1">
-                      {item.title}
-                    </h4>
-                    <p className="text-muted-foreground text-sm font-light">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-2xl text-foreground font-light mb-8">
-              Refine AI Assistant
-            </h3>
-            <div className="space-y-6">
-              {[
-                {
-                  icon: "✓",
-                  title: "AI-Powered Organization",
-                  description:
-                    "Automatically organize and break down tasks into optimal study blocks",
-                },
-                {
-                  icon: "✓",
-                  title: "Seamless LMS Sync",
-                  description:
-                    "Auto-sync with Canvas, Brightspace, and Blackboard in real-time",
-                },
-                {
-                  icon: "✓",
-                  title: "Smart Time Analytics",
-                  description:
-                    "Track study patterns and get personalized optimization tips",
-                },
-                {
-                  icon: "✓",
-                  title: "Adaptive Planning",
-                  description:
-                    "AI adjusts your schedule based on progress and learning style",
-                },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary backdrop-blur-sm bg-card/[0.02] transition-all"
-                >
-                  <span className="text-primary text-lg mt-1">{item.icon}</span>
-                  <div>
-                    <h4 className="text-foreground font-light mb-1">
-                      {item.title}
-                    </h4>
-                    <p className="text-muted-foreground text-sm font-light">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
-=======
->>>>>>> 3959f4c (feat: FG)
 const Testimonials = () => (
   <section
     id="testimonials"
-    className="min-h-screen relative bg-gradient-to-b from-background to-background/90 overflow-hidden flex items-center justify-center"
+    className="min-h-screen snap-start relative bg-gradient-to-b from-background to-background/90 overflow-hidden flex items-center justify-center"
   >
-<<<<<<< HEAD
-    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-    <div className="container mx-auto px-4">
-      <p className="text-primary font-normal text-base uppercase tracking-wide mb-4">
-        TESTIMONIALS
-      </p>
-      <h2 className="text-[4rem] text-foreground font-extralight tracking-tight mb-6">
-        Student Stories.
-      </h2>
-      <p className="text-muted-foreground text-xl font-light mb-24 max-w-3xl leading-relaxed opacity-75">
-        See how students are transforming their academic life with Refine's
-        AI-powered planning.
-=======
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]"></div>
-    <div className="container mx-auto px-4 scale-[0.85] origin-top">
+    <div className="container mx-auto px-4 scale-[0.85] origin-top py-16">
       <p className="text-primary font-normal text-sm uppercase tracking-wide mb-2">
         TESTIMONIALS
       </p>
@@ -939,40 +683,11 @@ const Testimonials = () => (
       </h2>
       <p className="text-muted-foreground text-base font-light mb-12 max-w-2xl leading-relaxed opacity-75">
         See how students are transforming their academic journey with Refine.
->>>>>>> 3959f4c (feat: FG)
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[
           {
-<<<<<<< HEAD
-            quote:
-              "The task breakdown feature is incredible. What used to take me hours to plan now gets organized in minutes. The AI suggestions for breaking down big projects are spot-on.",
-            author: "Sarah Chen",
-            role: "Computer Science Major",
-            metric: "3x faster project completion",
-          },
-          {
-            quote:
-              "I love how it integrates with my university's LMS. All my assignments are automatically synced and organized. The time tracking helps me understand my study patterns.",
-            author: "Michael Park",
-            role: "Engineering Student",
-            metric: "98% assignment completion rate",
-          },
-          {
-            quote:
-              "The subtask management is a game-changer. Complex assignments become manageable steps, and the AI adjusts my schedule when things change.",
-            author: "Emma Rodriguez",
-            role: "Pre-Med Student",
-            metric: "2 hours saved daily",
-          },
-          {
-            quote:
-              "Finally, a tool that understands how students actually work. The AI planning adapts to my style and helps me stay ahead of deadlines without burning out.",
-            author: "David Kim",
-            role: "Business Major",
-            metric: "4.0 GPA maintained",
-=======
             name: "Sarah Chen",
             role: "Computer Science Major",
             school: "Stanford University",
@@ -1019,28 +734,9 @@ const Testimonials = () => (
             image: "/testimonials/david.jpg",
             quote:
               "The adaptive scheduling adjusts perfectly to my reading-heavy curriculum. It's made a huge difference in my law school experience.",
->>>>>>> 3959f4c (feat: FG)
           },
         ].map((testimonial, i) => (
-          <div
-            key={i}
-<<<<<<< HEAD
-            className="bg-card/5 backdrop-blur-sm rounded-xl p-8 border border-border"
-          >
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                <span className="text-2xl">{"👤"}</span>
-              </div>
-              <div>
-                <p className="text-foreground font-light">
-                  {testimonial.author}
-                </p>
-                <p className="text-muted-foreground text-sm">
-                  {testimonial.role}
-                </p>
-=======
-            className="bg-card shadow-sm backdrop-blur-sm rounded-xl border border-border p-6 hover:border-primary transition-all"
-          >
+          <div key={i} className="bg-card shadow-sm backdrop-blur-sm rounded-xl border border-border p-6 hover:border-primary transition-all">
             <div className="flex items-start gap-4 mb-4">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center overflow-hidden">
                 <img
@@ -1055,21 +751,11 @@ const Testimonials = () => (
                   {testimonial.role}
                 </p>
                 <p className="text-primary text-xs">{testimonial.school}</p>
->>>>>>> 3959f4c (feat: FG)
               </div>
             </div>
             <p className="text-muted-foreground text-sm font-light leading-relaxed">
               "{testimonial.quote}"
             </p>
-<<<<<<< HEAD
-            <div className="flex items-center gap-2">
-              <span className="text-primary">↗</span>
-              <span className="text-muted-foreground text-sm">
-                {testimonial.metric}
-              </span>
-            </div>
-=======
->>>>>>> 3959f4c (feat: FG)
           </div>
         ))}
       </div>
@@ -1136,17 +822,159 @@ const CTASection = () => (
   </section>
 );
 
+const Footer = () => (
+  <section
+    id="footer"
+    className="min-h-screen snap-start relative bg-gradient-to-b from-background to-background/90 overflow-hidden flex items-center justify-center"
+  >
+    <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]"></div>
+    <div className="container mx-auto px-4 scale-[0.85] origin-top py-16">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-12">
+        <div>
+          <h3 className="text-lg font-medium mb-4">Product</h3>
+          <ul className="space-y-2">
+            <li><a href="#features" className="text-muted-foreground hover:text-primary transition-colors">Features</a></li>
+            <li><a href="#tasks" className="text-muted-foreground hover:text-primary transition-colors">Tasks</a></li>
+            <li><a href="#ai-assistant" className="text-muted-foreground hover:text-primary transition-colors">AI Assistant</a></li>
+            <li><a href="#comparison" className="text-muted-foreground hover:text-primary transition-colors">Why Refine</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-lg font-medium mb-4">Resources</h3>
+          <ul className="space-y-2">
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Documentation</a></li>
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">API Reference</a></li>
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Blog</a></li>
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Community</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-lg font-medium mb-4">Company</h3>
+          <ul className="space-y-2">
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">About</a></li>
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Careers</a></li>
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Contact</a></li>
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Press Kit</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-lg font-medium mb-4">Legal</h3>
+          <ul className="space-y-2">
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a></li>
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</a></li>
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Cookie Policy</a></li>
+            <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Security</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="border-t border-border mt-8 pt-8 pb-12">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl font-semibold">refine</span>
+            <span className="text-muted-foreground"> 2024. All rights reserved.</span>
+          </div>
+          <div className="flex gap-6">
+            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <span className="sr-only">Twitter</span>
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+              </svg>
+            </a>
+            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <span className="sr-only">GitHub</span>
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+            </a>
+            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <span className="sr-only">Discord</span>
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028 14.09 14.09 0 001.226-1.994.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const BubbleNav = () => {
+  const [activeSection, setActiveSection] = React.useState("hero");
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+
+    const sections = document.querySelectorAll("section[id]");
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
+
+  const sections = [
+    { id: "hero", label: "refine" },
+    { id: "tasks", label: "Tasks" },
+    { id: "ai-assistant", label: "AI Assistant" },
+    { id: "features", label: "Features" },
+    { id: "comparison", label: "Why Refine" },
+    { id: "testimonials", label: "Testimonials" },
+    { id: "footer", label: "Contact" },
+  ];
+
+  return (
+    <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50">
+      <div className="flex flex-col gap-4">
+        {sections.map((section) => (
+          <button
+            key={section.id}
+            onClick={() => {
+              const element = document.getElementById(section.id);
+              element?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="group relative flex items-center"
+            aria-label={`Navigate to ${section.label} section`}
+          >
+            <div 
+              className={cn(
+                "w-2.5 h-2.5 rounded-full transition-all duration-300",
+                activeSection === section.id
+                  ? "bg-primary scale-125"
+                  : "bg-muted-foreground/20 hover:bg-primary/50 hover:scale-110"
+              )}
+            >
+              <div className="absolute right-full mr-4 py-1.5 px-3 rounded-md bg-card/90 backdrop-blur-sm shadow-sm border border-border opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-sm text-foreground">
+                {section.label}
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default function Home() {
   return (
-    <div className="bg-background">
+    <main className="bg-background text-foreground h-screen snap-y snap-mandatory overflow-y-auto overflow-x-hidden">
+      <BubbleNav />
       <HeroSection />
       <TaskPreview />
       <AIAssistantPreview />
       <FeatureGrid />
       <ComparisonSection />
       <Testimonials />
-      <CTASection />
       <Footer />
-    </div>
+    </main>
   );
 }
