@@ -2,109 +2,100 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard,
   Calendar,
-  CheckSquare,
   Settings,
   PieChart,
-  GalleryVerticalEnd,
+  CheckSquare,
+  Layers,
+  Menu,
+  Box
 } from "lucide-react";
+import { useState, useEffect } from "react";
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarHeader,
-} from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
-
-const items = [
+const sidebarItems = [
   {
     title: "Dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
+    href: "/dashboard",
+    icon: Box
+  },
+  {
+    title: "Grid",
+    href: "/dashboard/grid",
+    icon: Layers
   },
   {
     title: "Tasks",
-    url: "/dashboard/tasks",
-    icon: CheckSquare,
+    href: "/dashboard/tasks",
+    icon: CheckSquare
   },
   {
     title: "Calendar",
-    url: "/dashboard/calendar",
-    icon: Calendar,
+    href: "/dashboard/calendar",
+    icon: Calendar
   },
   {
-    title: "Insights",
-    url: "/dashboard/insights",
-    icon: PieChart,
+    title: "Analytics",
+    href: "/dashboard/analytics",
+    icon: PieChart
   },
   {
     title: "Settings",
-    url: "/dashboard/settings",
-    icon: Settings,
-  },
+    href: "/dashboard/settings",
+    icon: Settings
+  }
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  useEffect(() => {
+    // Dispatch custom event when sidebar state changes
+    const event = new CustomEvent('sidebarStateChange', { 
+      detail: { collapsed: isCollapsed }
+    });
+    window.dispatchEvent(event);
+  }, [isCollapsed]);
 
   return (
-    <Sidebar collapsible="icon" variant="sidebar">
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <Link href={"/dashboard"} passHref legacyBehavior>
-              <SidebarMenuButton
-                className="bg-secondary text-foreground py-6 px-4 text-lg transition-all duration-150 cursor-pointer"
-              >
-                <GalleryVerticalEnd className="h-4 w-4" />
-                <span className="text-base font-semibold">Refine</span>
-              </SidebarMenuButton>
-            </Link>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-sm">Main</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <Link href={item.url} passHref legacyBehavior>
-                    <SidebarMenuButton
-                      className={cn(
-                        "py-5 px-4 text-lg transition-all duration-150 cursor-pointer rounded-xl",
-                        pathname === item.url
-                          ? "bg-[#fdf4ff] text-[#c026d3]"
-                          : "text-black hover:bg-[#fdf4ff]",
-                      )}
-                      data-active={pathname === item.url}
-                    >
-                      <item.icon className="h-5 w-5 text-black" />
-                      <span
-                        className={cn(
-                          "text-base",
-                          pathname === item.url && "text-[#c026d3]",
-                        )}
-                      >
-                        {item.title}
-                      </span>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+    <div className={cn(
+      "flex h-full flex-col items-center border-r bg-white py-4 transition-all duration-300",
+      isCollapsed ? "w-[60px]" : "w-[260px]"
+    )}>
+      <div className={cn(
+        "flex h-[60px] items-center justify-center border-b w-full",
+        isCollapsed ? "px-[10px]" : "px-6"
+      )}>
+        <button 
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="flex h-10 w-10 items-center justify-center rounded-md hover:bg-[#fdf4ff] transition-colors"
+        >
+          <Menu className="h-6 w-6 text-black" />
+        </button>
+      </div>
+      <div className="flex flex-1 flex-col items-center gap-2 pt-4 w-full">
+        {sidebarItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={cn(
+              "flex h-10 items-center rounded-md transition-colors",
+              isCollapsed ? "w-10 justify-center mx-[10px]" : "w-[calc(100%-24px)] px-3",
+              "hover:bg-[#fdf4ff]",
+              pathname === item.href 
+                ? "text-[#c026d3]" 
+                : "text-black"
+            )}
+          >
+            <item.icon className="h-5 w-5" />
+            {!isCollapsed && (
+              <span className="ml-3 text-sm font-medium">{item.title}</span>
+            )}
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }

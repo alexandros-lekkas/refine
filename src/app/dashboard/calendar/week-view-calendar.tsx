@@ -18,6 +18,7 @@ interface Event {
 interface WeekViewCalendarProps {
   events: Event[];
   onCreateTaskClick: (date: Date, hour: number) => void;
+  width: number;
 }
 
 const HOURS = [
@@ -30,8 +31,9 @@ const HOUR_TO_INDEX = Object.fromEntries(
   HOURS.map((hour, index) => [hour, index])
 );
 
-export function WeekViewCalendar({ events, onCreateTaskClick }: WeekViewCalendarProps) {
+export function WeekViewCalendar({ events, onCreateTaskClick, width }: WeekViewCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [hoveredSlot, setHoveredSlot] = useState<{ date: Date; hour: string } | null>(null);
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 }); // Start from Sunday
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)); // Sun-Sat
 
@@ -56,22 +58,32 @@ export function WeekViewCalendar({ events, onCreateTaskClick }: WeekViewCalendar
   };
 
   return (
-    <div className="h-full bg-white rounded-lg overflow-hidden" style={{ width: '1150px' }}>
+    <div className="h-full bg-white rounded-lg overflow-hidden shadow-sm transition-all duration-300" style={{ width: `${width}px` }}>
       {/* Header */}
       <div className="grid grid-cols-[80px_1fr] border-b">
-        <div className="p-2 flex items-center justify-end gap-1">
+        <div className="p-2 flex items-center justify-end gap-2">
           <Button
             variant="ghost"
-            size="icon"
-            className="h-8 w-8 text-[#c026d3] hover:text-[#c026d3] hover:bg-[#fdf4ff]"
+            size="sm"
+            className={cn(
+              "h-8 w-8 rounded-md transition-colors",
+              "text-[#c026d3] hover:text-[#c026d3]",
+              "border border-[#f5d0fe] hover:border-[#c026d3]",
+              "bg-[#fdf4ff] hover:bg-[#fdf4ff]"
+            )}
             onClick={() => setCurrentDate(prev => addWeeks(prev, -1))}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <Button
             variant="ghost"
-            size="icon"
-            className="h-8 w-8 text-[#c026d3] hover:text-[#c026d3] hover:bg-[#fdf4ff]"
+            size="sm"
+            className={cn(
+              "h-8 w-8 rounded-md transition-colors",
+              "text-[#c026d3] hover:text-[#c026d3]",
+              "border border-[#f5d0fe] hover:border-[#c026d3]",
+              "bg-[#fdf4ff] hover:bg-[#fdf4ff]"
+            )}
             onClick={() => setCurrentDate(prev => addWeeks(prev, 1))}
           >
             <ChevronRight className="h-4 w-4" />
@@ -86,7 +98,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick }: WeekViewCalendar
                 key={day.toISOString()} 
                 className={cn(
                   "p-2 text-center border-l",
-                  isToday && "bg-[#fdf4ff]"
+                  isToday && "bg-[#fdf4ff] border-[#f5d0fe]"
                 )}
               >
                 <div className={cn(
@@ -99,10 +111,10 @@ export function WeekViewCalendar({ events, onCreateTaskClick }: WeekViewCalendar
                 )}>{format(day, "EEE")}</div>
                 {dayEvents.length > 0 && (
                   <div className={cn(
-                    "mt-1 px-2 py-0.5 text-xs rounded text-center",
+                    "mt-1 px-2 py-0.5 text-xs rounded-md text-center transition-colors",
                     dayEvents.length > 2 
                       ? "bg-[#c026d3] text-white" 
-                      : "bg-[#fdf4ff] text-[#c026d3] border border-[#f5d0fe]"
+                      : "bg-[#fdf4ff] text-[#c026d3] border border-[#f5d0fe] hover:border-[#c026d3]"
                   )}>
                     {dayEvents.length} {dayEvents.length === 1 ? "task" : "tasks"} due
                   </div>
@@ -118,7 +130,10 @@ export function WeekViewCalendar({ events, onCreateTaskClick }: WeekViewCalendar
         <div className="bg-white">
           {HOURS.map((hour) => (
             <div key={hour} className="h-12 relative">
-              <div className="absolute top-0 -translate-y-1/2 right-3 text-xs text-gray-500 font-medium tracking-wide">
+              <div className={cn(
+                "absolute top-0 -translate-y-1/2 right-3 text-xs font-medium tracking-wide transition-colors",
+                hoveredSlot?.hour === hour ? "text-[#c026d3]" : "text-gray-500"
+              )}>
                 {hour}
               </div>
             </div>
@@ -130,7 +145,14 @@ export function WeekViewCalendar({ events, onCreateTaskClick }: WeekViewCalendar
               {HOURS.map((hour, index) => (
                 <div
                   key={`${day.toISOString()}-${hour}`}
-                  className="h-12 border-t first:border-t-0 relative group hover:bg-[#fdf4ff] transition-colors"
+                  className={cn(
+                    "h-12 border-t first:border-t-0 relative group transition-all duration-150 cursor-pointer",
+                    hoveredSlot?.date.toISOString() === day.toISOString() && hoveredSlot?.hour === hour
+                      ? "bg-[#fdf4ff] border-[#f5d0fe] border-2 -m-[1px] z-10"
+                      : "hover:bg-[#fdf4ff]"
+                  )}
+                  onMouseEnter={() => setHoveredSlot({ date: day, hour })}
+                  onMouseLeave={() => setHoveredSlot(null)}
                   onClick={() => {
                     const [h, ampm] = hour.split(' ');
                     let hourNum = parseInt(h);
@@ -146,10 +168,10 @@ export function WeekViewCalendar({ events, onCreateTaskClick }: WeekViewCalendar
                   <div
                     key={event.id}
                     className={cn(
-                      "absolute left-1 right-1 rounded px-2 py-1 text-xs overflow-hidden",
-                      event.color === "#34D399" && "bg-green-100 text-green-800 border border-green-200",
-                      event.color === "#F87171" && "bg-red-100 text-red-800 border border-red-200",
-                      event.color === "#60A5FA" && "bg-blue-100 text-blue-800 border border-blue-200"
+                      "absolute left-1 right-1 rounded-md px-2 py-1 text-xs overflow-hidden border transition-all duration-150",
+                      event.color === "#34D399" && "bg-green-50 text-green-800 border-green-200 hover:bg-green-100 hover:border-green-300",
+                      event.color === "#F87171" && "bg-red-50 text-red-800 border-red-200 hover:bg-red-100 hover:border-red-300",
+                      event.color === "#60A5FA" && "bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100 hover:border-blue-300"
                     )}
                     style={{
                       top: getEventTop(event),

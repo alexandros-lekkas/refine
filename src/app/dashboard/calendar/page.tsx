@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { WeekViewCalendar } from "./week-view-calendar";
 import { CreateEventDialog } from "./create-event-dialog";
+import { usePathname } from "next/navigation";
 
 interface Event {
   id: string;
@@ -19,6 +20,22 @@ export default function CalendarPage() {
     date: Date;
     hour: number;
   } | null>(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const pathname = usePathname();
+
+  // Listen for sidebar collapse event
+  useEffect(() => {
+    const handleSidebarChange = (event: CustomEvent) => {
+      if (pathname === '/dashboard/calendar') {
+        setIsSidebarCollapsed(event.detail.collapsed);
+      }
+    };
+
+    window.addEventListener('sidebarStateChange' as any, handleSidebarChange);
+    return () => {
+      window.removeEventListener('sidebarStateChange' as any, handleSidebarChange);
+    };
+  }, [pathname]);
 
   const handleCreateEvent = (event: {
     title: string;
@@ -95,12 +112,19 @@ export default function CalendarPage() {
     }
   ];
 
+  const calendarWidth = isSidebarCollapsed ? 1350 : 1150;
+
   return (
     <div className="-m-8 h-[calc(100vh-4rem)] overflow-x-auto">
-      <div className="min-w-[1150px] h-full">
+      <div style={{ 
+        minWidth: `${calendarWidth}px`,
+        height: '100%',
+        transition: 'min-width 300ms'
+      }}>
         <WeekViewCalendar 
           events={[...events, ...sampleEvents]} 
           onCreateTaskClick={(date, hour) => setSelectedTimeSlot({ date, hour })}
+          width={calendarWidth}
         />
       </div>
       {selectedTimeSlot && (
