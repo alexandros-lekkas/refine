@@ -2,11 +2,13 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useTask } from "@/lib/providers/tasks";
 import { cn } from "@/lib/utils";
+import { AddTaskButton } from "@/components/tasks/add-task-button";
+import { TaskDialog } from "@/components/tasks/task-dialog";
+import { useState } from "react";
 
 interface Phase {
   id: string;
@@ -33,6 +35,7 @@ interface Task {
 export default function TasksPage() {
   const router = useRouter();
   const { tasks } = useTask();
+  const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
   const handleTaskClick = (taskId: string) => {
     router.push(`/dashboard/tasks/${taskId}`);
@@ -99,20 +102,16 @@ export default function TasksPage() {
     <main className="max-w-7xl mx-auto p-6">
       {/* Header with navigation and add task button */}
       <div className="flex justify-between items-center mb-8">
-        <div className="flex gap-2">
-          <Button className="bg-primary rounded-full text-white font-medium">All Tasks</Button>
-          <Button variant="secondary" className="bg-gray-100 rounded-full text-gray-600 font-medium">Calendar</Button>
-          <Button variant="secondary" className="bg-gray-100 rounded-full text-gray-600 font-medium">Today</Button>
-          <Button variant="secondary" className="bg-gray-100 rounded-full text-gray-600 font-medium">Week</Button>
-          <Button variant="secondary" className="bg-gray-100 rounded-full text-gray-600 font-medium">Month</Button>
+        <div className="flex items-center gap-4">
+          <Button variant="outline">All Tasks</Button>
+          <Button variant="ghost">Calendar</Button>
+          <Button variant="ghost">Analytics</Button>
         </div>
-        <Button className="bg-primary rounded-full text-white font-medium">
-          <Plus className="mr-2 h-4 w-4" /> Add Task
-        </Button>
+        <AddTaskButton />
       </div>
 
-      {/* Date display */}
-      <div className="text-lg text-gray-600 mb-6">
+      {/* Current date */}
+      <div className="text-lg text-gray-600 mb-8">
         {format(new Date(), "EEEE, MMMM do")}
       </div>
 
@@ -163,6 +162,12 @@ export default function TasksPage() {
           );
         })}
       </div>
+
+      {/* Task Dialog */}
+      <TaskDialog 
+        open={isAddTaskOpen} 
+        onOpenChange={setIsAddTaskOpen} 
+      />
     </main>
   );
 }
