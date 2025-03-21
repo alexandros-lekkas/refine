@@ -41,20 +41,20 @@ export function Calendar({
   }
 
   return (
-    <div className={cn("p-3", className)}>
-      <div className="flex items-center justify-between mb-4">
+    <div className={cn("p-2", className)}>
+      <div className="flex items-center justify-between mb-2">
         <button
           onClick={handlePrevMonth}
           title="Previous month"
           aria-label="Previous month"
           className={cn(
             buttonVariants({ variant: "outline" }),
-            "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+            "h-6 w-6 p-0 opacity-50 hover:opacity-100"
           )}
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-3 w-3" />
         </button>
-        <h2 className="text-sm font-medium">
+        <h2 className="text-xs font-medium">
           {format(currentMonth, "MMMM yyyy")}
         </h2>
         <button
@@ -63,25 +63,23 @@ export function Calendar({
           aria-label="Next month"
           className={cn(
             buttonVariants({ variant: "outline" }),
-            "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+            "h-6 w-6 p-0 opacity-50 hover:opacity-100"
           )}
         >
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-3 w-3" />
         </button>
       </div>
 
       <table className="w-full border-collapse">
         <thead>
           <tr>
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+            {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
               <th
                 key={day}
                 scope="col"
-                className="text-center text-sm text-muted-foreground font-medium p-0"
+                className="text-center text-xs text-muted-foreground font-medium p-0"
               >
-                <abbr title={day} className="no-underline">
-                  {day}
-                </abbr>
+                {day}
               </th>
             ))}
           </tr>
@@ -90,7 +88,7 @@ export function Calendar({
           <tr>
             {Array.from({ length: startOfMonth(currentMonth).getDay() }).map((_, i) => (
               <td key={`empty-${i}`} className="p-0">
-                <div className="h-9" />
+                <div className="h-6" />
               </td>
             ))}
             {days.map((day: Date) => {
@@ -105,8 +103,8 @@ export function Calendar({
                     title={dateLabel}
                     aria-label={dateLabel}
                     className={cn(
-                      "h-9 w-full rounded-md flex items-center justify-center text-sm transition-colors",
-                      isSelected && "bg-primary text-primary-foreground hover:bg-primary/90",
+                      "h-6 w-6 rounded-md flex items-center justify-center text-xs transition-colors",
+                      isSelected && "bg-[#c026d3] text-white hover:bg-[#c026d3]/90",
                       !isSelected && isToday(day) && "bg-accent text-accent-foreground",
                       !isSelected && !isToday(day) && "hover:bg-accent",
                       !isSameMonth(day, currentMonth) && "text-muted-foreground opacity-50"
