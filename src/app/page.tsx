@@ -10,47 +10,47 @@ const HeroSection = () => {
 
   return (
     <section id="hero" className="min-h-screen relative flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-[#0B0A0F]"></div>
+      <div className="absolute inset-0 bg-background"></div>
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-      <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5"></div>
       
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-b from-pink-500/20 to-transparent rounded-full blur-3xl"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-b from-primary/20 to-transparent rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 py-32 relative">
         <div className="max-w-4xl mx-auto text-center">
           <div className="grid grid-cols-3 gap-8 mb-12">
             <div className="text-center space-y-2">
-              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">87%</div>
-              <p className="text-sm text-gray-400">Average Time Saved on Planning</p>
+              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">87%</div>
+              <p className="text-sm text-muted-foreground">Average Time Saved on Planning</p>
             </div>
             <div className="text-center space-y-2">
-              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">2.5x</div>
-              <p className="text-sm text-gray-400">Improved Study Efficiency</p>
+              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">2.5x</div>
+              <p className="text-sm text-muted-foreground">Improved Study Efficiency</p>
             </div>
             <div className="text-center space-y-2">
-              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">100%</div>
-              <p className="text-sm text-gray-400">Assignment Coverage</p>
+              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">100%</div>
+              <p className="text-sm text-muted-foreground">Assignment Coverage</p>
             </div>
           </div>
 
-          <h1 className="text-[5rem] text-white font-extralight tracking-tight mb-8 leading-[1.1]">
+          <h1 className="text-[5rem] text-foreground font-extralight tracking-tight mb-8 leading-[1.1]">
             Your Academic Success,
-            <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent block mt-2">
+            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent block mt-2">
               AI-Powered
             </span>
           </h1>
 
-          <p className="text-gray-400 text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto opacity-75">
+          <p className="text-muted-foreground text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto opacity-75">
             Seamlessly sync with your LMS, get AI-powered study plans, and never miss a deadline. Join thousands of students transforming their academic journey.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-6">
-            <button className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl text-lg font-normal hover:opacity-90 transition-opacity">
+            <button className="px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-xl text-lg font-normal hover:opacity-90 transition-opacity">
               Sign Up & Sync Your LMS
             </button>
             <button 
               onClick={scrollToTasks}
-              className="px-8 py-4 bg-white/5 text-white rounded-xl text-lg font-normal hover:bg-white/10 transition-colors border border-white/5"
+              className="px-8 py-4 bg-secondary text-secondary-foreground rounded-xl text-lg font-normal hover:bg-secondary/80 transition-colors border border-border"
             >
               See How It Works
             </button>
@@ -68,31 +68,31 @@ const TaskPreview = () => (
   >
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
     <div className="container mx-auto px-4">
-      <p className="text-pink-500 font-normal text-sm uppercase tracking-wide mb-2">
+      <p className="text-primary font-normal text-sm uppercase tracking-wide mb-2">
         TASK MANAGEMENT
       </p>
-      <h2 className="text-[3rem] text-white font-extralight tracking-tight mb-4">
+      <h2 className="text-[3rem] text-foreground font-extralight tracking-tight mb-4">
         Your Tasks, Organized.
       </h2>
-      <p className="text-gray-400 text-base font-light mb-6 max-w-2xl leading-relaxed opacity-75">
+      <p className="text-muted-foreground text-base font-light mb-6 max-w-2xl leading-relaxed opacity-75">
         See all your assignments at a glance. Refine automatically organizes
         your tasks by due date and priority.
       </p>
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/5 p-8">
+      <div className="bg-card/5 backdrop-blur-sm rounded-xl border border-border p-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <div className="flex gap-2">
-              <button className="px-4 py-2 bg-pink-500 text-white rounded-lg text-sm font-normal">All Tasks</button>
-              <button className="px-4 py-2 bg-white/5 text-white rounded-lg text-sm font-normal">Calendar</button>
+              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-normal">All Tasks</button>
+              <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-normal">Calendar</button>
             </div>
-            <div className="h-6 w-px bg-white/10"></div>
+            <div className="h-6 w-px bg-border"></div>
             <div className="flex gap-2">
-              <button className="px-4 py-2 bg-white/5 text-white rounded-lg text-sm font-normal">Today</button>
-              <button className="px-4 py-2 bg-white/5 text-white rounded-lg text-sm font-normal">Week</button>
-              <button className="px-4 py-2 bg-white/5 text-white rounded-lg text-sm font-normal">Month</button>
+              <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-normal">Today</button>
+              <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-normal">Week</button>
+              <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-normal">Month</button>
             </div>
           </div>
-          <button className="px-4 py-2 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-lg text-sm font-normal">
+          <button className="px-4 py-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-lg text-sm font-normal">
             + Add Task
           </button>
         </div>
@@ -101,8 +101,8 @@ const TaskPreview = () => (
           {[
             {
               title: "Due Today",
-              color: "bg-red-500/10",
-              textColor: "text-red-400",
+              color: "bg-destructive/10",
+              textColor: "text-destructive",
               tasks: [
                 {
                   course: "CS 101",
@@ -122,8 +122,8 @@ const TaskPreview = () => (
             },
             {
               title: "Due Soon",
-              color: "bg-blue-500/10",
-              textColor: "text-blue-400",
+              color: "bg-primary/10",
+              textColor: "text-primary",
               tasks: [
                 {
                   course: "PHYS 202",
@@ -143,8 +143,8 @@ const TaskPreview = () => (
             },
             {
               title: "Start Soon",
-              color: "bg-gray-500/10",
-              textColor: "text-gray-400",
+              color: "bg-muted/10",
+              textColor: "text-muted-foreground",
               tasks: [
                 {
                   course: "BIO 301",
@@ -166,30 +166,30 @@ const TaskPreview = () => (
             <div key={i} className={`${column.color} rounded-xl p-6`}>
               <div className="flex items-center justify-between mb-6">
                 <h3 className={`${column.textColor} font-light text-lg`}>{column.title}</h3>
-                <span className="text-white/60 text-sm">{column.tasks.length} tasks</span>
+                <span className="text-muted-foreground text-sm">{column.tasks.length} tasks</span>
               </div>
               <div className="space-y-4">
                 {column.tasks.map((task, j) => (
-                  <div key={j} className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/5">
+                  <div key={j} className="bg-card/5 backdrop-blur-sm rounded-lg p-4 border border-border">
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <p className="text-white/60 text-sm mb-1">{task.course}</p>
-                        <p className="text-white font-light">{task.title}</p>
+                        <p className="text-muted-foreground text-sm mb-1">{task.course}</p>
+                        <p className="text-foreground font-light">{task.title}</p>
                       </div>
-                      <div className="bg-white/5 px-2 py-1 rounded text-sm text-white/60">
+                      <div className="bg-secondary px-2 py-1 rounded text-sm text-muted-foreground">
                         {task.time}
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                      <div className="w-full h-1 bg-secondary rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full"
+                          className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full"
                           style={{ width: `${task.progress}%` }}
                         ></div>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-white/60">{task.subtasks}</span>
-                        <span className="text-white/60">{task.progress}%</span>
+                        <span className="text-muted-foreground">{task.subtasks}</span>
+                        <span className="text-muted-foreground">{task.progress}%</span>
                       </div>
                     </div>
                   </div>
@@ -225,49 +225,49 @@ const AIAssistantPreview = () => (
           <div>
             <div className="bg-white/5 rounded-xl p-6 mb-6">
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                   <span className="text-xl">🤖</span>
                 </div>
                 <div>
-                  <p className="text-white font-light">AI Assistant</p>
-                  <p className="text-gray-400 text-sm">Analyzing your workload...</p>
+                  <p className="text-foreground font-light">AI Assistant</p>
+                  <p className="text-muted-foreground text-sm">Analyzing your workload...</p>
                 </div>
               </div>
               <div className="space-y-4">
-                <div className="bg-white/5 rounded-lg p-4">
-                  <p className="text-white font-light mb-2">Project Breakdown</p>
+                <div className="bg-card/5 rounded-lg p-4">
+                  <p className="text-foreground font-light mb-2">Project Breakdown</p>
                   <div className="space-y-3">
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400 hover:text-pink-500 transition-colors">Research Phase</span>
-                        <span className="text-pink-500">4 hours</span>
+                        <span className="text-muted-foreground hover:text-primary transition-colors">Research Phase</span>
+                        <span className="text-primary">4 hours</span>
                       </div>
-                      <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full" style={{ width: '40%' }}></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400 hover:text-pink-500 transition-colors">Data Analysis</span>
-                        <span className="text-pink-500">3 hours</span>
-                      </div>
-                      <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full" style={{ width: '30%' }}></div>
+                      <div className="w-full h-1 bg-secondary rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full" style={{ width: '40%' }}></div>
                       </div>
                     </div>
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400 hover:text-pink-500 transition-colors">Report Writing</span>
-                        <span className="text-pink-500">3 hours</span>
+                        <span className="text-muted-foreground hover:text-primary transition-colors">Data Analysis</span>
+                        <span className="text-primary">3 hours</span>
                       </div>
-                      <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full" style={{ width: '30%' }}></div>
+                      <div className="w-full h-1 bg-secondary rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full" style={{ width: '30%' }}></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-muted-foreground hover:text-primary transition-colors">Report Writing</span>
+                        <span className="text-primary">3 hours</span>
+                      </div>
+                      <div className="w-full h-1 bg-secondary rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full" style={{ width: '30%' }}></div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white/5 rounded-lg p-4">
-                  <p className="text-white font-light mb-3">Suggested Schedule</p>
+                <div className="bg-card/5 rounded-lg p-4">
+                  <p className="text-foreground font-light mb-3">Suggested Schedule</p>
                   <div className="space-y-3">
                     {[
                       { day: "Monday", tasks: ["Research: Literature Review", "Data Collection"] },
@@ -275,10 +275,10 @@ const AIAssistantPreview = () => (
                       { day: "Wednesday", tasks: ["Report Writing", "Final Review"] }
                     ].map((day, i) => (
                       <div key={i} className="flex gap-4">
-                        <div className="text-gray-400 text-sm w-24">{day.day}</div>
+                        <div className="text-muted-foreground text-sm w-24">{day.day}</div>
                         <div className="flex-1">
                           {day.tasks.map((task, j) => (
-                            <div key={j} className="text-white/80 text-sm mb-1 font-light hover:text-pink-500 transition-colors">{task}</div>
+                            <div key={j} className="text-foreground/80 text-sm mb-1 font-light hover:text-primary transition-colors">{task}</div>
                           ))}
                         </div>
                       </div>
@@ -353,13 +353,13 @@ const FeatureGrid = () => (
   >
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
     <div className="container mx-auto px-4">
-      <p className="text-pink-500 font-normal text-sm uppercase tracking-wide mb-2">
+      <p className="text-primary font-normal text-sm uppercase tracking-wide mb-2">
         FEATURES
       </p>
-      <h2 className="text-[3rem] text-white font-extralight tracking-tight mb-4">
+      <h2 className="text-[3rem] text-foreground font-extralight tracking-tight mb-4">
         Everything You Need.
       </h2>
-      <p className="text-gray-400 text-base font-light mb-6 max-w-2xl leading-relaxed opacity-75">
+      <p className="text-muted-foreground text-base font-light mb-6 max-w-2xl leading-relaxed opacity-75">
         A complete suite of tools designed to transform your academic
         planning experience.
       </p>
@@ -402,21 +402,21 @@ const FeatureGrid = () => (
             features: ["Smart alerts", "Priority notices", "Streak tracking", "Break reminders"]
           }
         ].map((feature, i) => (
-          <div key={i} className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/5">
+          <div key={i} className="bg-card/5 backdrop-blur-sm rounded-lg p-4 border border-border">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                 <span className="text-lg">{feature.icon}</span>
               </div>
-              <h3 className="text-base text-white font-light">{feature.title}</h3>
+              <h3 className="text-base text-foreground font-light">{feature.title}</h3>
             </div>
-            <p className="text-gray-400 text-sm font-light mb-3 leading-relaxed">
+            <p className="text-muted-foreground text-sm font-light mb-3 leading-relaxed">
               {feature.description}
             </p>
             <div className="space-y-1.5">
               {feature.features.map((item, j) => (
                 <div key={j} className="flex items-center gap-2">
-                  <span className="text-pink-500/60 text-xs">→</span>
-                  <span className="text-gray-400 font-light text-xs hover:text-pink-500 transition-colors">{item}</span>
+                  <span className="text-primary/60 text-xs">→</span>
+                  <span className="text-muted-foreground font-light text-xs hover:text-primary transition-colors">{item}</span>
                 </div>
               ))}
             </div>
@@ -435,20 +435,20 @@ const ComparisonSection = () => (
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
     <div className="container mx-auto px-4">
       <div className="max-w-4xl">
-        <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">
+        <p className="text-primary font-normal text-base uppercase tracking-wide mb-4">
           WHY REFINE
         </p>
-        <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">
+        <h2 className="text-[4rem] text-foreground font-extralight tracking-tight mb-6">
           The Smart Choice.
         </h2>
-        <p className="text-gray-400 text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
+        <p className="text-muted-foreground text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
           See how Refine transforms your academic planning experience with
           AI-powered features and seamless LMS integration.
         </p>
 
         <div className="grid md:grid-cols-2 gap-16">
           <div>
-            <h3 className="text-2xl text-white font-light mb-8">
+            <h3 className="text-2xl text-foreground font-light mb-8">
               Traditional Planning
             </h3>
             <div className="space-y-6">
@@ -480,14 +480,14 @@ const ComparisonSection = () => (
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="group flex items-start gap-4 p-4 rounded-xl border border-white/5 hover:border-pink-500 backdrop-blur-sm bg-white/[0.02] transition-all"
+                  className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary backdrop-blur-sm bg-card/[0.02] transition-all"
                 >
-                  <span className="text-red-500/70 text-lg mt-1">
+                  <span className="text-destructive/70 text-lg mt-1">
                     {item.icon}
                   </span>
                   <div>
-                    <h4 className="text-white font-light mb-1">{item.title}</h4>
-                    <p className="text-gray-400 text-sm font-light">
+                    <h4 className="text-foreground font-light mb-1">{item.title}</h4>
+                    <p className="text-muted-foreground text-sm font-light">
                       {item.description}
                     </p>
                   </div>
@@ -497,7 +497,7 @@ const ComparisonSection = () => (
           </div>
 
           <div>
-            <h3 className="text-2xl text-white font-light mb-8">
+            <h3 className="text-2xl text-foreground font-light mb-8">
               Refine AI Assistant
             </h3>
             <div className="space-y-6">
@@ -529,14 +529,14 @@ const ComparisonSection = () => (
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="group flex items-start gap-4 p-4 rounded-xl border border-white/5 hover:border-pink-500 backdrop-blur-sm bg-white/[0.02] transition-all"
+                  className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary backdrop-blur-sm bg-card/[0.02] transition-all"
                 >
-                  <span className="text-green-400 text-lg mt-1">
+                  <span className="text-primary text-lg mt-1">
                     {item.icon}
                   </span>
                   <div>
-                    <h4 className="text-white font-light mb-1">{item.title}</h4>
-                    <p className="text-gray-400 text-sm font-light">
+                    <h4 className="text-foreground font-light mb-1">{item.title}</h4>
+                    <p className="text-muted-foreground text-sm font-light">
                       {item.description}
                     </p>
                   </div>
@@ -557,9 +557,9 @@ const Testimonials = () => (
   >
     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
     <div className="container mx-auto px-4">
-      <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">TESTIMONIALS</p>
-      <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">Student Stories.</h2>
-      <p className="text-gray-400 text-xl font-light mb-24 max-w-3xl leading-relaxed opacity-75">
+      <p className="text-primary font-normal text-base uppercase tracking-wide mb-4">TESTIMONIALS</p>
+      <h2 className="text-[4rem] text-foreground font-extralight tracking-tight mb-6">Student Stories.</h2>
+      <p className="text-muted-foreground text-xl font-light mb-24 max-w-3xl leading-relaxed opacity-75">
         See how students are transforming their academic life with Refine's AI-powered planning.
       </p>
 
@@ -590,22 +590,22 @@ const Testimonials = () => (
             metric: "4.0 GPA maintained"
           }
         ].map((testimonial, i) => (
-          <div key={i} className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/5">
+          <div key={i} className="bg-card/5 backdrop-blur-sm rounded-xl p-8 border border-border">
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                 <span className="text-2xl">{"👤"}</span>
               </div>
               <div>
-                <p className="text-white font-light">{testimonial.author}</p>
-                <p className="text-gray-400 text-sm">{testimonial.role}</p>
+                <p className="text-foreground font-light">{testimonial.author}</p>
+                <p className="text-muted-foreground text-sm">{testimonial.role}</p>
               </div>
             </div>
-            <p className="text-gray-300 font-light text-lg leading-relaxed mb-6">
+            <p className="text-foreground/90 font-light text-lg leading-relaxed mb-6">
               "{testimonial.quote}"
             </p>
             <div className="flex items-center gap-2">
-              <span className="text-pink-500">↗</span>
-              <span className="text-gray-400 text-sm">{testimonial.metric}</span>
+              <span className="text-primary">↗</span>
+              <span className="text-muted-foreground text-sm">{testimonial.metric}</span>
             </div>
           </div>
         ))}
@@ -624,13 +624,13 @@ const CTASection = () => (
     
     <div className="container mx-auto px-4">
       <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">
+        <h2 className="text-[4rem] text-foreground font-extralight tracking-tight mb-6">
           Ready to Transform Your
           <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent block mt-2">
             Academic Journey?
           </span>
         </h2>
-        <p className="text-gray-400 text-xl font-light mb-12 leading-relaxed opacity-75">
+        <p className="text-muted-foreground text-xl font-light mb-12 leading-relaxed opacity-75">
           Join thousands of students who are already using Refine to excel in their studies. Get started in minutes with our seamless LMS integration.
         </p>
         
@@ -638,26 +638,26 @@ const CTASection = () => (
           <button className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl text-lg font-normal hover:opacity-90 transition-opacity">
             Sign Up & Sync Your LMS
           </button>
-          <button className="px-8 py-4 bg-white/5 text-white rounded-xl text-lg font-normal hover:bg-white/10 transition-colors border border-white/5">
+          <button className="px-8 py-4 bg-secondary text-secondary-foreground rounded-xl text-lg font-normal hover:bg-secondary/80 transition-colors border border-border">
             Schedule Demo
           </button>
         </div>
 
         <div className="grid sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
+          <div className="bg-card/5 backdrop-blur-sm rounded-xl p-6 border border-border">
             <div className="text-2xl mb-2">⚡️</div>
-            <p className="text-white font-light mb-2">2-Minute Setup</p>
-            <p className="text-gray-400 text-sm font-light">Quick LMS sync with Canvas, Brightspace & Blackboard</p>
+            <p className="text-foreground font-light mb-2">2-Minute Setup</p>
+            <p className="text-muted-foreground text-sm font-light">Quick LMS sync with Canvas, Brightspace & Blackboard</p>
           </div>
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
+          <div className="bg-card/5 backdrop-blur-sm rounded-xl p-6 border border-border">
             <div className="text-2xl mb-2">🔒</div>
-            <p className="text-white font-light mb-2">Secure & Private</p>
-            <p className="text-gray-400 text-sm font-light">Your academic data is always safe and protected</p>
+            <p className="text-foreground font-light mb-2">Secure & Private</p>
+            <p className="text-muted-foreground text-sm font-light">Your academic data is always safe and protected</p>
           </div>
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/5">
+          <div className="bg-card/5 backdrop-blur-sm rounded-xl p-6 border border-border">
             <div className="text-2xl mb-2">💬</div>
-            <p className="text-white font-light mb-2">24/7 Support</p>
-            <p className="text-gray-400 text-sm font-light">Get help anytime you need assistance</p>
+            <p className="text-foreground font-light mb-2">24/7 Support</p>
+            <p className="text-muted-foreground text-sm font-light">Get help anytime you need assistance</p>
           </div>
         </div>
       </div>
