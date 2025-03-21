@@ -291,11 +291,11 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                             }
                           }}
                           className={cn(
-                            "h-8 w-8 p-0 flex items-center justify-center",
-                            isSelected && "relative before:absolute before:inset-0 before:rounded-full before:bg-[#c026d3] before:opacity-5 text-[#c026d3] font-normal",
-                            isToday && !isSelected && "text-[#c026d3] font-normal",
+                            "h-8 w-8 p-0 flex items-center justify-center transition-colors duration-150",
+                            isSelected && "relative before:absolute before:inset-0 before:rounded-full before:bg-[#c026d3] before:opacity-5 text-black font-normal hover:text-[#c026d3]",
+                            isToday && !isSelected && "text-black font-normal hover:text-[#c026d3]",
                             !isCurrentMonth && "text-gray-300/5",
-                            isCurrentMonth && !isSelected && !isToday && "text-gray-300/60 font-light"
+                            isCurrentMonth && !isSelected && !isToday && "text-black font-light hover:text-[#c026d3]"
                           )}
                           disabled={!isCurrentMonth}
                         >
