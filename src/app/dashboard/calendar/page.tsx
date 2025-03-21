@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { WeekViewCalendar } from "./week-view-calendar";
 import { CreateEventDialog } from "./create-event-dialog";
-import { AppSidebar } from "@/components/app-sidebar";
-import { cn } from "@/utils/classnames";
 
 interface Event {
   id: string;
@@ -21,7 +19,6 @@ export default function CalendarPage() {
     date: Date;
     hour: number;
   } | null>(null);
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
   const handleCreateEvent = (event: {
     title: string;
@@ -99,18 +96,12 @@ export default function CalendarPage() {
   ];
 
   return (
-    <div className="flex h-screen">
-      <AppSidebar onToggle={setSidebarExpanded} />
-      <div className="-m-8 h-[calc(100vh-4rem)] overflow-x-auto flex-1">
-        <div className={cn("h-full transition-all duration-300", 
-          sidebarExpanded ? "min-w-[1150px]" : "min-w-[1350px]"
-        )}>
-          <WeekViewCalendar 
-            events={[...events, ...sampleEvents]} 
-            onCreateTaskClick={(date, hour) => setSelectedTimeSlot({ date, hour })}
-            width={sidebarExpanded ? 1150 : 1350}
-          />
-        </div>
+    <div className="-m-8 h-[calc(100vh-4rem)] overflow-x-auto">
+      <div className="min-w-[1150px] h-full">
+        <WeekViewCalendar 
+          events={[...events, ...sampleEvents]} 
+          onCreateTaskClick={(date, hour) => setSelectedTimeSlot({ date, hour })}
+        />
       </div>
       {selectedTimeSlot && (
         <CreateEventDialog

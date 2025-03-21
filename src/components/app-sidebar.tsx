@@ -2,85 +2,109 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  Calendar,
+  CheckSquare,
+  Settings,
+  PieChart,
+  GalleryVerticalEnd,
+} from "lucide-react";
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarHeader,
+} from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar, LayoutGrid, ClipboardCheck, Clock, Settings, Menu, X } from "lucide-react";
-import { useState } from "react";
 
-interface AppSidebarProps {
-  onToggle: (isExpanded: boolean) => void;
-}
+const items = [
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Tasks",
+    url: "/dashboard/tasks",
+    icon: CheckSquare,
+  },
+  {
+    title: "Calendar",
+    url: "/dashboard/calendar",
+    icon: Calendar,
+  },
+  {
+    title: "Insights",
+    url: "/dashboard/insights",
+    icon: PieChart,
+  },
+  {
+    title: "Settings",
+    url: "/dashboard/settings",
+    icon: Settings,
+  },
+];
 
-export function AppSidebar({ onToggle }: AppSidebarProps) {
+export function AppSidebar() {
   const pathname = usePathname();
-  const [isExpanded, setIsExpanded] = useState(true);
-
-  const toggleSidebar = () => {
-    const newState = !isExpanded;
-    setIsExpanded(newState);
-    onToggle(newState);
-  };
-
-  const items = [
-    {
-      title: "Dashboard",
-      icon: LayoutGrid,
-      href: "/dashboard",
-    },
-    {
-      title: "Tasks",
-      icon: ClipboardCheck,
-      href: "/dashboard/tasks",
-    },
-    {
-      title: "Calendar",
-      icon: Calendar,
-      href: "/dashboard/calendar",
-    },
-    {
-      title: "Time Tracking",
-      icon: Clock,
-      href: "/dashboard/time-tracking",
-    },
-    {
-      title: "Settings",
-      icon: Settings,
-      href: "/dashboard/settings",
-    },
-  ];
 
   return (
-    <div className="flex flex-col h-screen border-r bg-white">
-      <div className="p-4 flex justify-end">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 text-black hover:text-[#c026d3]"
-          onClick={toggleSidebar}
-        >
-          {isExpanded ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-        </Button>
-      </div>
-      <nav className="flex-1">
-        <div className="px-4 space-y-2">
-          {items.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-black transition-all hover:text-[#c026d3]",
-                  isActive && "bg-[#fdf4ff] text-[#c026d3]"
-                )}
+    <Sidebar collapsible="icon" variant="sidebar">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <Link href={"/dashboard"} passHref legacyBehavior>
+              <SidebarMenuButton
+                className="bg-secondary text-foreground py-6 px-4 text-lg transition-all duration-150 cursor-pointer"
               >
-                <item.icon className="h-4 w-4" />
-                {isExpanded && <span>{item.title}</span>}
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
-    </div>
+                <GalleryVerticalEnd className="h-4 w-4" />
+                <span className="text-base font-semibold">Refine</span>
+              </SidebarMenuButton>
+            </Link>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-sm">Main</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <Link href={item.url} passHref legacyBehavior>
+                    <SidebarMenuButton
+                      className={cn(
+                        "py-5 px-4 text-lg transition-all duration-150 cursor-pointer rounded-xl",
+                        pathname === item.url
+                          ? "bg-[#fdf4ff] text-[#c026d3]"
+                          : "text-black hover:bg-[#fdf4ff]",
+                      )}
+                      data-active={pathname === item.url}
+                    >
+                      <item.icon className="h-5 w-5 text-black" />
+                      <span
+                        className={cn(
+                          "text-base",
+                          pathname === item.url && "text-[#c026d3]",
+                        )}
+                      >
+                        {item.title}
+                      </span>
+                    </SidebarMenuButton>
+                  </Link>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 }
