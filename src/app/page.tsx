@@ -1,6 +1,8 @@
 "use client";
 
 import { Footer } from "@/components/layout/footer";
+import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
+import { AuroraText } from "@/components/magicui/aurora-text";
 
 const HeroSection = () => {
   const scrollToTasks = () => {
@@ -33,11 +35,9 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <h1 className="text-[5rem] text-foreground font-extralight tracking-tight mb-8 leading-[1.1]">
+          <h1 className="text-[5rem] text-foreground font-semibold tracking-tight mb-8 leading-[1.1]">
             Your Academic Success,
-            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent block mt-2">
-              AI-Powered
-            </span>
+            <AuroraText colors={["#FF3DC0", "#FF1A8D", "#FF69B4", "#DA70D6", "#BA55D3", "#9932CC", "#8B008B", "#FF00FF", "#FF69B4", "#FF1493"]}>AI Powered</AuroraText>
           </h1>
 
           <p className="text-muted-foreground text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto opacity-75">
@@ -52,7 +52,11 @@ const HeroSection = () => {
               onClick={scrollToTasks}
               className="px-8 py-4 bg-secondary text-secondary-foreground rounded-xl text-lg font-normal hover:bg-secondary/80 transition-colors border border-border"
             >
+              <AnimatedShinyText>
+
               See How It Works
+              </AnimatedShinyText>
+
             </button>
           </div>
         </div>
