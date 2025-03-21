@@ -6,9 +6,9 @@ const sections = [
   { id: "hero", label: "refine" },
   { id: "tasks", label: "Tasks" },
   { id: "ai-assistant", label: "AI Assistant" },
+  { id: "features", label: "Features" },
   { id: "comparison", label: "Why Refine" },
   { id: "testimonials", label: "Testimonials" },
-  { id: "features", label: "Features" },
 ];
 
 export function BubbleNav() {

@@ -691,6 +691,7 @@ export default function Home() {
       </ParallaxSection>
 
       <ParallaxSection
+        id="ai-assistant"
         className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
         speed={0.5}
       >
@@ -706,26 +707,7 @@ export default function Home() {
       </ParallaxSection>
 
       <ParallaxSection
-        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
-        speed={0.5}
-      >
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-        <div className="container mx-auto px-4 py-32">
-          <ComparisonSection />
-        </div>
-      </ParallaxSection>
-
-      <ParallaxSection
-        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
-        speed={0.5}
-      >
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-        <div className="container mx-auto px-4 py-32">
-          <Testimonials />
-        </div>
-      </ParallaxSection>
-
-      <ParallaxSection
+        id="features"
         className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
         speed={0.5}
       >
@@ -737,6 +719,28 @@ export default function Home() {
             A complete suite of tools designed to transform your academic planning experience.
           </p>
           <FeatureGrid />
+        </div>
+      </ParallaxSection>
+
+      <ParallaxSection
+        id="comparison"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
+        speed={0.5}
+      >
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+        <div className="container mx-auto px-4 py-32">
+          <ComparisonSection />
+        </div>
+      </ParallaxSection>
+
+      <ParallaxSection
+        id="testimonials"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
+        speed={0.5}
+      >
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+        <div className="container mx-auto px-4 py-32">
+          <Testimonials />
         </div>
       </ParallaxSection>
 
