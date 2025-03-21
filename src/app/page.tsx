@@ -10,7 +10,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
+    <section className="min-h-screen relative flex items-center justify-center overflow-hidden snap-start">
       <div className="absolute inset-0 bg-[#0B0A0F]"></div>
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
       <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5"></div>
@@ -63,90 +63,60 @@ const Hero = () => {
 };
 
 const FeatureGrid = () => (
-  <div className="grid md:grid-cols-3 gap-8">
+  <div className="grid md:grid-cols-3 gap-4">
     {[
       {
         icon: "📚",
         title: "Smart Task Organization",
-        description: "Automatically organize and prioritize your assignments. Break down complex projects into manageable subtasks.",
-        features: [
-          "Auto-categorization by due date",
-          "Smart priority assignment",
-          "Subtask management",
-          "Progress tracking"
-        ]
+        description: "Auto-organize and prioritize assignments with AI-powered subtask management.",
+        features: ["Auto-categorization", "Priority assignment", "Subtask tracking", "Progress metrics"]
       },
       {
         icon: "🔄",
         title: "LMS Integration",
-        description: "Seamlessly sync with your university's learning management system. Never miss an assignment or deadline.",
-        features: [
-          "Canvas integration",
-          "Brightspace sync",
-          "Blackboard support",
-          "Real-time updates"
-        ]
+        description: "Seamless sync with your university's LMS for real-time assignment tracking.",
+        features: ["Canvas sync", "Brightspace", "Blackboard", "Auto-updates"]
       },
       {
         icon: "🤖",
         title: "AI Study Planning",
-        description: "Let AI handle your study schedule. Get personalized plans based on your learning style and workload.",
-        features: [
-          "Smart time allocation",
-          "Adaptive scheduling",
-          "Focus time optimization",
-          "Study pattern analysis"
-        ]
+        description: "Personalized study schedules based on your learning style and workload.",
+        features: ["Smart scheduling", "Adaptive plans", "Focus optimization", "Pattern analysis"]
       },
       {
         icon: "⏱️",
         title: "Time Tracking",
-        description: "Track your study time and optimize your productivity. Understand where your time goes and improve focus.",
-        features: [
-          "Focus session tracking",
-          "Progress analytics",
-          "Study pattern insights",
-          "Break reminders"
-        ]
+        description: "Track study time and optimize productivity with smart analytics.",
+        features: ["Focus sessions", "Progress stats", "Study insights", "Break timers"]
       },
       {
         icon: "📊",
         title: "Progress Analytics",
-        description: "Visualize your academic progress with detailed analytics. Stay motivated with clear progress indicators.",
-        features: [
-          "Completion rate tracking",
-          "Time usage analysis",
-          "Performance trends",
-          "Goal achievement stats"
-        ]
+        description: "Visual progress tracking with detailed performance metrics.",
+        features: ["Completion rates", "Time analysis", "Trend tracking", "Goal metrics"]
       },
       {
         icon: "🎯",
         title: "Smart Reminders",
-        description: "Get intelligent reminders based on your study patterns and deadlines. Stay on track without the stress.",
-        features: [
-          "AI-powered notifications",
-          "Priority alerts",
-          "Study streak tracking",
-          "Break reminders"
-        ]
+        description: "AI-powered notifications based on study patterns and deadlines.",
+        features: ["Smart alerts", "Priority notices", "Streak tracking", "Break reminders"]
       }
     ].map((feature, i) => (
-      <div key={i} className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/5">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
-            <span className="text-2xl">{feature.icon}</span>
+      <div key={i} className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/5">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
+            <span className="text-lg">{feature.icon}</span>
           </div>
-          <h3 className="text-xl text-white font-light">{feature.title}</h3>
+          <h3 className="text-base text-white font-light">{feature.title}</h3>
         </div>
-        <p className="text-gray-400 font-light mb-6 leading-relaxed">
+        <p className="text-gray-400 text-sm font-light mb-3 leading-relaxed">
           {feature.description}
         </p>
-        <div className="space-y-3">
+        <div className="space-y-1.5">
           {feature.features.map((item, j) => (
-            <div key={j} className="flex items-center gap-3">
-              <span className="text-pink-500/60">→</span>
-              <span className="text-gray-400 font-light text-sm hover:text-pink-500 transition-colors">{item}</span>
+            <div key={j} className="flex items-center gap-2">
+              <span className="text-pink-500/60 text-xs">→</span>
+              <span className="text-gray-400 font-light text-xs hover:text-pink-500 transition-colors">{item}</span>
             </div>
           ))}
         </div>
@@ -667,23 +637,70 @@ const Footer = () => (
 
 export default function Home() {
   return (
-    <div className="flex flex-col bg-black relative">
-      <BubbleNav />
-      
-      <section id="hero">
-        <Hero />
+    <div className="snap-y snap-mandatory">
+      <section id="hero" className="min-h-screen relative flex items-center justify-center overflow-hidden snap-start">
+        <div className="absolute inset-0 bg-[#0B0A0F]"></div>
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5"></div>
+        
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-b from-pink-500/20 to-transparent rounded-full blur-3xl"></div>
+        
+        <div className="container mx-auto px-4 py-32 relative">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="grid grid-cols-3 gap-8 mb-12">
+              <div className="text-center space-y-2">
+                <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">87%</div>
+                <p className="text-sm text-gray-400">Average Time Saved on Planning</p>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">2.5x</div>
+                <p className="text-sm text-gray-400">Improved Study Efficiency</p>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">100%</div>
+                <p className="text-sm text-gray-400">Assignment Coverage</p>
+              </div>
+            </div>
+
+            <h1 className="text-[5rem] text-white font-extralight tracking-tight mb-8 leading-[1.1]">
+              Your Academic Success,
+              <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent block mt-2">
+                AI-Powered
+              </span>
+            </h1>
+
+            <p className="text-gray-400 text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto opacity-75">
+              Seamlessly sync with your LMS, get AI-powered study plans, and never miss a deadline. Join thousands of students transforming their academic journey.
+            </p>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
+              <button className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl text-lg font-normal hover:opacity-90 transition-opacity">
+                Sign Up & Sync Your LMS
+              </button>
+              <button 
+                onClick={() => {
+                  const element = document.getElementById('tasks');
+                  element?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-8 py-4 bg-white/5 text-white rounded-xl text-lg font-normal hover:bg-white/10 transition-colors border border-white/5"
+              >
+                See How It Works
+              </button>
+            </div>
+          </div>
+        </div>
       </section>
-      
+
       <ParallaxSection
         id="tasks"
-        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden snap-start h-screen"
         speed={0.5}
       >
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-        <div className="container mx-auto px-4 py-32">
-          <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">TASK MANAGEMENT</p>
-          <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">Your Tasks, Organized.</h2>
-          <p className="text-gray-400 text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
+        <div className="container mx-auto px-4 py-16 scale-[0.85] origin-top">
+          <p className="text-pink-500 font-normal text-sm uppercase tracking-wide mb-2">TASK MANAGEMENT</p>
+          <h2 className="text-[3rem] text-white font-extralight tracking-tight mb-4">Your Tasks, Organized.</h2>
+          <p className="text-gray-400 text-base font-light mb-6 max-w-2xl leading-relaxed opacity-75">
             See all your assignments at a glance. Refine automatically organizes your tasks by due date and priority.
           </p>
           <TaskPreview />
@@ -692,14 +709,14 @@ export default function Home() {
 
       <ParallaxSection
         id="ai-assistant"
-        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden snap-start h-screen"
         speed={0.5}
       >
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-        <div className="container mx-auto px-4 py-32">
-          <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">AI ASSISTANT</p>
-          <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">Study Smarter.</h2>
-          <p className="text-gray-400 text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
+        <div className="container mx-auto px-4 py-16 scale-[0.85] origin-top">
+          <p className="text-pink-500 font-normal text-sm uppercase tracking-wide mb-2">AI ASSISTANT</p>
+          <h2 className="text-[3rem] text-white font-extralight tracking-tight mb-4">Study Smarter.</h2>
+          <p className="text-gray-400 text-base font-light mb-6 max-w-2xl leading-relaxed opacity-75">
             Get personalized study plans, time estimates, and smart suggestions based on your learning style.
           </p>
           <AIAssistantPreview />
@@ -708,14 +725,14 @@ export default function Home() {
 
       <ParallaxSection
         id="features"
-        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden snap-start h-screen"
         speed={0.5}
       >
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-        <div className="container mx-auto px-4 py-32">
-          <p className="text-pink-500 font-normal text-base uppercase tracking-wide mb-4">FEATURES</p>
-          <h2 className="text-[4rem] text-white font-extralight tracking-tight mb-6">Everything You Need.</h2>
-          <p className="text-gray-400 text-xl font-light mb-16 max-w-3xl leading-relaxed opacity-75">
+        <div className="container mx-auto px-4 py-16 scale-[0.85] origin-top">
+          <p className="text-pink-500 font-normal text-sm uppercase tracking-wide mb-2">FEATURES</p>
+          <h2 className="text-[3rem] text-white font-extralight tracking-tight mb-4">Everything You Need.</h2>
+          <p className="text-gray-400 text-base font-light mb-6 max-w-2xl leading-relaxed opacity-75">
             A complete suite of tools designed to transform your academic planning experience.
           </p>
           <FeatureGrid />
@@ -724,22 +741,22 @@ export default function Home() {
 
       <ParallaxSection
         id="comparison"
-        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden snap-start h-screen"
         speed={0.5}
       >
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-        <div className="container mx-auto px-4 py-32">
+        <div className="container mx-auto px-4 py-16 scale-[0.85] origin-top">
           <ComparisonSection />
         </div>
       </ParallaxSection>
 
       <ParallaxSection
         id="testimonials"
-        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden"
+        className="relative bg-gradient-to-b from-[#0B0A0F] to-black overflow-hidden snap-start h-screen"
         speed={0.5}
       >
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-        <div className="container mx-auto px-4 py-32">
+        <div className="container mx-auto px-4 py-16 scale-[0.85] origin-top">
           <Testimonials />
         </div>
       </ParallaxSection>
