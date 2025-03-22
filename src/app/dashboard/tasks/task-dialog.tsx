@@ -12,7 +12,7 @@ import {
   ChevronRight,
   Plus,
 } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -46,25 +46,31 @@ export function TaskDialog({ className }: TaskDialogProps) {
   const [open, setOpen] = React.useState(false);
   const { user } = useAuth();
   const router = useRouter();
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [category, setCategory] =
-    React.useState<Enums<"task_category">>("ACADEMIC");
-  const [priority, setPriority] =
-    React.useState<Enums<"task_priority">>("MEDIUM");
-  const [type, setType] = React.useState<Enums<"task_type">>("ASSIGNMENT");
-  const [dueDate, setDueDate] = React.useState<Date>();
-  const [dueTime, setDueTime] = React.useState("12:00");
-  const [isMultiPhase, setIsMultiPhase] = React.useState(false);
-  const [plannedTimeHours, setPlannedTimeHours] = React.useState(0);
-  const [plannedTimeMinutes, setPlannedTimeMinutes] = React.useState(0);
+  const [formState, setFormState] = React.useState({
+    title: "",
+    description: "",
+    category: "ACADEMIC" as Enums<"task_category">,
+    priority: "MEDIUM" as Enums<"task_priority">,
+    type: "ASSIGNMENT" as Enums<"task_type">,
+    dueTime: "12:00",
+    isMultiPhase: false,
+    plannedTimeHours: 0,
+    plannedTimeMinutes: 0
+  });
+  const [dueDate, setDueDate] = React.useState<Date | undefined>(undefined);
+
+  const [isMounted, setIsMounted] = React.useState(false);
+  
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleCreateTask = async () => {
     if (!user) {
       console.error("Failed to create task: No user found");
       return;
     }
-    if (!title) {
+    if (!formState.title) {
       console.error("Failed to create task: Title is required");
       return;
     }
@@ -72,20 +78,6 @@ export function TaskDialog({ className }: TaskDialogProps) {
       console.error("Failed to create task: Due date is required");
       return;
     }
-
-    console.log("Creating task with data:", {
-      title,
-      description,
-      category,
-      priority,
-      type,
-      due_date: format(dueDate, "yyyy-MM-dd"),
-      due_time: dueTime,
-      is_multi_phase: isMultiPhase,
-      planned_time_hours: plannedTimeHours,
-      planned_time_minutes: plannedTimeMinutes,
-      user_id: user.id,
-    });
 
     const task: Omit<
       Task,
@@ -96,25 +88,23 @@ export function TaskDialog({ className }: TaskDialogProps) {
       | "time_used_hours"
       | "time_used_minutes"
     > = {
-      title,
-      description,
-      category,
-      priority,
-      type,
+      title: formState.title,
+      description: formState.description,
+      category: formState.category,
+      priority: formState.priority,
+      type: formState.type,
       due_date: format(dueDate, "yyyy-MM-dd"),
-      due_time: dueTime,
+      due_time: formState.dueTime,
       completed: false,
-      is_multi_phase: isMultiPhase,
-      planned_time_hours: plannedTimeHours,
-      planned_time_minutes: plannedTimeMinutes,
+      is_multi_phase: formState.isMultiPhase,
+      planned_time_hours: formState.plannedTimeHours,
+      planned_time_minutes: formState.plannedTimeMinutes,
       user_id: user.id,
       start_mark: 0,
     };
 
     try {
       const supabase = createClient();
-      console.log("Attempting to insert task into database...");
-
       const { data, error } = await supabase
         .from("tasks")
         .insert(task)
@@ -122,37 +112,27 @@ export function TaskDialog({ className }: TaskDialogProps) {
         .single();
 
       if (error) {
-        console.error("Database error while creating task:", {
-          error_message: error.message,
-          error_code: error.code,
-          error_details: error.details,
-          task_data: task,
-        });
+        console.error("Database error while creating task:", error);
         throw error;
       }
 
-      console.log("Task created successfully:", data);
-
       // Reset form
-      setTitle("");
-      setDescription("");
-      setCategory("ACADEMIC");
-      setPriority("MEDIUM");
-      setType("ASSIGNMENT");
+      setFormState({
+        title: "",
+        description: "",
+        category: "ACADEMIC",
+        priority: "MEDIUM",
+        type: "ASSIGNMENT",
+        dueTime: "12:00",
+        isMultiPhase: false,
+        plannedTimeHours: 0,
+        plannedTimeMinutes: 0
+      });
       setDueDate(undefined);
-      setDueTime("12:00");
-      setIsMultiPhase(false);
-      setPlannedTimeHours(0);
-      setPlannedTimeMinutes(0);
-
       setOpen(false);
       router.refresh();
     } catch (error) {
-      console.error("Detailed error while creating task:", {
-        error,
-        task_data: task,
-        user_id: user.id,
-      });
+      console.error("Error creating task:", error);
     }
   };
 
@@ -170,6 +150,7 @@ export function TaskDialog({ className }: TaskDialogProps) {
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[525px]">
+          <DialogTitle>Create New Task</DialogTitle>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <label htmlFor="title" className="text-sm font-medium">
@@ -177,8 +158,8 @@ export function TaskDialog({ className }: TaskDialogProps) {
               </label>
               <Input
                 id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={formState.title}
+                onChange={(e) => setFormState(prev => ({ ...prev, title: e.target.value }))}
                 placeholder="Enter task title"
               />
             </div>
@@ -189,8 +170,8 @@ export function TaskDialog({ className }: TaskDialogProps) {
               </label>
               <Input
                 id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={formState.description}
+                onChange={(e) => setFormState(prev => ({ ...prev, description: e.target.value }))}
                 placeholder="Enter task description"
               />
             </div>
@@ -201,9 +182,9 @@ export function TaskDialog({ className }: TaskDialogProps) {
                   Category
                 </label>
                 <Select
-                  value={category}
+                  value={formState.category}
                   onValueChange={(value: Enums<"task_category">) =>
-                    setCategory(value)
+                    setFormState(prev => ({ ...prev, category: value }))
                   }
                 >
                   <SelectTrigger>
@@ -222,9 +203,9 @@ export function TaskDialog({ className }: TaskDialogProps) {
                   Priority
                 </label>
                 <Select
-                  value={priority}
+                  value={formState.priority}
                   onValueChange={(value: Enums<"task_priority">) =>
-                    setPriority(value)
+                    setFormState(prev => ({ ...prev, priority: value }))
                   }
                 >
                   <SelectTrigger>
@@ -245,8 +226,10 @@ export function TaskDialog({ className }: TaskDialogProps) {
                   Type
                 </label>
                 <Select
-                  value={type}
-                  onValueChange={(value: Enums<"task_type">) => setType(value)}
+                  value={formState.type}
+                  onValueChange={(value: Enums<"task_type">) => 
+                    setFormState(prev => ({ ...prev, type: value }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -264,11 +247,13 @@ export function TaskDialog({ className }: TaskDialogProps) {
                 <label htmlFor="due-date" className="text-sm font-medium">
                   Due Date
                 </label>
-                <DatePicker
-                  date={dueDate}
-                  onDateChange={setDueDate}
-                  placeholder="Select due date"
-                />
+                {isMounted && (
+                  <DatePicker
+                    date={dueDate}
+                    onDateChange={setDueDate}
+                    placeholder="Select due date"
+                  />
+                )}
               </div>
             </div>
 
@@ -279,17 +264,17 @@ export function TaskDialog({ className }: TaskDialogProps) {
               <Input
                 id="due-time"
                 type="time"
-                value={dueTime}
-                onChange={(e) => setDueTime(e.target.value)}
+                value={formState.dueTime}
+                onChange={(e) => setFormState(prev => ({ ...prev, dueTime: e.target.value }))}
               />
             </div>
 
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="multi-phase"
-                checked={isMultiPhase}
+                checked={formState.isMultiPhase}
                 onCheckedChange={(checked) =>
-                  setIsMultiPhase(checked as boolean)
+                  setFormState(prev => ({ ...prev, isMultiPhase: checked as boolean }))
                 }
               />
               <label
@@ -300,7 +285,7 @@ export function TaskDialog({ className }: TaskDialogProps) {
               </label>
             </div>
 
-            {isMultiPhase && (
+            {formState.isMultiPhase && (
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
                   <label
@@ -313,9 +298,9 @@ export function TaskDialog({ className }: TaskDialogProps) {
                     id="planned-hours"
                     type="number"
                     min="0"
-                    value={plannedTimeHours}
+                    value={formState.plannedTimeHours}
                     onChange={(e) =>
-                      setPlannedTimeHours(parseInt(e.target.value))
+                      setFormState(prev => ({ ...prev, plannedTimeHours: parseInt(e.target.value) }))
                     }
                   />
                 </div>
@@ -332,9 +317,9 @@ export function TaskDialog({ className }: TaskDialogProps) {
                     type="number"
                     min="0"
                     max="59"
-                    value={plannedTimeMinutes}
+                    value={formState.plannedTimeMinutes}
                     onChange={(e) =>
-                      setPlannedTimeMinutes(parseInt(e.target.value))
+                      setFormState(prev => ({ ...prev, plannedTimeMinutes: parseInt(e.target.value) }))
                     }
                   />
                 </div>
