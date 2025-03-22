@@ -10,6 +10,7 @@ import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
+  Plus,
 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -38,11 +39,11 @@ import { useRouter } from "next/navigation";
 type Task = Tables<"tasks">;
 
 interface TaskDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  className?: string;
 }
 
-export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
+export function TaskDialog({ className }: TaskDialogProps) {
+  const [open, setOpen] = React.useState(false);
   const { user } = useAuth();
   const router = useRouter();
   const [title, setTitle] = React.useState("");
@@ -145,7 +146,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
       setPlannedTimeHours(0);
       setPlannedTimeMinutes(0);
 
-      onOpenChange(false);
+      setOpen(false);
       router.refresh();
     } catch (error) {
       console.error("Detailed error while creating task:", {
@@ -157,177 +158,189 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[525px]">
-        <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <label htmlFor="title" className="text-sm font-medium">
-              Title
-            </label>
-            <Input
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter task title"
-            />
-          </div>
-
-          <div className="grid gap-2">
-            <label htmlFor="description" className="text-sm font-medium">
-              Description
-            </label>
-            <Input
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter task description"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
+    <>
+      <Button
+        onClick={() => setOpen(true)}
+        className={cn(
+          "bg-[#c026d3] hover:bg-[#c026d3]/90 text-white rounded-full px-8 py-6 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300",
+          className
+        )}
+      >
+        <Plus className="w-6 h-6 mr-2" />
+        Add Task
+      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[525px]">
+          <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <label htmlFor="category" className="text-sm font-medium">
-                Category
+              <label htmlFor="title" className="text-sm font-medium">
+                Title
               </label>
-              <Select
-                value={category}
-                onValueChange={(value: Enums<"task_category">) =>
-                  setCategory(value)
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ACADEMIC">Academic</SelectItem>
-                  <SelectItem value="PERSONAL">Personal</SelectItem>
-                  <SelectItem value="WORK">Work</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid gap-2">
-              <label htmlFor="priority" className="text-sm font-medium">
-                Priority
-              </label>
-              <Select
-                value={priority}
-                onValueChange={(value: Enums<"task_priority">) =>
-                  setPriority(value)
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="LOW">Low</SelectItem>
-                  <SelectItem value="MEDIUM">Medium</SelectItem>
-                  <SelectItem value="HIGH">High</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <label htmlFor="type" className="text-sm font-medium">
-                Type
-              </label>
-              <Select
-                value={type}
-                onValueChange={(value: Enums<"task_type">) => setType(value)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ESSAY">Essay</SelectItem>
-                  <SelectItem value="PROJECT">Project</SelectItem>
-                  <SelectItem value="ASSIGNMENT">Assignment</SelectItem>
-                  <SelectItem value="QUIZ">Quiz</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid gap-2">
-              <label htmlFor="due-date" className="text-sm font-medium">
-                Due Date
-              </label>
-              <DatePicker
-                date={dueDate}
-                onDateChange={setDueDate}
-                placeholder="Select due date"
+              <Input
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter task title"
               />
             </div>
-          </div>
 
-          <div className="grid gap-2">
-            <label htmlFor="due-time" className="text-sm font-medium">
-              Due Time
-            </label>
-            <Input
-              id="due-time"
-              type="time"
-              value={dueTime}
-              onChange={(e) => setDueTime(e.target.value)}
-            />
-          </div>
+            <div className="grid gap-2">
+              <label htmlFor="description" className="text-sm font-medium">
+                Description
+              </label>
+              <Input
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter task description"
+              />
+            </div>
 
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="multi-phase"
-              checked={isMultiPhase}
-              onCheckedChange={(checked) => setIsMultiPhase(checked as boolean)}
-            />
-            <label
-              htmlFor="multi-phase"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Multi-phase task
-            </label>
-          </div>
-
-          {isMultiPhase && (
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <label htmlFor="planned-hours" className="text-sm font-medium">
-                  Planned Hours
+                <label htmlFor="category" className="text-sm font-medium">
+                  Category
                 </label>
-                <Input
-                  id="planned-hours"
-                  type="number"
-                  min="0"
-                  value={plannedTimeHours}
-                  onChange={(e) =>
-                    setPlannedTimeHours(parseInt(e.target.value))
+                <Select
+                  value={category}
+                  onValueChange={(value: Enums<"task_category">) =>
+                    setCategory(value)
                   }
-                />
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ACADEMIC">Academic</SelectItem>
+                    <SelectItem value="PERSONAL">Personal</SelectItem>
+                    <SelectItem value="WORK">Work</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="grid gap-2">
-                <label
-                  htmlFor="planned-minutes"
-                  className="text-sm font-medium"
-                >
-                  Planned Minutes
+                <label htmlFor="priority" className="text-sm font-medium">
+                  Priority
                 </label>
-                <Input
-                  id="planned-minutes"
-                  type="number"
-                  min="0"
-                  max="59"
-                  value={plannedTimeMinutes}
-                  onChange={(e) =>
-                    setPlannedTimeMinutes(parseInt(e.target.value))
+                <Select
+                  value={priority}
+                  onValueChange={(value: Enums<"task_priority">) =>
+                    setPriority(value)
                   }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="LOW">Low</SelectItem>
+                    <SelectItem value="MEDIUM">Medium</SelectItem>
+                    <SelectItem value="HIGH">High</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <label htmlFor="type" className="text-sm font-medium">
+                  Type
+                </label>
+                <Select
+                  value={type}
+                  onValueChange={(value: Enums<"task_type">) => setType(value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ESSAY">Essay</SelectItem>
+                    <SelectItem value="PROJECT">Project</SelectItem>
+                    <SelectItem value="ASSIGNMENT">Assignment</SelectItem>
+                    <SelectItem value="QUIZ">Quiz</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid gap-2">
+                <label htmlFor="due-date" className="text-sm font-medium">
+                  Due Date
+                </label>
+                <DatePicker
+                  date={dueDate}
+                  onDateChange={setDueDate}
+                  placeholder="Select due date"
                 />
               </div>
             </div>
-          )}
 
-          <Button onClick={handleCreateTask}>Create Task</Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+            <div className="grid gap-2">
+              <label htmlFor="due-time" className="text-sm font-medium">
+                Due Time
+              </label>
+              <Input
+                id="due-time"
+                type="time"
+                value={dueTime}
+                onChange={(e) => setDueTime(e.target.value)}
+              />
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="multi-phase"
+                checked={isMultiPhase}
+                onCheckedChange={(checked) => setIsMultiPhase(checked as boolean)}
+              />
+              <label
+                htmlFor="multi-phase"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Multi-phase task
+              </label>
+            </div>
+
+            {isMultiPhase && (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <label htmlFor="planned-hours" className="text-sm font-medium">
+                    Planned Hours
+                  </label>
+                  <Input
+                    id="planned-hours"
+                    type="number"
+                    min="0"
+                    value={plannedTimeHours}
+                    onChange={(e) =>
+                      setPlannedTimeHours(parseInt(e.target.value))
+                    }
+                  />
+                </div>
+
+                <div className="grid gap-2">
+                  <label
+                    htmlFor="planned-minutes"
+                    className="text-sm font-medium"
+                  >
+                    Planned Minutes
+                  </label>
+                  <Input
+                    id="planned-minutes"
+                    type="number"
+                    min="0"
+                    max="59"
+                    value={plannedTimeMinutes}
+                    onChange={(e) =>
+                      setPlannedTimeMinutes(parseInt(e.target.value))
+                    }
+                  />
+                </div>
+              </div>
+            )}
+
+            <Button onClick={handleCreateTask}>Create Task</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

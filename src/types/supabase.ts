@@ -34,62 +34,47 @@ export type Database = {
   }
   public: {
     Tables: {
-      categories: {
+      assignments: {
         Row: {
           created_at: string
           id: string
-          name: string
+          order_index: number
+          task_id: string
+          title: string
           updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          name?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      chat_messages: {
-        Row: {
-          chat_id: string
-          content: string
-          created_at: string
-          id: string
-          read: boolean
+          url: string | null
           user_id: string
         }
         Insert: {
-          chat_id: string
-          content: string
           created_at?: string
           id?: string
-          read?: boolean
+          order_index: number
+          task_id: string
+          title: string
+          updated_at?: string
+          url?: string | null
           user_id: string
         }
         Update: {
-          chat_id?: string
-          content?: string
           created_at?: string
           id?: string
-          read?: boolean
+          order_index?: number
+          task_id?: string
+          title?: string
+          updated_at?: string
+          url?: string | null
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "messages_chat_id_fkey"
-            columns: ["chat_id"]
+            foreignKeyName: "assignments_task_id_fkey"
+            columns: ["task_id"]
             isOneToOne: false
-            referencedRelation: "chats"
+            referencedRelation: "tasks"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "messages_user_id_fkey"
+            foreignKeyName: "assignments_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -97,116 +82,43 @@ export type Database = {
           },
         ]
       }
-      chat_users: {
+      courses: {
         Row: {
-          chat_id: string
-          created_at: string
-          id: string
-          last_opened_at: string | null
-          user_id: string
-        }
-        Insert: {
-          chat_id: string
-          created_at?: string
-          id?: string
-          last_opened_at?: string | null
-          user_id: string
-        }
-        Update: {
-          chat_id?: string
-          created_at?: string
-          id?: string
-          last_opened_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "chat_users_chat_id_fkey"
-            columns: ["chat_id"]
-            isOneToOne: false
-            referencedRelation: "chats"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "chat_users_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      chats: {
-        Row: {
-          created_at: string
-          id: string
-          last_message: string | null
-          last_message_at: string | null
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          last_message?: string | null
-          last_message_at?: string | null
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          last_message?: string | null
-          last_message_at?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      items: {
-        Row: {
-          category_id: string | null
+          code: string
+          color: string
           created_at: string
           description: string
           id: string
-          image_urls: string[]
-          latitude: number | null
-          longitude: number | null
-          name: string
+          status: Database["public"]["Enums"]["course_status"]
+          title: string
           updated_at: string
           user_id: string
         }
         Insert: {
-          category_id?: string | null
+          code: string
+          color: string
           created_at?: string
           description: string
           id?: string
-          image_urls: string[]
-          latitude?: number | null
-          longitude?: number | null
-          name: string
+          status: Database["public"]["Enums"]["course_status"]
+          title: string
           updated_at?: string
           user_id: string
         }
         Update: {
-          category_id?: string | null
+          code?: string
+          color?: string
           created_at?: string
           description?: string
           id?: string
-          image_urls?: string[]
-          latitude?: number | null
-          longitude?: number | null
-          name?: string
+          status?: Database["public"]["Enums"]["course_status"]
+          title?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "items_category_id_fkey"
-            columns: ["category_id"]
-            isOneToOne: false
-            referencedRelation: "categories"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "items_user_fkey"
+            foreignKeyName: "courses_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -214,45 +126,56 @@ export type Database = {
           },
         ]
       }
-      trade_items: {
+      phases: {
         Row: {
           created_at: string
+          description: string | null
+          due_date: string
           id: string
-          item_id: string
-          trade_id: string
+          order_index: number
+          planned_time_hours: number
+          planned_time_minutes: number
+          task_id: string
+          title: string
+          updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          description?: string | null
+          due_date: string
           id?: string
-          item_id: string
-          trade_id: string
+          order_index: number
+          planned_time_hours?: number
+          planned_time_minutes?: number
+          task_id: string
+          title: string
+          updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
+          description?: string | null
+          due_date?: string
           id?: string
-          item_id?: string
-          trade_id?: string
+          order_index?: number
+          planned_time_hours?: number
+          planned_time_minutes?: number
+          task_id?: string
+          title?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "trade_items_item_id_fkey"
-            columns: ["item_id"]
+            foreignKeyName: "phases_task_id_fkey"
+            columns: ["task_id"]
             isOneToOne: false
-            referencedRelation: "items"
+            referencedRelation: "tasks"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "trade_items_trade_id_fkey"
-            columns: ["trade_id"]
-            isOneToOne: false
-            referencedRelation: "trades"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "trade_items_user_id_fkey"
+            foreignKeyName: "phases_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -260,74 +183,121 @@ export type Database = {
           },
         ]
       }
-      trades: {
+      subtasks: {
         Row: {
+          completed: boolean
           created_at: string
           id: string
-          recipient_id: string | null
-          requester_id: string | null
-          status: Database["public"]["Enums"]["trade_status"]
+          order_index: number
+          task_id: string
+          title: string
+          updated_at: string
+          user_id: string
         }
         Insert: {
+          completed?: boolean
           created_at?: string
           id?: string
-          recipient_id?: string | null
-          requester_id?: string | null
-          status?: Database["public"]["Enums"]["trade_status"]
+          order_index: number
+          task_id: string
+          title: string
+          updated_at?: string
+          user_id: string
         }
         Update: {
+          completed?: boolean
           created_at?: string
           id?: string
-          recipient_id?: string | null
-          requester_id?: string | null
-          status?: Database["public"]["Enums"]["trade_status"]
+          order_index?: number
+          task_id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "trades_recipient_id_fkey"
-            columns: ["recipient_id"]
+            foreignKeyName: "subtasks_task_id_fkey"
+            columns: ["task_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "tasks"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "trades_requester_id_fkey"
-            columns: ["requester_id"]
+            foreignKeyName: "subtasks_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
       }
-      user_followers: {
+      tasks: {
         Row: {
+          actual_time: string
+          category: Database["public"]["Enums"]["task_category"]
+          completed: boolean
           created_at: string
-          follower_id: string | null
+          description: string | null
+          due_date: string
+          due_time: string
           id: string
-          user_id: string | null
+          is_multi_phase: boolean
+          planned_time_hours: number
+          planned_time_minutes: number
+          priority: Database["public"]["Enums"]["task_priority"]
+          start_mark: number
+          time_used_hours: number
+          time_used_minutes: number
+          title: string
+          type: Database["public"]["Enums"]["task_type"]
+          updated_at: string
+          user_id: string
         }
         Insert: {
+          actual_time?: string
+          category: Database["public"]["Enums"]["task_category"]
+          completed?: boolean
           created_at?: string
-          follower_id?: string | null
+          description?: string | null
+          due_date: string
+          due_time: string
           id?: string
-          user_id?: string | null
+          is_multi_phase?: boolean
+          planned_time_hours?: number
+          planned_time_minutes?: number
+          priority: Database["public"]["Enums"]["task_priority"]
+          start_mark: number
+          time_used_hours?: number
+          time_used_minutes?: number
+          title: string
+          type: Database["public"]["Enums"]["task_type"]
+          updated_at?: string
+          user_id: string
         }
         Update: {
+          actual_time?: string
+          category?: Database["public"]["Enums"]["task_category"]
+          completed?: boolean
           created_at?: string
-          follower_id?: string | null
+          description?: string | null
+          due_date?: string
+          due_time?: string
           id?: string
-          user_id?: string | null
+          is_multi_phase?: boolean
+          planned_time_hours?: number
+          planned_time_minutes?: number
+          priority?: Database["public"]["Enums"]["task_priority"]
+          start_mark?: number
+          time_used_hours?: number
+          time_used_minutes?: number
+          title?: string
+          type?: Database["public"]["Enums"]["task_type"]
+          updated_at?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "user_followers_follower_id_fkey"
-            columns: ["follower_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_followers_user_id_fkey"
+            foreignKeyName: "tasks_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -339,29 +309,23 @@ export type Database = {
         Row: {
           avatar_url: string | null
           created_at: string
-          first_name: string | null
+          first_name: string
           id: string
-          last_name: string | null
-          updated_at: string
-          username: string | null
+          last_name: string
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
-          first_name?: string | null
+          first_name: string
           id?: string
-          last_name?: string | null
-          updated_at?: string
-          username?: string | null
+          last_name: string
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
-          first_name?: string | null
+          first_name?: string
           id?: string
-          last_name?: string | null
-          updated_at?: string
-          username?: string | null
+          last_name?: string
         }
         Relationships: []
       }
@@ -370,116 +334,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      calculate_shipping_cost: {
-        Args: {
-          country: string
-          weight_g: number
-          height_cm: number
-          width_cm: number
-          length_cm: number
-        }
-        Returns: {
-          shipping_method_name: string
-          estimated_shipping_cost: number
-        }[]
-      }
-      get_category_names_by_item_id: {
-        Args: {
-          item_id_input: string
-        }
-        Returns: string[]
-      }
-      get_chat_id_from_users: {
-        Args: {
-          user_1_id: string
-          user_2_id: string
-        }
-        Returns: Json
-      }
-      get_items_by_category_and_city: {
-        Args: {
-          category_ids?: string[]
-          city_name?: string
-          limit_count?: number
-          offset_count?: number
-        }
-        Returns: Json
-      }
-      get_trade_id_from_items: {
-        Args: {
-          item_1_id: string
-          item_2_id: string
-        }
-        Returns: Json
-      }
-      get_unviewed_items: {
-        Args: {
-          user_uuid: string
-          limit_count?: number
-          offset_count?: number
-        }
-        Returns: Json
-      }
-      gtrgm_compress: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      gtrgm_decompress: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      gtrgm_in: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      gtrgm_options: {
-        Args: {
-          "": unknown
-        }
-        Returns: undefined
-      }
-      gtrgm_out: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      insert_email_into_waitlist: {
-        Args: {
-          email: string
-        }
-        Returns: undefined
-      }
-      set_limit: {
-        Args: {
-          "": number
-        }
-        Returns: number
-      }
-      show_limit: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      show_trgm: {
-        Args: {
-          "": string
-        }
-        Returns: string[]
-      }
+      [_ in never]: never
     }
     Enums: {
-      trade_status:
-        | "pending"
-        | "declined"
-        | "accepted"
-        | "cancelled"
-        | "completed"
+      assigment_type:
+        | "HOMEWORK"
+        | "EXAM"
+        | "PROJECT"
+        | "QUIZ"
+        | "PAPER"
+        | "PRESENTATION"
+        | "OTHER"
+      course_status: "ACTIVE" | "COMPLETED" | "UPCOMING"
+      phase_status: "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED" | "BLOCKED"
+      task_category: "ACADEMIC" | "PERSONAL" | "WORK"
+      task_priority: "LOW" | "MEDIUM" | "HIGH"
+      task_status: "DUE_TODAY" | "DUE_SOON" | "START_SOON"
+      task_type: "ESSAY" | "PROJECT" | "ASSIGNMENT" | "QUIZ"
     }
     CompositeTypes: {
       [_ in never]: never

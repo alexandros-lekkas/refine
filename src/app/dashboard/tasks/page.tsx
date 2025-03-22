@@ -91,13 +91,7 @@ export default function TasksPage() {
           <h2 className="text-4xl font-bold text-foreground">Tasks</h2>
         </div>
 
-        <Button
-          className="bg-primary hover:bg-primary/90 text-primary-foreground px-4"
-          onClick={() => setIsTaskDialogOpen(true)}
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add Task
-        </Button>
+        <TaskDialog />
       </div>
 
       <div className="grid grid-cols-3 gap-6">
@@ -332,8 +326,6 @@ export default function TasksPage() {
           </div>
         </div>
       </div>
-
-      <TaskDialog open={isTaskDialogOpen} onOpenChange={setIsTaskDialogOpen} />
     </>
   );
 }
