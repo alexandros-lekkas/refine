@@ -23,12 +23,13 @@ interface WeekViewCalendarProps {
 }
 
 const HOURS = [
-  "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM",
-  "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM",
-  "8 PM", "9 PM", "10 PM", "11 PM", "12 AM", "1 AM", "2 AM", "3 AM"
+  "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM",
+  "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM",
+  "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM",
+  "12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM"
 ];
 
-const HOUR_HEIGHT = 28; // Reduced height to match the screenshot's compact view
+const HOUR_HEIGHT = 28; // Keep the compact height
 const MINUTES_IN_HOUR = 60;
 const HOUR_TO_INDEX = Object.fromEntries(
   HOURS.map((hour, index) => [hour, index])
@@ -69,41 +70,65 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
     return `${format(start, 'h:mm')} - ${format(end, 'h:mmaaa')}`;
   };
 
-  const handleDragStart = (event: Event) => {
+  const handleDragStart = (event: Event, e: React.DragEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
     setDraggedEvent(event);
+    // Set drag image offset to make it look more natural
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = 'move';
+      const dragImage = e.currentTarget as HTMLElement;
+      e.dataTransfer.setDragImage(dragImage, 10, 10);
+    }
   };
 
   const handleDragOver = (e: React.DragEvent, date: Date, hour: string) => {
     e.preventDefault();
-    setHoveredSlot({ date, hour });
+    e.stopPropagation();
     
-    if (draggedEvent) {
-      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-      const relativeY = e.clientY - rect.top;
-      const hourIndex = Math.floor(relativeY / HOUR_HEIGHT);
-      const minuteRatio = (relativeY % HOUR_HEIGHT) / HOUR_HEIGHT;
-      const minutes = Math.floor(minuteRatio * MINUTES_IN_HOUR);
-
-      const newStart = new Date(date);
-      newStart.setHours(hourIndex + 4); // Add 4 because our day starts at 4 AM
-      newStart.setMinutes(minutes);
-
-      const duration = new Date(draggedEvent.end).getTime() - new Date(draggedEvent.start).getTime();
-      const newEnd = new Date(newStart.getTime() + duration);
-
-      setDragTime({ start: newStart, end: newEnd });
-    }
+    if (!draggedEvent || !gridRef.current) return;
+    
+    const gridRect = gridRef.current.getBoundingClientRect();
+    const relativeY = e.clientY - gridRect.top;
+    
+    // Calculate hour and minutes based on mouse position with 5-minute snapping
+    const hourIndex = Math.floor(relativeY / HOUR_HEIGHT);
+    const minuteRatio = (relativeY % HOUR_HEIGHT) / HOUR_HEIGHT;
+    const minutes = Math.round(minuteRatio * MINUTES_IN_HOUR / 5) * 5; // Snap to 5-minute intervals
+    
+    const newStart = new Date(date);
+    const startHourNum = (hourIndex + 6) % 24; // Adjust for 6 AM start
+    newStart.setHours(startHourNum);
+    newStart.setMinutes(minutes);
+    
+    // Calculate new end time preserving duration
+    const duration = new Date(draggedEvent.end).getTime() - new Date(draggedEvent.start).getTime();
+    const newEnd = new Date(newStart.getTime() + duration);
+    
+    setHoveredSlot({ date, hour });
+    setDragTime({ start: newStart, end: newEnd });
   };
 
   const handleDrop = (e: React.DragEvent, date: Date, hour: string) => {
     e.preventDefault();
+    e.stopPropagation();
+    
     if (draggedEvent && onEventUpdate && dragTime) {
-      onEventUpdate({
+      // Ensure the event stays within the same day when dropped
+      const newEvent = {
         ...draggedEvent,
         start: dragTime.start,
         end: dragTime.end,
-      });
+      };
+      
+      onEventUpdate(newEvent);
     }
+    
+    setDraggedEvent(null);
+    setHoveredSlot(null);
+    setDragTime(null);
+  };
+
+  const handleDragEnd = () => {
     setDraggedEvent(null);
     setHoveredSlot(null);
     setDragTime(null);
@@ -120,11 +145,12 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
     const relativeY = e.clientY - gridRect.top;
     const hourIndex = Math.floor(relativeY / HOUR_HEIGHT);
     const minuteRatio = (relativeY % HOUR_HEIGHT) / HOUR_HEIGHT;
-    const minutes = Math.floor(minuteRatio * MINUTES_IN_HOUR);
+    const minutes = Math.round(minuteRatio * MINUTES_IN_HOUR / 5) * 5; // Snap to 5-minute intervals
 
     const newEvent = { ...resizingEvent.event };
     const date = new Date(resizingEvent.edge === "top" ? newEvent.start : newEvent.end);
-    date.setHours(hourIndex + 4); // Add 4 because our day starts at 4 AM
+    const startHourNum = (hourIndex + 6) % 24; // Adjust for 6 AM start
+    date.setHours(startHourNum);
     date.setMinutes(minutes);
 
     if (resizingEvent.edge === "top") {
@@ -200,22 +226,22 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
                 <div 
                   key={day.toISOString()} 
                   className={cn(
-                    "p-2 text-center border-r",
+                    "py-4 px-2 text-center border-r flex flex-col items-center justify-center",
                     isToday && "bg-[#fdf4ff]",
                     dayIndex === 6 && "border-r-0"
                   )}
                 >
                   <div className={cn(
-                    "text-sm font-medium",
+                    "text-sm font-medium mb-1 flex items-center justify-center",
                     isToday && "text-[#c026d3]"
                   )}>{format(day, "dd")}</div>
                   <div className={cn(
-                    "text-xs text-gray-500",
+                    "text-xs text-gray-500 mb-1 flex items-center justify-center",
                     isToday && "text-[#c026d3]"
                   )}>{format(day, "EEE")}</div>
                   {dayEvents.length > 0 && (
                     <div className={cn(
-                      "mt-1 px-2 py-0.5 text-xs rounded-md text-center transition-colors",
+                      "mt-2 px-2 py-0.5 text-xs rounded-md text-center transition-colors w-full",
                       dayEvents.length > 2 
                         ? "bg-[#c026d3] text-white" 
                         : "bg-[#fdf4ff] text-[#c026d3] border border-[#f5d0fe] hover:border-[#c026d3]"
@@ -234,9 +260,14 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
       <div className="grid grid-cols-[100px_1fr]">
         <div className="bg-white border-r">
           {HOURS.map((hour) => (
-            <div key={hour} className="relative border-b last:border-b-0" style={{ height: `${HOUR_HEIGHT}px` }}>
+            <div 
+              key={hour} 
+              className="relative border-b last:border-b-0" 
+              style={{ height: `${HOUR_HEIGHT}px` }}
+            >
               <div className={cn(
                 "absolute top-[50%] -translate-y-1/2 right-4 text-xs font-medium tracking-wide transition-colors whitespace-nowrap text-gray-600",
+                "flex items-center justify-end h-full pt-0.5", // Added padding and flex for better alignment
                 hoveredSlot?.hour === hour ? "text-[#c026d3]" : ""
               )}>
                 {hour}
@@ -279,9 +310,11 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
                     <div
                       key={event.id}
                       draggable
-                      onDragStart={() => handleDragStart(event)}
+                      onDragStart={(e) => handleDragStart(event, e)}
+                      onDragEnd={handleDragEnd}
                       className={cn(
                         "absolute left-1 right-1 rounded-md px-2 py-1 text-xs overflow-hidden border shadow-sm transition-all duration-150 group z-20",
+                        draggedEvent?.id === event.id ? "opacity-50 cursor-grabbing" : "cursor-grab",
                         event.color === "#34D399" && "bg-green-50 text-green-800 border-green-200 hover:bg-green-100 hover:border-green-300",
                         event.color === "#F87171" && "bg-red-50 text-red-800 border-red-200 hover:bg-red-100 hover:border-red-300",
                         event.color === "#60A5FA" && "bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100 hover:border-blue-300"
