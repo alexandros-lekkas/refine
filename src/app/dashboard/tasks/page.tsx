@@ -151,7 +151,7 @@ export default function TasksPage() {
           </div>
           {/* Due Soon Column */}
           <div className="flex flex-col gap-4">
-            <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full w-fit dark:bg-yellow-900/20 dark:text-yellow-200">
+            <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full w-fit dark:bg-blue-900/20 dark:text-blue-200">
               Due Soon
             </div>
             <div className="space-y-3">
@@ -197,13 +197,13 @@ export default function TasksPage() {
                             )}
                           </div>
                           <div className="mt-2">
-                            <div className="w-full bg-muted rounded-full h-1">
+                            <div className="w-full bg-blue-100/20 rounded-full h-1">
                               <div
                                 className={cn(
                                   "h-1 rounded-full",
                                   task.completed
                                     ? "bg-green-500 dark:bg-green-400"
-                                    : "bg-primary"
+                                    : "bg-[#4477ff]"
                                 )}
                                 style={{ width: `${progressPercentage}%` }}
                               />
@@ -222,7 +222,7 @@ export default function TasksPage() {
           </div>
           {/* Start Soon Column */}
           <div className="flex flex-col gap-4">
-            <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full w-fit dark:bg-blue-900/20 dark:text-blue-200">
+            <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full w-fit dark:bg-gray-900/20 dark:text-gray-200">
               Start Soon
             </div>
             <div className="space-y-3">
@@ -268,13 +268,13 @@ export default function TasksPage() {
                             )}
                           </div>
                           <div className="mt-2">
-                            <div className="w-full bg-muted rounded-full h-1">
+                            <div className="w-full bg-gray-100/20 rounded-full h-1">
                               <div
                                 className={cn(
                                   "h-1 rounded-full",
                                   task.completed
                                     ? "bg-green-500 dark:bg-green-400"
-                                    : "bg-primary"
+                                    : "bg-[#666666]"
                                 )}
                                 style={{ width: `${progressPercentage}%` }}
                               />
