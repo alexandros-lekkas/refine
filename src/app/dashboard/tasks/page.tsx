@@ -130,8 +130,8 @@ export default function TasksPage() {
   }
 
   return (
-    <div className="w-full h-full">
-      <div className="flex items-center justify-between px-4 py-2">
+    <div className="w-full h-full max-w-[1600px] mx-auto px-6">
+      <div className="flex items-center justify-between py-4">
         <div className="flex items-center gap-6">
           <h2 className="text-4xl font-bold text-foreground">Tasks</h2>
           <div className="flex items-center gap-3 ml-2.5">
@@ -153,7 +153,7 @@ export default function TasksPage() {
         <TaskDialog />
       </div>
 
-      <div className="grid grid-cols-3 gap-4 px-4 h-[calc(100vh-140px)] w-full">
+      <div className="grid grid-cols-3 gap-6 h-[calc(100vh-140px)] w-full">
         {/* Due Today Column */}
         <div className="flex flex-col gap-4">
           <div className="bg-destructive/10 text-destructive px-3 py-1.5 rounded-md w-fit dark:bg-destructive/20">
