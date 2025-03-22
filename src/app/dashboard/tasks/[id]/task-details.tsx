@@ -169,16 +169,16 @@ export function TaskDetails({
     <div className="space-y-6">
       {/* Description */}
       <Card className="p-6">
-        <h2 className="text-lg font-semibold mb-4">Assignment Description</h2>
-        <p className="text-gray-600">{task.description}</p>
+        <h2 className="text-lg font-semibold mb-4 text-foreground">Assignment Description</h2>
+        <p className="text-muted-foreground">{task.description}</p>
       </Card>
 
       {/* Progress and Timer */}
       <Card className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-semibold mb-2">Overall Progress</h2>
-            <div className="flex items-center gap-4 text-sm text-gray-600">
+            <h2 className="text-lg font-semibold mb-2 text-foreground">Overall Progress</h2>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
                 <span>Planned: {task.plannedTime}</span>
@@ -193,7 +193,7 @@ export function TaskDetails({
             variant={isTimerRunning ? "destructive" : "default"}
             size="sm"
             onClick={() => setIsTimerRunning(!isTimerRunning)}
-            className={isTimerRunning ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}
+            className={isTimerRunning ? "bg-destructive hover:bg-destructive/90" : "bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"}
           >
             {isTimerRunning ? "Stop Timer" : "Start Timer"}
           </Button>
@@ -207,15 +207,15 @@ export function TaskDetails({
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-medium">{phase.title}</h3>
-                    <span className="text-sm text-gray-500">({phase.estimatedTime})</span>
+                    <h3 className="font-medium text-foreground">{phase.title}</h3>
+                    <span className="text-sm text-muted-foreground">({phase.estimatedTime})</span>
                     {task.phaseProgress[index] === 100 && (
-                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                      <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400" />
                     )}
                   </div>
-                  <p className="text-sm text-gray-600">{phase.description}</p>
+                  <p className="text-sm text-muted-foreground">{phase.description}</p>
                 </div>
-                <span className="text-sm font-medium">{task.phaseProgress[index]}%</span>
+                <span className="text-sm font-medium text-foreground">{task.phaseProgress[index]}%</span>
               </div>
               <div className="space-y-2">
                 <Progress 
@@ -230,13 +230,13 @@ export function TaskDetails({
                 />
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-[#c026d3]" />
-                    <span className="text-sm text-gray-600">Click progress bar to update</span>
+                    <div className="w-3 h-3 rounded-full bg-primary" />
+                    <span className="text-sm text-muted-foreground">Click progress bar to update</span>
                   </div>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs hover:text-[#c026d3] hover:border-[#c026d3]"
+                    className="text-xs hover:text-primary hover:border-primary"
                     onClick={(e: React.MouseEvent) => {
                       e.stopPropagation();
                       onPhaseUpdate(index, 100);
@@ -246,11 +246,14 @@ export function TaskDetails({
                   </Button>
                 </div>
               </div>
-              <div className="pl-4 border-l-2 border-gray-200">
-                <h4 className="text-sm font-medium mb-2">Tips:</h4>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  {phase.tips.map((tip, i) => (
-                    <li key={i}>{tip}</li>
+              <div className="pl-4 border-l-2 border-border">
+                <h4 className="text-sm font-medium mb-2 text-foreground">Tips:</h4>
+                <ul className="space-y-2">
+                  {phase.tips.map((tip, tipIndex) => (
+                    <li key={tipIndex} className="text-sm text-muted-foreground flex items-start gap-2">
+                      <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      {tip}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -261,7 +264,7 @@ export function TaskDetails({
 
       {/* Subtasks */}
       <Card className="p-6">
-        <h2 className="text-lg font-semibold mb-4">Subtasks</h2>
+        <h2 className="text-lg font-semibold mb-4 text-foreground">Subtasks</h2>
         <div className="space-y-3">
           {task.subtasks.map((subtask) => (
             <div key={subtask.id} className="flex items-center gap-3">
@@ -269,10 +272,14 @@ export function TaskDetails({
                 id={subtask.id}
                 checked={subtask.completed}
                 onCheckedChange={() => onSubtaskToggle(subtask.id)}
+                className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
               />
               <label
                 htmlFor={subtask.id}
-                className={`text-sm ${subtask.completed ? "text-gray-500 line-through" : ""}`}
+                className={cn(
+                  "text-sm cursor-pointer",
+                  subtask.completed && "text-muted-foreground line-through"
+                )}
               >
                 {subtask.title}
               </label>
