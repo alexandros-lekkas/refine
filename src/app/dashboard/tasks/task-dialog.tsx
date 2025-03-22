@@ -15,7 +15,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Calendar } from "@/components/ui/calendar";
+import { DatePicker } from "@/components/date-picker";
 import {
   Popover,
   PopoverContent,
@@ -47,8 +47,10 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
   const router = useRouter();
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const [category, setCategory] = React.useState<Enums<"task_category">>("ACADEMIC");
-  const [priority, setPriority] = React.useState<Enums<"task_priority">>("MEDIUM");
+  const [category, setCategory] =
+    React.useState<Enums<"task_category">>("ACADEMIC");
+  const [priority, setPriority] =
+    React.useState<Enums<"task_priority">>("MEDIUM");
   const [type, setType] = React.useState<Enums<"task_type">>("ASSIGNMENT");
   const [dueDate, setDueDate] = React.useState<Date>();
   const [dueTime, setDueTime] = React.useState("12:00");
@@ -115,7 +117,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[525px]">
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <label htmlFor="title" className="text-sm font-medium">
@@ -146,7 +148,12 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
               <label htmlFor="category" className="text-sm font-medium">
                 Category
               </label>
-              <Select value={category} onValueChange={(value: Enums<"task_category">) => setCategory(value)}>
+              <Select
+                value={category}
+                onValueChange={(value: Enums<"task_category">) =>
+                  setCategory(value)
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -162,7 +169,12 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
               <label htmlFor="priority" className="text-sm font-medium">
                 Priority
               </label>
-              <Select value={priority} onValueChange={(value: Enums<"task_priority">) => setPriority(value)}>
+              <Select
+                value={priority}
+                onValueChange={(value: Enums<"task_priority">) =>
+                  setPriority(value)
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -180,7 +192,10 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
               <label htmlFor="type" className="text-sm font-medium">
                 Type
               </label>
-              <Select value={type} onValueChange={(value: Enums<"task_type">) => setType(value)}>
+              <Select
+                value={type}
+                onValueChange={(value: Enums<"task_type">) => setType(value)}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -197,27 +212,11 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
               <label htmlFor="due-date" className="text-sm font-medium">
                 Due Date
               </label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !dueDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dueDate ? format(dueDate, "PPP") : "Pick a date"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    selected={dueDate}
-                    onSelect={setDueDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+              <DatePicker
+                date={dueDate}
+                onDateChange={setDueDate}
+                placeholder="Select due date"
+              />
             </div>
           </div>
 
@@ -258,12 +257,17 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                   type="number"
                   min="0"
                   value={plannedTimeHours}
-                  onChange={(e) => setPlannedTimeHours(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    setPlannedTimeHours(parseInt(e.target.value))
+                  }
                 />
               </div>
 
               <div className="grid gap-2">
-                <label htmlFor="planned-minutes" className="text-sm font-medium">
+                <label
+                  htmlFor="planned-minutes"
+                  className="text-sm font-medium"
+                >
                   Planned Minutes
                 </label>
                 <Input
@@ -272,7 +276,9 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                   min="0"
                   max="59"
                   value={plannedTimeMinutes}
-                  onChange={(e) => setPlannedTimeMinutes(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    setPlannedTimeMinutes(parseInt(e.target.value))
+                  }
                 />
               </div>
             </div>
