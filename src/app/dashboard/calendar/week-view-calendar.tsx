@@ -186,10 +186,10 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
   }, [resizingEvent]);
 
   return (
-    <div className="flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-sm">
+    <div className="flex h-full flex-col rounded-lg border bg-white shadow-sm">
       {/* Fixed Header */}
       <div className="flex-none border-b bg-white z-50">
-        <div className="grid grid-cols-[100px_1fr] pr-3">
+        <div className="grid grid-cols-[100px_1fr]">
           <div className="border-r bg-white p-1.5 flex items-center justify-center gap-2">
             <Button
               variant="ghost"
@@ -218,7 +218,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
-          <div className="pr-3">
+          <div>
             <div className="grid grid-cols-7">
               {weekDays.map((day, dayIndex) => {
                 const dayEvents = getEventsForDay(day);
@@ -259,8 +259,8 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="grid grid-cols-[100px_1fr] min-w-[800px]">
+      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200">
+        <div className="grid grid-cols-[100px_1fr]">
           <div className="bg-white border-r">
             {HOURS.map((hour) => (
               <div 
@@ -278,7 +278,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
               </div>
             ))}
           </div>
-          <div className="relative pr-3" ref={gridRef}>
+          <div className="relative" ref={gridRef}>
             <div className="grid grid-cols-7 h-full">
               {weekDays.map((day, dayIndex) => (
                 <div key={day.toISOString()} className={cn(
