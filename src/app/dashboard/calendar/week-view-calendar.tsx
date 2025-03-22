@@ -126,12 +126,12 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width }: WeekViewC
       </div>
 
       {/* Calendar Grid */}
-      <div className="grid grid-cols-[80px_1fr] h-[calc(100vh-8rem)] overflow-y-auto">
-        <div className="bg-white">
+      <div className="grid grid-cols-[100px_1fr] h-[calc(100vh-8rem)] overflow-y-auto">
+        <div className="bg-white p-2">
           {HOURS.map((hour) => (
             <div key={hour} className="h-12 relative">
               <div className={cn(
-                "absolute top-0 -translate-y-1/2 right-3 text-xs font-medium tracking-wide transition-colors",
+                "absolute top-0 -translate-y-1/2 right-4 text-xs font-medium tracking-wide transition-colors whitespace-nowrap",
                 hoveredSlot?.hour === hour ? "text-[#c026d3]" : "text-gray-500"
               )}>
                 {hour}
