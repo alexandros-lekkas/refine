@@ -85,7 +85,7 @@ export default function TasksPage() {
   }
 
   return (
-    <>
+    <div className="flex flex-col bg-background">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <h2 className="text-4xl font-bold text-foreground">
@@ -343,6 +343,6 @@ export default function TasksPage() {
         </div>
       </div>
       <TaskDialog open={isTaskDialogOpen} onOpenChange={setIsTaskDialogOpen} />
-    </>
+    </div>
   );
 }

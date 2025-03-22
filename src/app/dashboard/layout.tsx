@@ -27,7 +27,9 @@ export default function DashboardLayout({
               <SidebarTrigger />
             </div>
 
-            <main className="overflow-y-auto p-8 space-y-4">{children}</main>
+            <main className="flex overflow-y-auto p-4 space-y-4">
+              {children}
+            </main>
           </div>
         </div>
         <Toaster />
