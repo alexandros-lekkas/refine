@@ -166,12 +166,17 @@ export default function TasksPage() {
                 <Card
                   key={task.id}
                   className={cn(
-                    "p-4 cursor-pointer hover:shadow-md transition-shadow",
+                    "p-4 cursor-pointer hover:shadow-md transition-shadow relative",
                     task.completed && "bg-green-500/10 dark:bg-green-500/20"
                   )}
                   onClick={() => handleTaskClick(task.id)}
                 >
-                  <div className="flex items-start justify-between">
+                  {/* Static Checkmark Icon */}
+                  <div className="absolute top-3 right-3 px-2 py-1 rounded-md border border-gray-200 dark:border-gray-700 group">
+                    <Check className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors" />
+                  </div>
+
+                  <div className="flex items-start justify-between pr-12">
                     <div className="flex-1">
                       <div className="text-sm text-muted-foreground mb-1">
                         {task.category}
@@ -241,12 +246,17 @@ export default function TasksPage() {
                 <Card
                   key={task.id}
                   className={cn(
-                    "p-4 cursor-pointer hover:shadow-md transition-shadow",
+                    "p-4 cursor-pointer hover:shadow-md transition-shadow relative",
                     task.completed && "bg-green-500/10 dark:bg-green-500/20"
                   )}
                   onClick={() => handleTaskClick(task.id)}
                 >
-                  <div className="flex items-start justify-between">
+                  {/* Static Checkmark Icon */}
+                  <div className="absolute top-3 right-3 px-2 py-1 rounded-md border border-gray-200 dark:border-gray-700 group">
+                    <Check className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors" />
+                  </div>
+
+                  <div className="flex items-start justify-between pr-12">
                     <div className="flex-1">
                       <div className="text-sm text-muted-foreground mb-1">
                         {task.category}
@@ -316,12 +326,17 @@ export default function TasksPage() {
                 <Card
                   key={task.id}
                   className={cn(
-                    "p-4 cursor-pointer hover:shadow-md transition-shadow",
+                    "p-4 cursor-pointer hover:shadow-md transition-shadow relative",
                     task.completed && "bg-green-500/10 dark:bg-green-500/20"
                   )}
                   onClick={() => handleTaskClick(task.id)}
                 >
-                  <div className="flex items-start justify-between">
+                  {/* Static Checkmark Icon */}
+                  <div className="absolute top-3 right-3 px-2 py-1 rounded-md border border-gray-200 dark:border-gray-700 group">
+                    <Check className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors" />
+                  </div>
+
+                  <div className="flex items-start justify-between pr-12">
                     <div className="flex-1">
                       <div className="text-sm text-muted-foreground mb-1">
                         {task.category}
