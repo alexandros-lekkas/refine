@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { WeekViewCalendar } from "./week-view-calendar";
 import { CreateEventDialog } from "./create-event-dialog";
-import { usePathname } from "next/navigation";
 
 interface Event {
   id: string;
@@ -17,21 +16,6 @@ interface Event {
 export default function CalendarPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<{ date: Date; hour: number } | null>(null);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    const handleSidebarChange = (event: CustomEvent) => {
-      if (pathname === '/dashboard/calendar') {
-        setIsSidebarCollapsed(event.detail.collapsed);
-      }
-    };
-
-    window.addEventListener('sidebarStateChange' as any, handleSidebarChange);
-    return () => {
-      window.removeEventListener('sidebarStateChange' as any, handleSidebarChange);
-    };
-  }, [pathname]);
 
   const handleCreateEvent = (event: Omit<Event, 'id'>) => {
     const newEvent = {
@@ -108,19 +92,17 @@ export default function CalendarPage() {
     }
   ];
 
-  const calendarWidth = isSidebarCollapsed ? 1350 : 1150;
-
   return (
-    <div className="max-w-[1600px] mx-auto px-6 py-6 h-[calc(100vh-4rem)] overflow-x-auto">
-      <div style={{ 
-        minWidth: `${calendarWidth}px`,
-        height: '100%',
-        transition: 'min-width 300ms'
-      }}>
+    <div className="max-w-[1600px] mx-auto px-6 py-6 space-y-4">
+      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+        <span>Dashboard</span>
+        <span>/</span>
+        <span className="text-foreground">Calendar</span>
+      </div>
+      <div className="bg-background rounded-lg border shadow-sm h-[calc(100vh-8rem)]">
         <WeekViewCalendar 
           events={[...events, ...sampleEvents]} 
           onCreateTaskClick={(date, hour) => setSelectedTimeSlot({ date, hour })}
-          width={calendarWidth}
           onEventUpdate={handleEventUpdate}
         />
       </div>

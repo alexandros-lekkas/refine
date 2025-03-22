@@ -18,7 +18,6 @@ interface Event {
 interface WeekViewCalendarProps {
   events: Event[];
   onCreateTaskClick: (date: Date, hour: number) => void;
-  width: number;
   onEventUpdate?: (event: Event) => void;
 }
 
@@ -35,7 +34,7 @@ const HOUR_TO_INDEX = Object.fromEntries(
   HOURS.map((hour, index) => [hour, index])
 );
 
-export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpdate }: WeekViewCalendarProps) {
+export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: WeekViewCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [hoveredSlot, setHoveredSlot] = useState<{ date: Date; hour: string } | null>(null);
   const [draggedEvent, setDraggedEvent] = useState<Event | null>(null);
@@ -187,10 +186,10 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
   }, [resizingEvent]);
 
   return (
-    <div className="h-full bg-white rounded-lg shadow-sm relative" style={{ width: `${width}px` }}>
+    <div className="h-full bg-white rounded-lg shadow-sm relative">
       {/* Fixed Header */}
-      <div className="absolute top-[5px] left-0 right-0 bg-white z-50">
-        <div className="grid grid-cols-[100px_1fr] mt-[20px] ml-[15px]">
+      <div className="sticky top-0 left-0 right-0 bg-white z-50 border-b">
+        <div className="grid grid-cols-[100px_1fr]">
           <div className="border-r bg-white p-2 flex items-center justify-center gap-2">
             <Button
               variant="ghost"
@@ -260,8 +259,8 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
       </div>
 
       {/* Scrollable Content */}
-      <div className="h-full overflow-y-auto pt-[92px]">
-        <div className="grid grid-cols-[100px_1fr] ml-[15px]">
+      <div className="h-[calc(100vh-12rem)] overflow-y-auto">
+        <div className="grid grid-cols-[100px_1fr] min-w-[800px]">
           <div className="bg-white border-r h-full">
             {HOURS.map((hour) => (
               <div 
