@@ -10,6 +10,7 @@ import {
   Check,
   Clock,
   BarChart3,
+  Loader2,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
@@ -22,7 +23,7 @@ type Task = Tables<"tasks">;
 
 export default function TasksPage() {
   const router = useRouter();
-  const { tasks } = useTask();
+  const { tasks, loading, error } = useTasks();
   const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
 
   const handleTaskClick = (taskId: string) => {
@@ -37,6 +38,22 @@ export default function TasksPage() {
         100
     );
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-red-500">Error: {error}</div>
+      </div>
+    );
+  }
 
   return (
     <main className="container mx-auto p-4">
