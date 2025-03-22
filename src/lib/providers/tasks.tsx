@@ -1,114 +1,101 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { addDays } from "date-fns";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client/client";
+import { Database } from "@/types/supabase";
+import { addDays, isToday, isTomorrow, isThisWeek } from "date-fns";
 
-export interface Task {
-  id: string;
-  courseCode: string;
-  title: string;
-  dueDate: Date;
-  status: "due-today" | "due-soon" | "start-soon";
-  completed: boolean;
-  progress?: {
-    completed: number;
-    total: number;
-  };
-}
+type Task = Database["public"]["Tables"]["tasks"]["Row"] & {
+  assignments?: Database["public"]["Tables"]["assignments"]["Row"][];
+  phases?: Database["public"]["Tables"]["phases"]["Row"][];
+  subtasks?: Database["public"]["Tables"]["subtasks"]["Row"][];
+};
 
 interface TaskContextType {
   tasks: Task[];
-  addTask: (task: Task) => void;
-  updateTask: (id: string, task: Partial<Task>) => void;
+  loading: boolean;
+  error: string | null;
+  addTask: (task: Omit<Task, "id" | "created_at" | "updated_at">) => Promise<void>;
+  updateTask: (id: string, task: Partial<Task>) => Promise<void>;
   getTask: (id: string) => Task | undefined;
+  refreshTasks: () => Promise<void>;
 }
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
 export function TaskProvider({ children }: { children: ReactNode }) {
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: "1",
-      courseCode: "CS 101",
-      title: "Algorithm Analysis Assignment",
-      dueDate: new Date(),
-      status: "due-today",
-      completed: false,
-      progress: {
-        completed: 4,
-        total: 5
-      }
-    },
-    {
-      id: "2",
-      courseCode: "MATH 201",
-      title: "Linear Algebra Quiz",
-      dueDate: new Date(),
-      status: "due-today",
-      completed: false,
-      progress: {
-        completed: 3,
-        total: 5
-      }
-    },
-    {
-      id: "3",
-      courseCode: "PHYS 202",
-      title: "Lab Report: Wave Motion",
-      dueDate: addDays(new Date(), 1),
-      status: "due-soon",
-      completed: false,
-      progress: {
-        completed: 2,
-        total: 6
-      }
-    },
-    {
-      id: "4",
-      courseCode: "ENG 301",
-      title: "Research Paper Draft",
-      dueDate: addDays(new Date(), 2),
-      status: "due-soon",
-      completed: false,
-      progress: {
-        completed: 1,
-        total: 4
-      }
-    },
-    {
-      id: "5",
-      courseCode: "BIO 301",
-      title: "Genetics Project",
-      dueDate: addDays(new Date(), 7),
-      status: "start-soon",
-      completed: false,
-      progress: {
-        completed: 0,
-        total: 5
-      }
-    },
-    {
-      id: "6",
-      courseCode: "CHEM 202",
-      title: "Lab Experiment Report",
-      dueDate: addDays(new Date(), 10),
-      status: "start-soon",
-      completed: false,
-      progress: {
-        completed: 0,
-        total: 4
-      }
-    }
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const supabase = createClient();
 
-  const addTask = (task: Task) => {
-    setTasks([...tasks, task]);
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Fetch tasks with related data
+      const { data: tasksData, error: tasksError } = await supabase
+        .from("tasks")
+        .select(`
+          *,
+          assignments (*),
+          phases (*),
+          subtasks (*)
+        `)
+        .order("due_date", { ascending: true });
+
+      if (tasksError) throw tasksError;
+
+      setTasks(tasksData || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch tasks");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const updateTask = (id: string, updatedTask: Partial<Task>) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, ...updatedTask } : task
-    ));
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const addTask = async (task: Omit<Task, "id" | "created_at" | "updated_at">) => {
+    try {
+      const { data, error } = await supabase
+        .from("tasks")
+        .insert([task])
+        .select()
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setTasks(prev => [...prev, data]);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to add task");
+      throw err;
+    }
+  };
+
+  const updateTask = async (id: string, updatedTask: Partial<Task>) => {
+    try {
+      const { data, error } = await supabase
+        .from("tasks")
+        .update(updatedTask)
+        .eq("id", id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setTasks(prev => prev.map(task => 
+          task.id === id ? { ...task, ...data } : task
+        ));
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update task");
+      throw err;
+    }
   };
 
   const getTask = (id: string) => {
@@ -116,7 +103,17 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, addTask, updateTask, getTask }}>
+    <TaskContext.Provider 
+      value={{ 
+        tasks, 
+        loading, 
+        error, 
+        addTask, 
+        updateTask, 
+        getTask,
+        refreshTasks: fetchTasks 
+      }}
+    >
       {children}
     </TaskContext.Provider>
   );
