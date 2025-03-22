@@ -107,7 +107,6 @@ export function TaskDialog({ className }: TaskDialogProps) {
       is_multi_phase: isMultiPhase,
       planned_time_hours: plannedTimeHours,
       planned_time_minutes: plannedTimeMinutes,
-      status: "START_SOON",
       user_id: user.id,
       start_mark: 0,
     };
@@ -115,7 +114,7 @@ export function TaskDialog({ className }: TaskDialogProps) {
     try {
       const supabase = createClient();
       console.log("Attempting to insert task into database...");
-      
+
       const { data, error } = await supabase
         .from("tasks")
         .insert(task)
@@ -127,7 +126,7 @@ export function TaskDialog({ className }: TaskDialogProps) {
           error_message: error.message,
           error_code: error.code,
           error_details: error.details,
-          task_data: task
+          task_data: task,
         });
         throw error;
       }
@@ -152,7 +151,7 @@ export function TaskDialog({ className }: TaskDialogProps) {
       console.error("Detailed error while creating task:", {
         error,
         task_data: task,
-        user_id: user.id
+        user_id: user.id,
       });
     }
   };
@@ -289,7 +288,9 @@ export function TaskDialog({ className }: TaskDialogProps) {
               <Checkbox
                 id="multi-phase"
                 checked={isMultiPhase}
-                onCheckedChange={(checked) => setIsMultiPhase(checked as boolean)}
+                onCheckedChange={(checked) =>
+                  setIsMultiPhase(checked as boolean)
+                }
               />
               <label
                 htmlFor="multi-phase"
@@ -302,7 +303,10 @@ export function TaskDialog({ className }: TaskDialogProps) {
             {isMultiPhase && (
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <label htmlFor="planned-hours" className="text-sm font-medium">
+                  <label
+                    htmlFor="planned-hours"
+                    className="text-sm font-medium"
+                  >
                     Planned Hours
                   </label>
                   <Input

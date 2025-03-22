@@ -12,7 +12,13 @@ import {
   BarChart3,
   Loader2,
 } from "lucide-react";
-import { format } from "date-fns";
+import {
+  format,
+  isToday,
+  isTomorrow,
+  addDays,
+  isWithinInterval,
+} from "date-fns";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { TaskDialog } from "./task-dialog";
@@ -22,6 +28,8 @@ import { createClient } from "@/lib/supabase/client/client";
 import { useAuth } from "@/lib/hooks/use-auth";
 
 type Task = Tables<"tasks">;
+
+type TaskCategory = "DUE_TODAY" | "DUE_SOON" | "START_SOON";
 
 export default function TasksPage() {
   const router = useRouter();
@@ -68,6 +76,32 @@ export default function TasksPage() {
     );
   };
 
+  const categorizeTask = (task: Task): TaskCategory => {
+    const dueDate = new Date(task.due_date);
+    const now = new Date();
+
+    // Due Today: Within 24 hours
+    if (
+      isToday(dueDate) ||
+      (isTomorrow(dueDate) &&
+        dueDate.getTime() - now.getTime() <= 24 * 60 * 60 * 1000)
+    ) {
+      return "DUE_TODAY";
+    }
+
+    // Due Soon: Within next 4 days
+    if (isWithinInterval(dueDate, { start: now, end: addDays(now, 4) })) {
+      return "DUE_SOON";
+    }
+
+    // Start Soon: Everything else
+    return "START_SOON";
+  };
+
+  const getTasksByCategory = (category: TaskCategory) => {
+    return tasks.filter((task) => categorizeTask(task) === category);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -101,74 +135,72 @@ export default function TasksPage() {
             Due Today
           </div>
           <div className="space-y-3">
-            {tasks
-              .filter((task: Task) => task.status === "DUE_TODAY")
-              .map((task: Task) => {
-                const progressPercentage = getProgressPercentage(task);
-                return (
-                  <Card
-                    key={task.id}
-                    className={cn(
-                      "p-4 cursor-pointer hover:shadow-md transition-shadow",
-                      task.completed && "bg-green-500/10 dark:bg-green-500/20"
-                    )}
-                    onClick={() => handleTaskClick(task.id)}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="text-sm text-muted-foreground mb-1">
-                          {task.category}
-                        </div>
-                        <div className="font-medium mb-2 flex items-center gap-2">
-                          <span
-                            className={cn(
-                              task.completed &&
-                                "text-green-500 dark:text-green-400"
-                            )}
-                          >
-                            {task.title}
+            {getTasksByCategory("DUE_TODAY").map((task: Task) => {
+              const progressPercentage = getProgressPercentage(task);
+              return (
+                <Card
+                  key={task.id}
+                  className={cn(
+                    "p-4 cursor-pointer hover:shadow-md transition-shadow",
+                    task.completed && "bg-green-500/10 dark:bg-green-500/20"
+                  )}
+                  onClick={() => handleTaskClick(task.id)}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="text-sm text-muted-foreground mb-1">
+                        {task.category}
+                      </div>
+                      <div className="font-medium mb-2 flex items-center gap-2">
+                        <span
+                          className={cn(
+                            task.completed &&
+                              "text-green-500 dark:text-green-400"
+                          )}
+                        >
+                          {task.title}
+                        </span>
+                        {task.completed && (
+                          <Check className="h-4 w-4 text-green-500 dark:text-green-400" />
+                        )}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-muted-foreground flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          <span>
+                            Due: {format(new Date(task.due_date), "MMM d")}
                           </span>
-                          {task.completed && (
-                            <Check className="h-4 w-4 text-green-500 dark:text-green-400" />
-                          )}
                         </div>
-                        <div className="flex items-center justify-between">
-                          <div className="text-sm text-muted-foreground flex items-center gap-2">
-                            <Clock className="h-4 w-4" />
-                            <span>
-                              Due: {format(new Date(task.due_date), "MMM d")}
-                            </span>
+                        {task.is_multi_phase && (
+                          <div className="text-xs text-muted-foreground">
+                            {task.time_used_hours}h {task.time_used_minutes}m /{" "}
+                            {task.planned_time_hours}h{" "}
+                            {task.planned_time_minutes}m
                           </div>
-                          {task.is_multi_phase && (
-                            <div className="text-xs text-muted-foreground">
-                              {task.time_used_hours}h {task.time_used_minutes}m
-                              / {task.planned_time_hours}h{" "}
-                              {task.planned_time_minutes}m
-                            </div>
-                          )}
+                        )}
+                      </div>
+                      <div className="mt-2">
+                        <div className="w-full bg-muted rounded-full h-1">
+                          <div
+                            className={cn(
+                              "h-1 rounded-full",
+                              task.completed
+                                ? "bg-green-500 dark:bg-green-400"
+                                : "bg-primary"
+                            )}
+                            style={{ width: `${progressPercentage}%` }}
+                          />
                         </div>
-                        <div className="mt-2">
-                          <div className="w-full bg-muted rounded-full h-1">
-                            <div
-                              className={cn(
-                                "h-1 rounded-full",
-                                task.completed
-                                  ? "bg-green-500 dark:bg-green-400"
-                                  : "bg-primary"
-                              )}
-                              style={{ width: `${progressPercentage}%` }}
-                            />
-                          </div>
-                          <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                            <span>Progress</span>
-                            <span>{progressPercentage}%</span>
-                          </div>
+                        <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                          <span>Progress</span>
+                          <span>{progressPercentage}%</span>
                         </div>
                       </div>
                     </div>
-                  </Card>
-                );
-              })}
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         </div>
 
@@ -178,74 +210,72 @@ export default function TasksPage() {
             Due Soon
           </div>
           <div className="space-y-3">
-            {tasks
-              .filter((task: Task) => task.status === "DUE_SOON")
-              .map((task: Task) => {
-                const progressPercentage = getProgressPercentage(task);
-                return (
-                  <Card
-                    key={task.id}
-                    className={cn(
-                      "p-4 cursor-pointer hover:shadow-md transition-shadow",
-                      task.completed && "bg-green-500/10 dark:bg-green-500/20"
-                    )}
-                    onClick={() => handleTaskClick(task.id)}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="text-sm text-muted-foreground mb-1">
-                          {task.category}
-                        </div>
-                        <div className="font-medium mb-2 flex items-center gap-2">
-                          <span
-                            className={cn(
-                              task.completed &&
-                                "text-green-500 dark:text-green-400"
-                            )}
-                          >
-                            {task.title}
+            {getTasksByCategory("DUE_SOON").map((task: Task) => {
+              const progressPercentage = getProgressPercentage(task);
+              return (
+                <Card
+                  key={task.id}
+                  className={cn(
+                    "p-4 cursor-pointer hover:shadow-md transition-shadow",
+                    task.completed && "bg-green-500/10 dark:bg-green-500/20"
+                  )}
+                  onClick={() => handleTaskClick(task.id)}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="text-sm text-muted-foreground mb-1">
+                        {task.category}
+                      </div>
+                      <div className="font-medium mb-2 flex items-center gap-2">
+                        <span
+                          className={cn(
+                            task.completed &&
+                              "text-green-500 dark:text-green-400"
+                          )}
+                        >
+                          {task.title}
+                        </span>
+                        {task.completed && (
+                          <Check className="h-4 w-4 text-green-500 dark:text-green-400" />
+                        )}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-muted-foreground flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          <span>
+                            Due: {format(new Date(task.due_date), "MMM d")}
                           </span>
-                          {task.completed && (
-                            <Check className="h-4 w-4 text-green-500 dark:text-green-400" />
-                          )}
                         </div>
-                        <div className="flex items-center justify-between">
-                          <div className="text-sm text-muted-foreground flex items-center gap-2">
-                            <Clock className="h-4 w-4" />
-                            <span>
-                              Due: {format(new Date(task.due_date), "MMM d")}
-                            </span>
+                        {task.is_multi_phase && (
+                          <div className="text-xs text-muted-foreground">
+                            {task.time_used_hours}h {task.time_used_minutes}m /{" "}
+                            {task.planned_time_hours}h{" "}
+                            {task.planned_time_minutes}m
                           </div>
-                          {task.is_multi_phase && (
-                            <div className="text-xs text-muted-foreground">
-                              {task.time_used_hours}h {task.time_used_minutes}m
-                              / {task.planned_time_hours}h{" "}
-                              {task.planned_time_minutes}m
-                            </div>
-                          )}
+                        )}
+                      </div>
+                      <div className="mt-2">
+                        <div className="w-full bg-muted rounded-full h-1">
+                          <div
+                            className={cn(
+                              "h-1 rounded-full",
+                              task.completed
+                                ? "bg-green-500 dark:bg-green-400"
+                                : "bg-primary"
+                            )}
+                            style={{ width: `${progressPercentage}%` }}
+                          />
                         </div>
-                        <div className="mt-2">
-                          <div className="w-full bg-muted rounded-full h-1">
-                            <div
-                              className={cn(
-                                "h-1 rounded-full",
-                                task.completed
-                                  ? "bg-green-500 dark:bg-green-400"
-                                  : "bg-primary"
-                              )}
-                              style={{ width: `${progressPercentage}%` }}
-                            />
-                          </div>
-                          <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                            <span>Progress</span>
-                            <span>{progressPercentage}%</span>
-                          </div>
+                        <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                          <span>Progress</span>
+                          <span>{progressPercentage}%</span>
                         </div>
                       </div>
                     </div>
-                  </Card>
-                );
-              })}
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         </div>
 
@@ -255,74 +285,72 @@ export default function TasksPage() {
             Start Soon
           </div>
           <div className="space-y-3">
-            {tasks
-              .filter((task: Task) => task.status === "START_SOON")
-              .map((task: Task) => {
-                const progressPercentage = getProgressPercentage(task);
-                return (
-                  <Card
-                    key={task.id}
-                    className={cn(
-                      "p-4 cursor-pointer hover:shadow-md transition-shadow",
-                      task.completed && "bg-green-500/10 dark:bg-green-500/20"
-                    )}
-                    onClick={() => handleTaskClick(task.id)}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="text-sm text-muted-foreground mb-1">
-                          {task.category}
-                        </div>
-                        <div className="font-medium mb-2 flex items-center gap-2">
-                          <span
-                            className={cn(
-                              task.completed &&
-                                "text-green-500 dark:text-green-400"
-                            )}
-                          >
-                            {task.title}
+            {getTasksByCategory("START_SOON").map((task: Task) => {
+              const progressPercentage = getProgressPercentage(task);
+              return (
+                <Card
+                  key={task.id}
+                  className={cn(
+                    "p-4 cursor-pointer hover:shadow-md transition-shadow",
+                    task.completed && "bg-green-500/10 dark:bg-green-500/20"
+                  )}
+                  onClick={() => handleTaskClick(task.id)}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="text-sm text-muted-foreground mb-1">
+                        {task.category}
+                      </div>
+                      <div className="font-medium mb-2 flex items-center gap-2">
+                        <span
+                          className={cn(
+                            task.completed &&
+                              "text-green-500 dark:text-green-400"
+                          )}
+                        >
+                          {task.title}
+                        </span>
+                        {task.completed && (
+                          <Check className="h-4 w-4 text-green-500 dark:text-green-400" />
+                        )}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-muted-foreground flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          <span>
+                            Due: {format(new Date(task.due_date), "MMM d")}
                           </span>
-                          {task.completed && (
-                            <Check className="h-4 w-4 text-green-500 dark:text-green-400" />
-                          )}
                         </div>
-                        <div className="flex items-center justify-between">
-                          <div className="text-sm text-muted-foreground flex items-center gap-2">
-                            <Clock className="h-4 w-4" />
-                            <span>
-                              Due: {format(new Date(task.due_date), "MMM d")}
-                            </span>
+                        {task.is_multi_phase && (
+                          <div className="text-xs text-muted-foreground">
+                            {task.time_used_hours}h {task.time_used_minutes}m /{" "}
+                            {task.planned_time_hours}h{" "}
+                            {task.planned_time_minutes}m
                           </div>
-                          {task.is_multi_phase && (
-                            <div className="text-xs text-muted-foreground">
-                              {task.time_used_hours}h {task.time_used_minutes}m
-                              / {task.planned_time_hours}h{" "}
-                              {task.planned_time_minutes}m
-                            </div>
-                          )}
+                        )}
+                      </div>
+                      <div className="mt-2">
+                        <div className="w-full bg-muted rounded-full h-1">
+                          <div
+                            className={cn(
+                              "h-1 rounded-full",
+                              task.completed
+                                ? "bg-green-500 dark:bg-green-400"
+                                : "bg-primary"
+                            )}
+                            style={{ width: `${progressPercentage}%` }}
+                          />
                         </div>
-                        <div className="mt-2">
-                          <div className="w-full bg-muted rounded-full h-1">
-                            <div
-                              className={cn(
-                                "h-1 rounded-full",
-                                task.completed
-                                  ? "bg-green-500 dark:bg-green-400"
-                                  : "bg-primary"
-                              )}
-                              style={{ width: `${progressPercentage}%` }}
-                            />
-                          </div>
-                          <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                            <span>Progress</span>
-                            <span>{progressPercentage}%</span>
-                          </div>
+                        <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                          <span>Progress</span>
+                          <span>{progressPercentage}%</span>
                         </div>
                       </div>
                     </div>
-                  </Card>
-                );
-              })}
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </div>
