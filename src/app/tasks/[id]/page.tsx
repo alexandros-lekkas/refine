@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { TaskDetails } from "@/components/tasks/task-details";
+import { TaskDetails } from "@/app/tasks/[id]/task-details";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, MessageSquare, Timer } from "lucide-react";
 
