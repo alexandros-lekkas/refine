@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { format } from "date-fns";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -74,14 +74,6 @@ export function CreateEventDialog({ isOpen, onClose, onCreateEvent, defaultDate,
       <DialogContent className="max-w-[500px] p-0">
         <div className="flex items-center justify-between p-4">
           <DialogTitle className="text-2xl">Create New Task</DialogTitle>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="h-8 w-8" 
-            onClick={onClose}
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </div>
 
         <div className="p-4 space-y-4">
@@ -222,7 +214,7 @@ export function CreateEventDialog({ isOpen, onClose, onCreateEvent, defaultDate,
                     cell: "text-center text-sm relative p-0 hover:bg-gray-50 rounded-lg w-9 h-9 flex items-center justify-center",
                     day: "h-9 w-9 p-0 font-normal hover:bg-gray-50 rounded-lg",
                     day_range_middle: "rounded-none",
-                    day_selected: "bg-[#4f46e5] text-white hover:bg-[#4f46e5] hover:text-white focus:bg-[#4f46e5] focus:text-white rounded-lg",
+                    day_selected: "bg-[#db2777] text-white hover:bg-[#db2777] hover:text-white focus:bg-[#db2777] focus:text-white rounded-lg",
                     day_today: "bg-gray-50 rounded-lg",
                     day_outside: "text-gray-400",
                     day_disabled: "text-gray-300",
