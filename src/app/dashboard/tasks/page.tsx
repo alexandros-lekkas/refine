@@ -79,18 +79,29 @@ export default function TasksPage() {
   const categorizeTask = (task: Task): TaskCategory => {
     const dueDate = new Date(task.due_date);
     const now = new Date();
+    const startOfToday = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+    );
+    const endOfToday = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      23,
+      59,
+      59,
+      999
+    );
+    const endOfDueSoon = addDays(endOfToday, 3); // Tasks due within next 3 days
 
-    // Due Today: Within 24 hours
-    if (
-      isToday(dueDate) ||
-      (isTomorrow(dueDate) &&
-        dueDate.getTime() - now.getTime() <= 24 * 60 * 60 * 1000)
-    ) {
+    // Due Today: Due today (until end of day)
+    if (dueDate <= endOfToday) {
       return "DUE_TODAY";
     }
 
-    // Due Soon: Within next 4 days
-    if (isWithinInterval(dueDate, { start: now, end: addDays(now, 4) })) {
+    // Due Soon: Due within next 3 days
+    if (dueDate <= endOfDueSoon) {
       return "DUE_SOON";
     }
 
