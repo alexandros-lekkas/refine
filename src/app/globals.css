@@ -153,25 +153,6 @@
 
 @tailwind utilities;
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0B0A0F;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 61, 192, 0.2);
-  border-radius: 3px;
-  transition: background 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 61, 192, 0.4);
-}
-
 @layer base {
   :root {
     --radius: 0.5rem;

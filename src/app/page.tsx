@@ -70,7 +70,7 @@ const HeroSection = () => {
             </AuroraText>
           </h1>
 
-          <p className="text-muted-foreground text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto opacity-75">
+          <p className="text-xl text-muted-foreground font-medium mb-12 leading-relaxed max-w-3xl mx-auto opacity-75">
             Seamlessly sync with your LMS, get AI-powered study plans, and never
             miss a deadline. Join thousands of students transforming their
             academic journey.
