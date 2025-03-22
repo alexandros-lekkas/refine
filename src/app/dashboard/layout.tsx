@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
+
 import { Toaster } from "@/components/ui/sonner";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
@@ -21,11 +22,12 @@ export default function DashboardLayout({
       <SidebarProvider>
         <div className="flex h-screen bg-background">
           <AppSidebar />
-          <div className="flex-1 flex flex-col">
+          <div>
             <div className="flex items-center p-4 border-b">
               <SidebarTrigger />
             </div>
-            <main className="flex-1 overflow-y-auto p-8">{children}</main>
+
+            <main className="overflow-y-auto p-8 space-y-4">{children}</main>
           </div>
         </div>
         <Toaster />
