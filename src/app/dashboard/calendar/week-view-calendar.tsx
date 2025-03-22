@@ -53,17 +53,16 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
   const getEventHeight = (event: Event) => {
     const start = new Date(event.start);
     const end = new Date(event.end);
-    const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-    return `${hours * HOUR_HEIGHT}px`;
+    const durationInHours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+    return `${durationInHours * HOUR_HEIGHT}px`;
   };
 
   const getEventTop = (event: Event) => {
     const start = new Date(event.start);
-    const hour = start.getHours();
-    const minutes = start.getMinutes();
-    const hourString = format(start, 'h a').toUpperCase();
-    const hourIndex = HOUR_TO_INDEX[hourString];
-    return `${(hourIndex * HOUR_HEIGHT) + (minutes / MINUTES_IN_HOUR) * HOUR_HEIGHT}px`;
+    const totalHours = start.getHours() + (start.getMinutes() / MINUTES_IN_HOUR);
+    // Convert from 24-hour format to our 6 AM start format
+    const adjustedHours = ((totalHours - 6 + 24) % 24);
+    return `${adjustedHours * HOUR_HEIGHT}px`;
   };
 
   const formatEventTime = (start: Date, end: Date) => {
@@ -90,13 +89,13 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
     const gridRect = gridRef.current.getBoundingClientRect();
     const relativeY = e.clientY - gridRect.top;
     
-    // Calculate hour and minutes based on mouse position with 5-minute snapping
-    const hourIndex = Math.floor(relativeY / HOUR_HEIGHT);
-    const minuteRatio = (relativeY % HOUR_HEIGHT) / HOUR_HEIGHT;
-    const minutes = Math.round(minuteRatio * MINUTES_IN_HOUR / 5) * 5; // Snap to 5-minute intervals
+    // Calculate time based on exact mouse position
+    const totalMinutes = (relativeY / HOUR_HEIGHT) * MINUTES_IN_HOUR;
+    const hours = Math.floor(totalMinutes / MINUTES_IN_HOUR);
+    const minutes = Math.round((totalMinutes % MINUTES_IN_HOUR) / 5) * 5; // Still snap to 5min for precision
     
     const newStart = new Date(date);
-    const startHourNum = (hourIndex + 6) % 24; // Adjust for 6 AM start
+    const startHourNum = (hours + 6) % 24; // Adjust for 6 AM start
     newStart.setHours(startHourNum);
     newStart.setMinutes(minutes);
     
@@ -143,14 +142,16 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
 
     const gridRect = gridRef.current.getBoundingClientRect();
     const relativeY = e.clientY - gridRect.top;
-    const hourIndex = Math.floor(relativeY / HOUR_HEIGHT);
-    const minuteRatio = (relativeY % HOUR_HEIGHT) / HOUR_HEIGHT;
-    const minutes = Math.round(minuteRatio * MINUTES_IN_HOUR / 5) * 5; // Snap to 5-minute intervals
+    
+    // Calculate time based on exact mouse position
+    const totalMinutes = (relativeY / HOUR_HEIGHT) * MINUTES_IN_HOUR;
+    const hours = Math.floor(totalMinutes / MINUTES_IN_HOUR);
+    const minutes = Math.round((totalMinutes % MINUTES_IN_HOUR) / 5) * 5;
 
     const newEvent = { ...resizingEvent.event };
     const date = new Date(resizingEvent.edge === "top" ? newEvent.start : newEvent.end);
-    const startHourNum = (hourIndex + 6) % 24; // Adjust for 6 AM start
-    date.setHours(startHourNum);
+    const hourNum = (hours + 6) % 24; // Adjust for 6 AM start
+    date.setHours(hourNum);
     date.setMinutes(minutes);
 
     if (resizingEvent.edge === "top") {
