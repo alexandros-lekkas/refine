@@ -13,9 +13,50 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { useState, useEffect } from "react";
 
-// Placeholder data - In real app, this would come from your backend
-const insightsData = {
+// Type definitions for our data
+type InsightsDataType = {
+  dailySnapshot: {
+    tasksCompletedToday: number;
+    tasksCompletedThisWeek: number;
+    averageTimePerDay: number;
+    timeSavedWithAI: number;
+  };
+  focusScore: number;
+  subjectStrainScores: Array<{
+    subject: string;
+    estimated: number;
+    actual: number;
+  }>;
+  procrastinationStats: {
+    earlyStarter: number;
+    onTime: number;
+    lastMinute: number;
+    overdue: number;
+  };
+};
+
+// Initial empty state that matches the structure
+const initialData: InsightsDataType = {
+  dailySnapshot: {
+    tasksCompletedToday: 0,
+    tasksCompletedThisWeek: 0,
+    averageTimePerDay: 0,
+    timeSavedWithAI: 0,
+  },
+  focusScore: 0,
+  subjectStrainScores: [],
+  procrastinationStats: {
+    earlyStarter: 0,
+    onTime: 0,
+    lastMinute: 0,
+    overdue: 0,
+  },
+};
+
+// Mock data - In real app, this would come from your backend
+const mockData: InsightsDataType = {
   dailySnapshot: {
     tasksCompletedToday: 5,
     tasksCompletedThisWeek: 23,
@@ -38,6 +79,34 @@ const insightsData = {
 };
 
 export default function InsightsPage() {
+  const [insightsData, setInsightsData] = useState<InsightsDataType>(initialData);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate API call
+    const fetchData = async () => {
+      try {
+        // In a real app, this would be an API call
+        // await fetch('/api/insights')
+        setInsightsData(mockData);
+      } catch (error) {
+        console.error('Error fetching insights data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="max-w-[1600px] mx-auto px-6 py-6 min-h-screen flex items-center justify-center">
+        <div className="text-muted-foreground">Loading insights...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-[1600px] mx-auto px-6 py-6 space-y-8">
       <div className="flex items-center justify-between">
