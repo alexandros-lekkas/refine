@@ -28,7 +28,7 @@ const HOURS = [
   "8 PM", "9 PM", "10 PM", "11 PM", "12 AM", "1 AM", "2 AM", "3 AM"
 ];
 
-const HOUR_HEIGHT = 60; // Increased height for better spacing
+const HOUR_HEIGHT = 28; // Reduced height to match the screenshot's compact view
 const MINUTES_IN_HOUR = 60;
 const HOUR_TO_INDEX = Object.fromEntries(
   HOURS.map((hour, index) => [hour, index])
@@ -39,6 +39,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
   const [hoveredSlot, setHoveredSlot] = useState<{ date: Date; hour: string } | null>(null);
   const [draggedEvent, setDraggedEvent] = useState<Event | null>(null);
   const [resizingEvent, setResizingEvent] = useState<{ event: Event; edge: "top" | "bottom" } | null>(null);
+  const [dragTime, setDragTime] = useState<{ start: Date; end: Date } | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 });
@@ -64,6 +65,10 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
     return `${(hourIndex * HOUR_HEIGHT) + (minutes / MINUTES_IN_HOUR) * HOUR_HEIGHT}px`;
   };
 
+  const formatEventTime = (start: Date, end: Date) => {
+    return `${format(start, 'h:mm')} - ${format(end, 'h:mmaaa')}`;
+  };
+
   const handleDragStart = (event: Event) => {
     setDraggedEvent(event);
   };
@@ -71,30 +76,37 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
   const handleDragOver = (e: React.DragEvent, date: Date, hour: string) => {
     e.preventDefault();
     setHoveredSlot({ date, hour });
-  };
-
-  const handleDrop = (e: React.DragEvent, date: Date, hour: string) => {
-    e.preventDefault();
-    if (draggedEvent && onEventUpdate) {
-      const [h, ampm] = hour.split(' ');
-      let hourNum = parseInt(h);
-      if (ampm === 'PM' && hourNum !== 12) hourNum += 12;
-      if (ampm === 'AM' && hourNum === 12) hourNum = 0;
+    
+    if (draggedEvent) {
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      const relativeY = e.clientY - rect.top;
+      const hourIndex = Math.floor(relativeY / HOUR_HEIGHT);
+      const minuteRatio = (relativeY % HOUR_HEIGHT) / HOUR_HEIGHT;
+      const minutes = Math.floor(minuteRatio * MINUTES_IN_HOUR);
 
       const newStart = new Date(date);
-      newStart.setHours(hourNum, 0, 0, 0);
+      newStart.setHours(hourIndex + 4); // Add 4 because our day starts at 4 AM
+      newStart.setMinutes(minutes);
 
       const duration = new Date(draggedEvent.end).getTime() - new Date(draggedEvent.start).getTime();
       const newEnd = new Date(newStart.getTime() + duration);
 
+      setDragTime({ start: newStart, end: newEnd });
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, date: Date, hour: string) => {
+    e.preventDefault();
+    if (draggedEvent && onEventUpdate && dragTime) {
       onEventUpdate({
         ...draggedEvent,
-        start: newStart,
-        end: newEnd,
+        start: dragTime.start,
+        end: dragTime.end,
       });
     }
     setDraggedEvent(null);
     setHoveredSlot(null);
+    setDragTime(null);
   };
 
   const handleResizeStart = (event: Event, edge: "top" | "bottom") => {
@@ -118,10 +130,12 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
     if (resizingEvent.edge === "top") {
       if (date < new Date(newEvent.end)) {
         newEvent.start = date;
+        setDragTime({ start: date, end: newEvent.end });
       }
     } else {
       if (date > new Date(newEvent.start)) {
         newEvent.end = date;
+        setDragTime({ start: newEvent.start, end: date });
       }
     }
 
@@ -130,6 +144,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
 
   const handleResizeEnd = () => {
     setResizingEvent(null);
+    setDragTime(null);
   };
 
   // Add event listeners for resize
@@ -145,10 +160,10 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
   }, [resizingEvent]);
 
   return (
-    <div className="h-full bg-white rounded-lg overflow-hidden shadow-sm transition-all duration-300" style={{ width: `${width}px` }}>
+    <div className="h-full bg-white rounded-lg shadow-sm" style={{ width: `${width}px` }}>
       {/* Header */}
-      <div className="grid grid-cols-[100px_1fr] border-b">
-        <div className="border-r bg-white p-2 flex items-center justify-end gap-2">
+      <div className="grid grid-cols-[100px_1fr]">
+        <div className="border-r border-b bg-white p-2 flex items-center justify-end gap-2">
           <Button
             variant="ghost"
             size="sm"
@@ -176,33 +191,18 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
-        <div className="relative">
-          {/* Header grid lines for perfect alignment */}
-          <div className="absolute inset-0 grid grid-cols-7 pointer-events-none">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <div
-                key={`header-line-${index}`}
-                className="border-l border-gray-200"
-                style={{
-                  position: 'absolute',
-                  left: `${(index / 7) * 100}%`,
-                  height: '100%',
-                  top: 0
-                }}
-              />
-            ))}
-          </div>
-          
-          <div className="grid grid-cols-7 relative">
-            {weekDays.map((day) => {
+        <div className="border-b">
+          <div className="grid grid-cols-7 h-full">
+            {weekDays.map((day, dayIndex) => {
               const dayEvents = getEventsForDay(day);
               const isToday = isSameDay(day, new Date());
               return (
                 <div 
                   key={day.toISOString()} 
                   className={cn(
-                    "p-2 text-center",
-                    isToday && "bg-[#fdf4ff]"
+                    "p-2 text-center border-r",
+                    isToday && "bg-[#fdf4ff]",
+                    dayIndex === 6 && "border-r-0"
                   )}
                 >
                   <div className={cn(
@@ -231,13 +231,13 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
       </div>
 
       {/* Calendar Grid */}
-      <div className="grid grid-cols-[100px_1fr] h-[calc(100vh-8rem)] overflow-y-auto">
-        <div className="bg-white border-r sticky left-0 z-10">
+      <div className="grid grid-cols-[100px_1fr]">
+        <div className="bg-white border-r">
           {HOURS.map((hour) => (
-            <div key={hour} className="relative" style={{ height: `${HOUR_HEIGHT}px` }}>
+            <div key={hour} className="relative border-b last:border-b-0" style={{ height: `${HOUR_HEIGHT}px` }}>
               <div className={cn(
-                "absolute top-[50%] -translate-y-1/2 right-4 text-xs font-medium tracking-wide transition-colors whitespace-nowrap",
-                hoveredSlot?.hour === hour ? "text-[#c026d3]" : "text-gray-500"
+                "absolute top-[50%] -translate-y-1/2 right-4 text-xs font-medium tracking-wide transition-colors whitespace-nowrap text-gray-600",
+                hoveredSlot?.hour === hour ? "text-[#c026d3]" : ""
               )}>
                 {hour}
               </div>
@@ -245,48 +245,21 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
           ))}
         </div>
         <div className="relative" ref={gridRef}>
-          {/* Vertical grid lines */}
-          <div className="absolute inset-0 grid grid-cols-7 pointer-events-none">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <div
-                key={`vertical-line-${index}`}
-                className="border-l border-gray-200"
-                style={{
-                  position: 'absolute',
-                  left: `${(index / 7) * 100}%`,
-                  height: '100%',
-                  top: 0
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Horizontal grid lines */}
-          <div className="absolute inset-0 pointer-events-none">
-            {HOURS.map((_, index) => (
-              <div
-                key={`gridline-${index}`}
-                className="border-t border-gray-200"
-                style={{ 
-                  top: `${index * HOUR_HEIGHT}px`, 
-                  width: '100%', 
-                  position: 'absolute' 
-                }}
-              />
-            ))}
-          </div>
-          
-          <div className="grid grid-cols-7 h-full relative">
+          <div className="grid grid-cols-7 h-full">
             {weekDays.map((day, dayIndex) => (
-              <div key={day.toISOString()} className="relative min-h-full">
+              <div key={day.toISOString()} className={cn(
+                "relative min-h-full border-r",
+                dayIndex === 6 && "border-r-0"
+              )}>
                 {HOURS.map((hour, index) => (
                   <div
                     key={`${day.toISOString()}-${hour}`}
                     className={cn(
-                      "relative group transition-all duration-150",
+                      "relative group transition-all duration-150 border-b",
                       hoveredSlot?.date.toISOString() === day.toISOString() && hoveredSlot?.hour === hour
                         ? "bg-[#fdf4ff] outline outline-2 outline-[#f5d0fe] z-10"
-                        : "hover:bg-[#fdf4ff]"
+                        : "hover:bg-[#fdf4ff]",
+                      index === HOURS.length - 1 && "border-b-0"
                     )}
                     style={{ height: `${HOUR_HEIGHT}px` }}
                     onDragOver={(e) => handleDragOver(e, day, hour)}
@@ -337,7 +310,13 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
                           handleResizeStart(event, "bottom");
                         }}
                       />
-                      <div className="font-medium truncate">{event.courseCode}</div>
+                      <div className="font-medium truncate">
+                        {(draggedEvent?.id === event.id || resizingEvent?.event.id === event.id) && dragTime ? (
+                          formatEventTime(dragTime.start, dragTime.end)
+                        ) : (
+                          event.courseCode
+                        )}
+                      </div>
                       <div className="truncate">{event.title}</div>
                     </div>
                   ))}
