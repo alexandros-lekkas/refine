@@ -205,32 +205,40 @@ export function CreateEventDialog({ isOpen, onClose, onCreateEvent, defaultDate,
                   selected={dueDate}
                   onSelect={setDueDate}
                   initialFocus
-                  className="rounded-md border shadow"
+                  className="rounded-md border"
                   classNames={{
-                    months: "space-y-4 p-4",
+                    months: "space-y-4",
                     month: "space-y-4",
-                    caption: "flex justify-between pt-1 relative items-center px-2",
-                    caption_label: "text-sm font-medium",
-                    nav: "flex items-center gap-1",
-                    nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 rounded-full flex items-center justify-center",
-                    nav_button_previous: "absolute left-1",
-                    nav_button_next: "absolute right-1",
-                    table: "w-full border-collapse",
+                    caption: "flex justify-center pt-1 relative items-center",
+                    caption_label: "text-sm font-medium text-center",
+                    nav: "flex items-center gap-1 absolute inset-0 justify-between px-2",
+                    nav_button: "h-7 w-7 hover:bg-gray-100 rounded-lg flex items-center justify-center shadow-sm border",
+                    nav_button_previous: "",
+                    nav_button_next: "",
+                    table: "w-full border-collapse space-y-1",
                     head_row: "flex",
                     head_cell: "text-gray-500 rounded-md w-9 font-normal text-[0.8rem]",
                     row: "flex w-full mt-2",
-                    cell: "text-center text-sm relative p-0 hover:bg-gray-100 rounded-full w-9 h-9 flex items-center justify-center",
-                    day: "h-9 w-9 p-0 font-normal",
+                    cell: "text-center text-sm relative p-0 hover:bg-gray-50 rounded-lg w-9 h-9 flex items-center justify-center",
+                    day: "h-9 w-9 p-0 font-normal hover:bg-gray-50 rounded-lg",
                     day_range_middle: "rounded-none",
-                    day_selected: "bg-[#3b82f6] text-white hover:bg-[#3b82f6] hover:text-white focus:bg-[#3b82f6] focus:text-white",
-                    day_today: "bg-gray-100",
-                    day_outside: "opacity-50",
-                    day_disabled: "opacity-50",
+                    day_selected: "bg-[#4f46e5] text-white hover:bg-[#4f46e5] hover:text-white focus:bg-[#4f46e5] focus:text-white rounded-lg",
+                    day_today: "bg-gray-50 rounded-lg",
+                    day_outside: "text-gray-400",
+                    day_disabled: "text-gray-300",
                     day_hidden: "invisible",
                   }}
                   components={{
-                    IconLeft: () => <ChevronLeft className="h-4 w-4" />,
-                    IconRight: () => <ChevronRight className="h-4 w-4" />,
+                    IconLeft: () => (
+                      <div className="flex items-center justify-center">
+                        <ChevronLeft className="h-4 w-4" />
+                      </div>
+                    ),
+                    IconRight: () => (
+                      <div className="flex items-center justify-center">
+                        <ChevronRight className="h-4 w-4" />
+                      </div>
+                    ),
                   }}
                 />
               </PopoverContent>
