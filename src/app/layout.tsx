@@ -27,20 +27,18 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn(figtree.className, "min-h-screen")}>
         <AuthProvider>
-          <TaskProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <div className="min-h-screen flex flex-col">
-                <main className="flex-1">{children}</main>
-              </div>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="min-h-screen flex flex-col">
+              <main className="flex-1">{children}</main>
+            </div>
 
-              <Toaster />
-            </ThemeProvider>
-          </TaskProvider>
+            <Toaster />
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

@@ -13,32 +13,12 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
-import { useTask } from "@/lib/providers/tasks";
 import { cn } from "@/lib/utils";
-import { TaskDialog } from "./[id]/task-dialog";
+import { TaskDialog } from "./task-dialog";
 import React from "react";
+import { Tables } from "@/types/supabase";
 
-interface Phase {
-  id: string;
-  title: string;
-  description: string;
-  plannedTime: { hours: number; minutes: number };
-  dueDate: Date;
-  completed: boolean;
-}
-
-interface Task {
-  id: string;
-  courseCode: string;
-  title: string;
-  dueDate: Date;
-  status: "due-today" | "due-soon" | "start-soon";
-  completed: boolean;
-  progress?: {
-    completed: number;
-    total: number;
-  };
-}
+type Task = Tables<"tasks">;
 
 export default function TasksPage() {
   const router = useRouter();
@@ -50,8 +30,12 @@ export default function TasksPage() {
   };
 
   const getProgressPercentage = (task: Task) => {
-    if (!task.progress) return 0;
-    return Math.round((task.progress.completed / task.progress.total) * 100);
+    if (!task.is_multi_phase) return task.completed ? 100 : 0;
+    return Math.round(
+      ((task.time_used_hours * 60 + task.time_used_minutes) /
+        (task.planned_time_hours * 60 + task.planned_time_minutes)) *
+        100
+    );
   };
 
   return (
@@ -71,7 +55,10 @@ export default function TasksPage() {
               </Button>
             </div>
           </div>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-4" onClick={() => setIsTaskDialogOpen(true)}>
+          <Button
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-4"
+            onClick={() => setIsTaskDialogOpen(true)}
+          >
             <Plus className="mr-2 h-4 w-4" />
             Add Task
           </Button>
@@ -85,7 +72,7 @@ export default function TasksPage() {
             </div>
             <div className="space-y-3">
               {tasks
-                .filter((task) => task.status === "due-today")
+                .filter((task) => task.status === "DUE_TODAY")
                 .map((task) => {
                   const progressPercentage = getProgressPercentage(task);
                   return (
@@ -100,11 +87,14 @@ export default function TasksPage() {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="text-sm text-muted-foreground mb-1">
-                            {task.courseCode}
+                            {task.category}
                           </div>
                           <div className="font-medium mb-2 flex items-center gap-2">
                             <span
-                              className={cn(task.completed && "text-green-500 dark:text-green-400")}
+                              className={cn(
+                                task.completed &&
+                                  "text-green-500 dark:text-green-400"
+                              )}
                             >
                               {task.title}
                             </span>
@@ -116,12 +106,14 @@ export default function TasksPage() {
                             <div className="text-sm text-muted-foreground flex items-center gap-2">
                               <Clock className="h-4 w-4" />
                               <span>
-                                Due: {format(task.dueDate, "MMM d")}
+                                Due: {format(new Date(task.due_date), "MMM d")}
                               </span>
                             </div>
-                            {task.progress && (
+                            {task.is_multi_phase && (
                               <div className="text-xs text-muted-foreground">
-                                {task.progress.completed}/{task.progress.total} steps
+                                {task.time_used_hours}h {task.time_used_minutes}
+                                m / {task.planned_time_hours}h{" "}
+                                {task.planned_time_minutes}m
                               </div>
                             )}
                           </div>
@@ -156,7 +148,7 @@ export default function TasksPage() {
             </div>
             <div className="space-y-3">
               {tasks
-                .filter((task) => task.status === "due-soon")
+                .filter((task) => task.status === "DUE_SOON")
                 .map((task) => {
                   const progressPercentage = getProgressPercentage(task);
                   return (
@@ -171,11 +163,14 @@ export default function TasksPage() {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="text-sm text-muted-foreground mb-1">
-                            {task.courseCode}
+                            {task.category}
                           </div>
                           <div className="font-medium mb-2 flex items-center gap-2">
                             <span
-                              className={cn(task.completed && "text-green-500 dark:text-green-400")}
+                              className={cn(
+                                task.completed &&
+                                  "text-green-500 dark:text-green-400"
+                              )}
                             >
                               {task.title}
                             </span>
@@ -187,12 +182,14 @@ export default function TasksPage() {
                             <div className="text-sm text-muted-foreground flex items-center gap-2">
                               <Clock className="h-4 w-4" />
                               <span>
-                                Due: {format(task.dueDate, "MMM d")}
+                                Due: {format(new Date(task.due_date), "MMM d")}
                               </span>
                             </div>
-                            {task.progress && (
+                            {task.is_multi_phase && (
                               <div className="text-xs text-muted-foreground">
-                                {task.progress.completed}/{task.progress.total} steps
+                                {task.time_used_hours}h {task.time_used_minutes}
+                                m / {task.planned_time_hours}h{" "}
+                                {task.planned_time_minutes}m
                               </div>
                             )}
                           </div>
@@ -227,7 +224,7 @@ export default function TasksPage() {
             </div>
             <div className="space-y-3">
               {tasks
-                .filter((task) => task.status === "start-soon")
+                .filter((task) => task.status === "START_SOON")
                 .map((task) => {
                   const progressPercentage = getProgressPercentage(task);
                   return (
@@ -242,11 +239,14 @@ export default function TasksPage() {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="text-sm text-muted-foreground mb-1">
-                            {task.courseCode}
+                            {task.category}
                           </div>
                           <div className="font-medium mb-2 flex items-center gap-2">
                             <span
-                              className={cn(task.completed && "text-green-500 dark:text-green-400")}
+                              className={cn(
+                                task.completed &&
+                                  "text-green-500 dark:text-green-400"
+                              )}
                             >
                               {task.title}
                             </span>
@@ -258,12 +258,14 @@ export default function TasksPage() {
                             <div className="text-sm text-muted-foreground flex items-center gap-2">
                               <Clock className="h-4 w-4" />
                               <span>
-                                Due: {format(task.dueDate, "MMM d")}
+                                Due: {format(new Date(task.due_date), "MMM d")}
                               </span>
                             </div>
-                            {task.progress && (
+                            {task.is_multi_phase && (
                               <div className="text-xs text-muted-foreground">
-                                {task.progress.completed}/{task.progress.total} steps
+                                {task.time_used_hours}h {task.time_used_minutes}
+                                m / {task.planned_time_hours}h{" "}
+                                {task.planned_time_minutes}m
                               </div>
                             )}
                           </div>

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { User as AuthUser } from "@supabase/supabase-js"
+import { User as AuthUser } from "@supabase/supabase-js";
 
 import { createClient } from "@/lib/supabase/client/client";
 
@@ -37,8 +37,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setError(null);
       setLoading(true);
       const supabase = createClient();
-      const { data: { user: fetchedAuthUser }, error: initError } = await supabase.auth.getUser();
-      
+      const {
+        data: { user: fetchedAuthUser },
+        error: initError,
+      } = await supabase.auth.getUser();
+
       if (initError) {
         setError("Authentication failed. Please try signing in again.");
         console.error("Failed to initialize auth:", initError);
@@ -167,9 +170,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [user, authUser, loading, error, isAuthenticated]
   );
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
