@@ -93,8 +93,8 @@ export default function CalendarPage() {
   ];
 
   return (
-    <div className="max-w-[1600px] mx-auto px-6 py-6">
-      <div className="bg-background rounded-lg border shadow-sm h-[calc(100vh-6rem)]">
+    <div className="h-screen max-w-[1600px] mx-auto px-6 py-6">
+      <div className="bg-background rounded-lg border shadow-sm h-[calc(100vh-3rem)]">
         <WeekViewCalendar 
           events={[...events, ...sampleEvents]} 
           onCreateTaskClick={(date, hour) => setSelectedTimeSlot({ date, hour })}

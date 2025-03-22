@@ -28,7 +28,7 @@ const HOURS = [
   "12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM"
 ];
 
-const HOUR_HEIGHT = 28; // Keep the compact height
+const HOUR_HEIGHT = 32; // Slightly reduced to accommodate more hours
 const MINUTES_IN_HOUR = 60;
 const HOUR_TO_INDEX = Object.fromEntries(
   HOURS.map((hour, index) => [hour, index])
@@ -186,10 +186,10 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
   }, [resizingEvent]);
 
   return (
-    <div className="h-full bg-white rounded-lg shadow-sm relative">
+    <div className="flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-sm">
       {/* Fixed Header */}
-      <div className="sticky top-0 left-0 right-0 bg-white z-50 border-b">
-        <div className="grid grid-cols-[100px_1fr]">
+      <div className="flex-none border-b bg-white z-50">
+        <div className="grid grid-cols-[100px_1fr] pr-3">
           <div className="border-r bg-white p-2 flex items-center justify-center gap-2">
             <Button
               variant="ghost"
@@ -218,8 +218,8 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
-          <div>
-            <div className="grid grid-cols-7 h-full">
+          <div className="pr-3">
+            <div className="grid grid-cols-7">
               {weekDays.map((day, dayIndex) => {
                 const dayEvents = getEventsForDay(day);
                 const isToday = isSameDay(day, new Date());
@@ -227,7 +227,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
                   <div 
                     key={day.toISOString()} 
                     className={cn(
-                      "py-3 px-2 text-center border-r border-b flex flex-col items-center justify-center",
+                      "py-2 px-2 text-center border-r border-b flex flex-col items-center justify-center",
                       isToday && "bg-[#fdf4ff]",
                       dayIndex === 6 && "border-r-0"
                     )}
@@ -259,9 +259,9 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
       </div>
 
       {/* Scrollable Content */}
-      <div className="h-[calc(100vh-12rem)] overflow-y-auto">
+      <div className="flex-1 overflow-y-auto">
         <div className="grid grid-cols-[100px_1fr] min-w-[800px]">
-          <div className="bg-white border-r h-full">
+          <div className="bg-white border-r">
             {HOURS.map((hour) => (
               <div 
                 key={hour} 
@@ -270,7 +270,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
               >
                 <div className={cn(
                   "absolute top-[50%] -translate-y-1/2 right-4 text-xs font-medium tracking-wide transition-colors whitespace-nowrap text-gray-600",
-                  "flex items-center justify-end h-full pt-0.5",
+                  "flex items-center justify-end h-full",
                   hoveredSlot?.hour === hour ? "text-[#c026d3]" : ""
                 )}>
                   {hour}
@@ -278,7 +278,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
               </div>
             ))}
           </div>
-          <div className="relative" ref={gridRef}>
+          <div className="relative pr-3" ref={gridRef}>
             <div className="grid grid-cols-7 h-full">
               {weekDays.map((day, dayIndex) => (
                 <div key={day.toISOString()} className={cn(
@@ -316,7 +316,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
                         onDragStart={(e) => handleDragStart(event, e)}
                         onDragEnd={handleDragEnd}
                         className={cn(
-                          "absolute left-1 right-1 rounded-md px-2 py-1 text-xs overflow-hidden border shadow-sm transition-all duration-150 group z-20",
+                          "absolute left-1 right-1 rounded-md px-1.5 py-0.5 text-xs overflow-hidden border shadow-sm transition-all duration-150 group z-20",
                           draggedEvent?.id === event.id ? "opacity-50 cursor-grabbing" : "cursor-grab",
                           event.color === "#34D399" && "bg-green-50 text-green-800 border-green-200 hover:bg-green-100 hover:border-green-300",
                           event.color === "#F87171" && "bg-red-50 text-red-800 border-red-200 hover:bg-red-100 hover:border-red-300",
@@ -331,7 +331,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
                       >
                         {/* Resize handles */}
                         <div
-                          className="absolute top-0 left-0 right-0 h-2 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-t-md"
+                          className="absolute top-0 left-0 right-0 h-1.5 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-t-md"
                           onMouseDown={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -339,21 +339,21 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
                           }}
                         />
                         <div
-                          className="absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-b-md"
+                          className="absolute bottom-0 left-0 right-0 h-1.5 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-b-md"
                           onMouseDown={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
                             handleResizeStart(event, "bottom");
                           }}
                         />
-                        <div className="font-medium truncate">
+                        <div className="font-medium truncate text-[11px]">
                           {(draggedEvent?.id === event.id || resizingEvent?.event.id === event.id) && dragTime ? (
                             formatEventTime(dragTime.start, dragTime.end)
                           ) : (
                             event.courseCode
                           )}
                         </div>
-                        <div className="truncate">{event.title}</div>
+                        <div className="truncate text-[11px]">{event.title}</div>
                       </div>
                     ))}
                 </div>
