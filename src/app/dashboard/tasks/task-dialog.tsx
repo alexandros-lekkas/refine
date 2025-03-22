@@ -59,7 +59,32 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
   const [plannedTimeMinutes, setPlannedTimeMinutes] = React.useState(0);
 
   const handleCreateTask = async () => {
-    if (!user || !title || !dueDate) return;
+    if (!user) {
+      console.error("Failed to create task: No user found");
+      return;
+    }
+    if (!title) {
+      console.error("Failed to create task: Title is required");
+      return;
+    }
+    if (!dueDate) {
+      console.error("Failed to create task: Due date is required");
+      return;
+    }
+
+    console.log("Creating task with data:", {
+      title,
+      description,
+      category,
+      priority,
+      type,
+      due_date: format(dueDate, "yyyy-MM-dd"),
+      due_time: dueTime,
+      is_multi_phase: isMultiPhase,
+      planned_time_hours: plannedTimeHours,
+      planned_time_minutes: plannedTimeMinutes,
+      user_id: user.id,
+    });
 
     const task: Omit<
       Task,
@@ -69,7 +94,6 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
       | "actual_time"
       | "time_used_hours"
       | "time_used_minutes"
-      | "start_mark"
     > = {
       title,
       description,
@@ -82,19 +106,32 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
       is_multi_phase: isMultiPhase,
       planned_time_hours: plannedTimeHours,
       planned_time_minutes: plannedTimeMinutes,
-      status: "START_SOON", // This should be calculated based on due date
+      status: "START_SOON",
       user_id: user.id,
+      start_mark: 0,
     };
 
     try {
       const supabase = createClient();
+      console.log("Attempting to insert task into database...");
+      
       const { data, error } = await supabase
         .from("tasks")
         .insert(task)
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Database error while creating task:", {
+          error_message: error.message,
+          error_code: error.code,
+          error_details: error.details,
+          task_data: task
+        });
+        throw error;
+      }
+
+      console.log("Task created successfully:", data);
 
       // Reset form
       setTitle("");
@@ -111,7 +148,11 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
       onOpenChange(false);
       router.refresh();
     } catch (error) {
-      console.error("Failed to create task:", error);
+      console.error("Detailed error while creating task:", {
+        error,
+        task_data: task,
+        user_id: user.id
+      });
     }
   };
 
