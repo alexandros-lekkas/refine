@@ -2,96 +2,99 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  Calendar,
-  CheckSquare,
+import { cn } from "@/lib/utils";
+import { 
+  LayoutDashboard, 
+  CheckSquare, 
+  Calendar, 
+  PieChart, 
   Settings,
-  PieChart,
-  GalleryVerticalEnd,
 } from "lucide-react";
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarHeader,
-} from "@/components/ui/sidebar";
-
-const items = [
-  {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "Tasks",
-    url: "/dashboard/tasks",
-    icon: CheckSquare,
-  },
-  {
-    title: "Calendar",
-    url: "/dashboard/calendar",
-    icon: Calendar,
-  },
-  {
-    title: "Insights",
-    url: "/dashboard/insights",
-    icon: PieChart,
-  },
-  {
-    title: "Settings",
-    url: "/dashboard/settings",
-    icon: Settings,
-  },
-];
+import { useState } from "react";
+import { CollapseIcon } from "@/components/ui/collapse-icon";
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+    // Dispatch custom event for calendar width adjustment
+    window.dispatchEvent(new CustomEvent('sidebarStateChange', {
+      detail: { collapsed: !isCollapsed }
+    }));
+  };
+
+  const links = [
+    {
+      title: "Dashboard",
+      href: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "Tasks",
+      href: "/dashboard/tasks",
+      icon: CheckSquare,
+    },
+    {
+      title: "Calendar",
+      href: "/dashboard/calendar",
+      icon: Calendar,
+    },
+    {
+      title: "Analytics",
+      href: "/dashboard/analytics",
+      icon: PieChart,
+    },
+    {
+      title: "Settings",
+      href: "/dashboard/settings",
+      icon: Settings,
+    },
+  ];
 
   return (
-    <Sidebar collapsible="icon" variant="sidebar">
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <Link href={"/dashboard"} passHref legacyBehavior>
-            <SidebarMenuButton
-              className="bg-secondary text-foreground py-6 px-4 text-lg transition-all duration-150 cursor-pointer"
-            >
-                <GalleryVerticalEnd className="h-4 w-4" />
-                <span className="text-base font-semibold">Refine</span>
-              </SidebarMenuButton>
-            </Link>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-sm">Main</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <Link href={item.url} passHref legacyBehavior>
-                    <SidebarMenuButton
-                      className="hover:bg-primary/10 data-[active=true]:bg-primary/20 data-[active=true]:text-primary py-5 px-4 text-lg transition-all duration-150 cursor-pointer"
-                      data-active={pathname === item.url}
-                    >
-                      <item.icon className="h-5 w-5" />
-                      <span className="text-base">{item.title}</span>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+    <div className={cn(
+      "h-screen border-r flex flex-col transition-all duration-300 bg-white",
+      isCollapsed ? "w-[60px]" : "w-[240px]"
+    )}>
+      <div className="h-[60px] border-b flex items-center">
+        <button 
+          onClick={toggleSidebar} 
+          className={cn(
+            "text-gray-500 transition-colors p-1 ml-4",
+            "hover:text-[#c026d3]"
+          )}
+        >
+          <CollapseIcon />
+        </button>
+      </div>
+      <div className="flex-1 py-6">
+        <nav className="space-y-4">
+          {links.map((link) => {
+            const Icon = link.icon;
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "flex items-center gap-x-3 text-gray-600 text-sm font-medium px-4 py-2",
+                  "hover:text-[#c026d3] hover:bg-[#fdf4ff] transition-colors",
+                  isActive && "text-[#c026d3] bg-[#fdf4ff]",
+                  isCollapsed && "justify-center"
+                )}
+              >
+                <Icon className={cn(
+                  "h-[20px] w-[20px] transition-colors",
+                  isActive ? "text-[#c026d3]" : "text-gray-600"
+                )} />
+                {!isCollapsed && <span>{link.title}</span>}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+    </div>
   );
 }

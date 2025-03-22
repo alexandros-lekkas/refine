@@ -1,125 +1,136 @@
 "use client"
 
 import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { format, startOfWeek, addDays, isSameDay, parseISO } from "date-fns"
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, isToday } from "date-fns"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { Flame } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+
+interface Task {
+  id: string;
+  title: string;
+  courseCode: string;
+  dueDate: Date;
+  startTime?: string;
+  endTime?: string;
+  type: "Assignment" | "Project" | "Exam";
+  priority?: "high" | "medium" | "low";
+}
 
 interface CalendarProps {
-  mode?: "single"
-  selected?: Date
-  onSelect?: (date: Date | undefined) => void
-  className?: string
-  classNames?: Record<string, string>
+  className?: string;
+  tasks?: Task[];
+  selectedDate?: Date;
+  onDateSelect?: (date: Date) => void;
+  view?: "week" | "month";
 }
 
-export function Calendar({
-  mode = "single",
-  selected,
-  onSelect,
+function Calendar({
   className,
-  classNames,
+  tasks = [],
+  selectedDate = new Date(),
+  onDateSelect,
+  view = "week"
 }: CalendarProps) {
-  const [currentMonth, setCurrentMonth] = React.useState(selected || new Date())
+  const hours = Array.from({ length: 20 }, (_, i) => i + 4); // 4 AM to 11 PM
+  const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const startDate = startOfWeek(selectedDate, { weekStartsOn: 1 });
 
-  const handlePrevMonth = () => {
-    setCurrentMonth(subMonths(currentMonth, 1))
-  }
+  const getTasksForDateAndHour = (date: Date, hour: number) => {
+    return tasks.filter(task => {
+      const taskDate = new Date(task.dueDate);
+      const taskHour = task.startTime ? parseInt(task.startTime.split(":")[0]) : null;
+      return isSameDay(taskDate, date) && (taskHour === null || taskHour === hour);
+    });
+  };
 
-  const handleNextMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, 1))
-  }
-
-  const days = eachDayOfInterval({
-    start: startOfMonth(currentMonth),
-    end: endOfMonth(currentMonth)
-  })
-
-  const handleDateSelect = (date: Date) => {
-    onSelect?.(date)
-  }
+  const getDueTasks = (date: Date) => {
+    return tasks.filter(task => isSameDay(new Date(task.dueDate), date));
+  };
 
   return (
-    <div className={cn("p-3", className)}>
-      <div className="flex items-center justify-between mb-4">
-        <button
-          onClick={handlePrevMonth}
-          title="Previous month"
-          aria-label="Previous month"
-          className={cn(
-            buttonVariants({ variant: "outline" }),
-            "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
-          )}
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
-        <h2 className="text-sm font-medium">
-          {format(currentMonth, "MMMM yyyy")}
-        </h2>
-        <button
-          onClick={handleNextMonth}
-          title="Next month"
-          aria-label="Next month"
-          className={cn(
-            buttonVariants({ variant: "outline" }),
-            "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
-          )}
-        >
-          <ChevronRight className="h-4 w-4" />
-        </button>
+    <div className={cn("w-full h-full bg-white rounded-lg", className)}>
+      {/* Header */}
+      <div className="grid grid-cols-[60px_1fr] border-b">
+        <div className="p-2" /> {/* Empty cell for time column */}
+        <div className="grid grid-cols-6">
+          {weekDays.map((day, i) => {
+            const date = addDays(startDate, i);
+            const dueTasks = getDueTasks(date);
+            const isToday = isSameDay(date, new Date());
+            return (
+              <div 
+                key={day} 
+                className={cn(
+                  "p-2 text-center border-l",
+                  isToday && "bg-purple-50"
+                )}
+              >
+                <div className="text-sm font-medium">{format(date, "dd")}</div>
+                <div className="text-xs text-gray-500">{day}</div>
+                {dueTasks.length > 0 && (
+                  <div className={cn(
+                    "mt-1 px-2 py-0.5 text-xs rounded text-center",
+                    dueTasks.length > 2 ? "bg-purple-600 text-white" : "bg-purple-100 text-purple-900"
+                  )}>
+                    {dueTasks.length} {dueTasks.length === 1 ? "task" : "tasks"} due
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      <table className="w-full border-collapse">
-        <thead>
-          <tr>
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-              <th
-                key={day}
-                scope="col"
-                className="text-center text-sm text-muted-foreground font-medium p-0"
-              >
-                <abbr title={day} className="no-underline">
-                  {day}
-                </abbr>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {Array.from({ length: startOfMonth(currentMonth).getDay() }).map((_, i) => (
-              <td key={`empty-${i}`} className="p-0">
-                <div className="h-9" />
-              </td>
-            ))}
-            {days.map((day: Date) => {
-              const isSelected = selected ? isSameDay(day, selected) : false
-              const dateLabel = format(day, "MMMM d, yyyy")
-
-              return (
-                <td key={day.toString()} className="p-0">
-                  <button
-                    type="button"
-                    onClick={() => handleDateSelect(day)}
-                    title={dateLabel}
-                    aria-label={dateLabel}
-                    className={cn(
-                      "h-9 w-full rounded-md flex items-center justify-center text-sm transition-colors",
-                      isSelected && "bg-primary text-primary-foreground hover:bg-primary/90",
-                      !isSelected && isToday(day) && "bg-accent text-accent-foreground",
-                      !isSelected && !isToday(day) && "hover:bg-accent",
-                      !isSameMonth(day, currentMonth) && "text-muted-foreground opacity-50"
-                    )}
+      {/* Calendar Grid */}
+      <div className="grid grid-cols-[60px_1fr] divide-y">
+        {hours.map(hour => (
+          <div key={hour} className="grid grid-cols-[60px_1fr] group">
+            {/* Time Column */}
+            <div className="py-2 px-2 text-xs text-gray-500">
+              {hour === 12 ? "12 PM" : hour > 12 ? `${hour-12} PM` : `${hour} AM`}
+            </div>
+            {/* Task Slots */}
+            <div className="grid grid-cols-6">
+              {weekDays.map((day, i) => {
+                const date = addDays(startDate, i);
+                const tasksForSlot = getTasksForDateAndHour(date, hour);
+                return (
+                  <div
+                    key={`${day}-${hour}`}
+                    className="h-12 border-l relative group hover:bg-gray-50"
                   >
-                    {format(day, "d")}
-                  </button>
-                </td>
-              )
-            })}
-          </tr>
-        </tbody>
-      </table>
+                    {tasksForSlot.map(task => (
+                      <div
+                        key={task.id}
+                        className={cn(
+                          "absolute inset-x-0 mx-1 rounded px-2 py-1 text-xs overflow-hidden",
+                          task.type === "Assignment" && "bg-green-100 text-green-800",
+                          task.type === "Exam" && "bg-red-100 text-red-800",
+                          task.type === "Project" && "bg-blue-100 text-blue-800"
+                        )}
+                        style={{
+                          top: "4px",
+                          minHeight: "calc(100% - 8px)"
+                        }}
+                      >
+                        <div className="font-medium truncate">{task.courseCode}</div>
+                        <div className="truncate">{task.title}</div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-  )
+  );
 }
+
+Calendar.displayName = "Calendar"
+
+export { Calendar }
