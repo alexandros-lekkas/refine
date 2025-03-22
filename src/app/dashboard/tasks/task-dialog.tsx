@@ -161,11 +161,11 @@ export function TaskDialog({ className }: TaskDialogProps) {
       <Button
         onClick={() => setOpen(true)}
         className={cn(
-          "bg-[#c026d3] hover:bg-[#c026d3]/90 text-white rounded-full px-8 py-6 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300",
+          "bg-[#c026d3] hover:bg-[#c026d3]/90 text-white rounded-md px-4 py-2 text-base font-medium shadow-md hover:shadow-lg transition-all duration-300",
           className
         )}
       >
-        <Plus className="w-6 h-6 mr-2" />
+        <Plus className="w-5 h-5 mr-2" />
         Add Task
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>

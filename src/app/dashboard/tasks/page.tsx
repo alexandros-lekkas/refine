@@ -156,7 +156,7 @@ export default function TasksPage() {
       <div className="grid grid-cols-3 gap-4 px-4 h-[calc(100vh-140px)] w-full">
         {/* Due Today Column */}
         <div className="flex flex-col gap-4">
-          <div className="bg-destructive/10 text-destructive px-4 py-2 rounded-full w-fit dark:bg-destructive/20">
+          <div className="bg-destructive/10 text-destructive px-3 py-1.5 rounded-md w-fit dark:bg-destructive/20">
             Due Today
           </div>
           <div className="space-y-3">
@@ -236,7 +236,7 @@ export default function TasksPage() {
 
         {/* Due Soon Column */}
         <div className="flex flex-col gap-4">
-          <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full w-fit dark:bg-yellow-900/20 dark:text-yellow-200">
+          <div className="bg-yellow-100 text-yellow-800 px-3 py-1.5 rounded-md w-fit dark:bg-yellow-900/20 dark:text-yellow-200">
             Due Soon
           </div>
           <div className="space-y-3">
@@ -316,7 +316,7 @@ export default function TasksPage() {
 
         {/* Start Soon Column */}
         <div className="flex flex-col gap-4">
-          <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full w-fit dark:bg-blue-900/20 dark:text-blue-200">
+          <div className="bg-blue-100 text-blue-800 px-3 py-1.5 rounded-md w-fit dark:bg-blue-900/20 dark:text-blue-200">
             Start Soon
           </div>
           <div className="space-y-3">
