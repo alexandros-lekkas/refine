@@ -130,16 +130,30 @@ export default function TasksPage() {
   }
 
   return (
-    <>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+    <div className="w-full h-full">
+      <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex items-center gap-6">
           <h2 className="text-4xl font-bold text-foreground">Tasks</h2>
+          <div className="flex items-center gap-3 ml-2.5">
+            <div className="flex items-center gap-2">
+              <button className="p-1 hover:bg-secondary rounded-full">
+                <ChevronLeft className="w-5 h-5 text-muted-foreground" />
+              </button>
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{format(new Date(), "MMM d")}</span>
+                <span className="text-sm text-muted-foreground">(Today)</span>
+              </div>
+              <button className="p-1 hover:bg-secondary rounded-full">
+                <ChevronRight className="w-5 h-5 text-muted-foreground" />
+              </button>
+            </div>
+          </div>
         </div>
 
         <TaskDialog />
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-4 px-4 h-[calc(100vh-140px)] w-full">
         {/* Due Today Column */}
         <div className="flex flex-col gap-4">
           <div className="bg-destructive/10 text-destructive px-4 py-2 rounded-full w-fit dark:bg-destructive/20">
@@ -365,6 +379,6 @@ export default function TasksPage() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -187,175 +187,179 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpda
   }, [resizingEvent]);
 
   return (
-    <div className="h-full bg-white rounded-lg shadow-sm" style={{ width: `${width}px` }}>
-      {/* Header */}
-      <div className="grid grid-cols-[100px_1fr]">
-        <div className="border-r border-b bg-white p-2 flex items-center justify-end gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "h-8 w-8 rounded-md transition-colors",
-              "text-[#c026d3] hover:text-[#c026d3]",
-              "border border-[#f5d0fe] hover:border-[#c026d3]",
-              "bg-[#fdf4ff] hover:bg-[#fdf4ff]"
-            )}
-            onClick={() => setCurrentDate(prev => addWeeks(prev, -1))}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "h-8 w-8 rounded-md transition-colors",
-              "text-[#c026d3] hover:text-[#c026d3]",
-              "border border-[#f5d0fe] hover:border-[#c026d3]",
-              "bg-[#fdf4ff] hover:bg-[#fdf4ff]"
-            )}
-            onClick={() => setCurrentDate(prev => addWeeks(prev, 1))}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-        <div className="border-b">
-          <div className="grid grid-cols-7 h-full">
-            {weekDays.map((day, dayIndex) => {
-              const dayEvents = getEventsForDay(day);
-              const isToday = isSameDay(day, new Date());
-              return (
-                <div 
-                  key={day.toISOString()} 
-                  className={cn(
-                    "py-4 px-2 text-center border-r flex flex-col items-center justify-center",
-                    isToday && "bg-[#fdf4ff]",
-                    dayIndex === 6 && "border-r-0"
-                  )}
-                >
-                  <div className={cn(
-                    "text-sm font-medium mb-1 flex items-center justify-center",
-                    isToday && "text-[#c026d3]"
-                  )}>{format(day, "dd")}</div>
-                  <div className={cn(
-                    "text-xs text-gray-500 mb-1 flex items-center justify-center",
-                    isToday && "text-[#c026d3]"
-                  )}>{format(day, "EEE")}</div>
-                  {dayEvents.length > 0 && (
+    <div className="h-full bg-white rounded-lg shadow-sm relative" style={{ width: `${width}px` }}>
+      {/* Fixed Header */}
+      <div className="absolute top-[5px] left-0 right-0 bg-white z-50">
+        <div className="grid grid-cols-[100px_1fr] mt-[20px] ml-[15px]">
+          <div className="border-r bg-white p-2 flex items-center justify-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                "h-8 w-8 rounded-md transition-colors",
+                "text-[#c026d3] hover:text-[#c026d3]",
+                "border border-[#f5d0fe] hover:border-[#c026d3]",
+                "bg-[#fdf4ff] hover:bg-[#fdf4ff]"
+              )}
+              onClick={() => setCurrentDate(prev => addWeeks(prev, -1))}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                "h-8 w-8 rounded-md transition-colors",
+                "text-[#c026d3] hover:text-[#c026d3]",
+                "border border-[#f5d0fe] hover:border-[#c026d3]",
+                "bg-[#fdf4ff] hover:bg-[#fdf4ff]"
+              )}
+              onClick={() => setCurrentDate(prev => addWeeks(prev, 1))}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <div>
+            <div className="grid grid-cols-7 h-full">
+              {weekDays.map((day, dayIndex) => {
+                const dayEvents = getEventsForDay(day);
+                const isToday = isSameDay(day, new Date());
+                return (
+                  <div 
+                    key={day.toISOString()} 
+                    className={cn(
+                      "py-3 px-2 text-center border-r border-b flex flex-col items-center justify-center",
+                      isToday && "bg-[#fdf4ff]",
+                      dayIndex === 6 && "border-r-0"
+                    )}
+                  >
                     <div className={cn(
-                      "mt-2 px-2 py-0.5 text-xs rounded-md text-center transition-colors w-full",
-                      dayEvents.length > 2 
-                        ? "bg-[#c026d3] text-white" 
-                        : "bg-[#fdf4ff] text-[#c026d3] border border-[#f5d0fe] hover:border-[#c026d3]"
-                    )}>
-                      {dayEvents.length} {dayEvents.length === 1 ? "task" : "tasks"} due
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                      "text-sm font-medium mb-0.5 flex items-center justify-center",
+                      isToday && "text-[#c026d3]"
+                    )}>{format(day, "dd")}</div>
+                    <div className={cn(
+                      "text-xs text-gray-500 flex items-center justify-center",
+                      isToday && "text-[#c026d3]"
+                    )}>{format(day, "EEE")}</div>
+                    {dayEvents.length > 0 && (
+                      <div className={cn(
+                        "mt-0.5 px-2 py-0.5 text-xs rounded-md text-center transition-colors w-full",
+                        dayEvents.length > 2 
+                          ? "bg-[#c026d3] text-white" 
+                          : "bg-[#fdf4ff] text-[#c026d3] border border-[#f5d0fe] hover:border-[#c026d3]"
+                      )}>
+                        {dayEvents.length} {dayEvents.length === 1 ? "task" : "tasks"} due
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Calendar Grid */}
-      <div className="grid grid-cols-[100px_1fr]">
-        <div className="bg-white border-r">
-          {HOURS.map((hour) => (
-            <div 
-              key={hour} 
-              className="relative border-b last:border-b-0" 
-              style={{ height: `${HOUR_HEIGHT}px` }}
-            >
-              <div className={cn(
-                "absolute top-[50%] -translate-y-1/2 right-4 text-xs font-medium tracking-wide transition-colors whitespace-nowrap text-gray-600",
-                "flex items-center justify-end h-full pt-0.5", // Added padding and flex for better alignment
-                hoveredSlot?.hour === hour ? "text-[#c026d3]" : ""
-              )}>
-                {hour}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="relative" ref={gridRef}>
-          <div className="grid grid-cols-7 h-full">
-            {weekDays.map((day, dayIndex) => (
-              <div key={day.toISOString()} className={cn(
-                "relative min-h-full border-r",
-                dayIndex === 6 && "border-r-0"
-              )}>
-                {HOURS.map((hour, index) => (
-                  <div
-                    key={`${day.toISOString()}-${hour}`}
-                    className={cn(
-                      "relative group transition-all duration-150 border-b",
-                      hoveredSlot?.date.toISOString() === day.toISOString() && hoveredSlot?.hour === hour
-                        ? "bg-[#fdf4ff] outline outline-2 outline-[#f5d0fe] z-10"
-                        : "hover:bg-[#fdf4ff]",
-                      index === HOURS.length - 1 && "border-b-0"
-                    )}
-                    style={{ height: `${HOUR_HEIGHT}px` }}
-                    onDragOver={(e) => handleDragOver(e, day, hour)}
-                    onDrop={(e) => handleDrop(e, day, hour)}
-                    onClick={() => {
-                      const [h, ampm] = hour.split(' ');
-                      let hourNum = parseInt(h);
-                      if (ampm === 'PM' && hourNum !== 12) hourNum += 12;
-                      if (ampm === 'AM' && hourNum === 12) hourNum = 0;
-                      onCreateTaskClick(day, hourNum);
-                    }}
-                  />
-                ))}
-                {events
-                  .filter(event => isSameDay(new Date(event.start), day))
-                  .map((event) => (
-                    <div
-                      key={event.id}
-                      draggable
-                      onDragStart={(e) => handleDragStart(event, e)}
-                      onDragEnd={handleDragEnd}
-                      className={cn(
-                        "absolute left-1 right-1 rounded-md px-2 py-1 text-xs overflow-hidden border shadow-sm transition-all duration-150 group z-20",
-                        draggedEvent?.id === event.id ? "opacity-50 cursor-grabbing" : "cursor-grab",
-                        event.color === "#34D399" && "bg-green-50 text-green-800 border-green-200 hover:bg-green-100 hover:border-green-300",
-                        event.color === "#F87171" && "bg-red-50 text-red-800 border-red-200 hover:bg-red-100 hover:border-red-300",
-                        event.color === "#60A5FA" && "bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100 hover:border-blue-300"
-                      )}
-                      style={{
-                        top: getEventTop(event),
-                        height: getEventHeight(event),
-                        opacity: event.title.includes("Time has passed") ? 0.5 : 1,
-                        cursor: resizingEvent?.event.id === event.id ? 'ns-resize' : 'move'
-                      }}
-                    >
-                      {/* Resize handles */}
-                      <div
-                        className="absolute top-0 left-0 right-0 h-2 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-t-md"
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleResizeStart(event, "top");
-                        }}
-                      />
-                      <div
-                        className="absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-b-md"
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleResizeStart(event, "bottom");
-                        }}
-                      />
-                      <div className="font-medium truncate">
-                        {(draggedEvent?.id === event.id || resizingEvent?.event.id === event.id) && dragTime ? (
-                          formatEventTime(dragTime.start, dragTime.end)
-                        ) : (
-                          event.courseCode
-                        )}
-                      </div>
-                      <div className="truncate">{event.title}</div>
-                    </div>
-                  ))}
+      {/* Scrollable Content */}
+      <div className="h-full overflow-y-auto pt-[92px]">
+        <div className="grid grid-cols-[100px_1fr] ml-[15px]">
+          <div className="bg-white border-r h-full">
+            {HOURS.map((hour) => (
+              <div 
+                key={hour} 
+                className="relative border-b last:border-b-0" 
+                style={{ height: `${HOUR_HEIGHT}px` }}
+              >
+                <div className={cn(
+                  "absolute top-[50%] -translate-y-1/2 right-4 text-xs font-medium tracking-wide transition-colors whitespace-nowrap text-gray-600",
+                  "flex items-center justify-end h-full pt-0.5",
+                  hoveredSlot?.hour === hour ? "text-[#c026d3]" : ""
+                )}>
+                  {hour}
+                </div>
               </div>
             ))}
+          </div>
+          <div className="relative" ref={gridRef}>
+            <div className="grid grid-cols-7 h-full">
+              {weekDays.map((day, dayIndex) => (
+                <div key={day.toISOString()} className={cn(
+                  "relative min-h-full border-r",
+                  dayIndex === 6 && "border-r-0"
+                )}>
+                  {HOURS.map((hour, index) => (
+                    <div
+                      key={`${day.toISOString()}-${hour}`}
+                      className={cn(
+                        "relative group transition-all duration-150 border-b",
+                        hoveredSlot?.date.toISOString() === day.toISOString() && hoveredSlot?.hour === hour
+                          ? "bg-[#fdf4ff] outline outline-2 outline-[#f5d0fe] z-10"
+                          : "hover:bg-[#fdf4ff]",
+                        index === HOURS.length - 1 && "border-b-0"
+                      )}
+                      style={{ height: `${HOUR_HEIGHT}px` }}
+                      onDragOver={(e) => handleDragOver(e, day, hour)}
+                      onDrop={(e) => handleDrop(e, day, hour)}
+                      onClick={() => {
+                        const [h, ampm] = hour.split(' ');
+                        let hourNum = parseInt(h);
+                        if (ampm === 'PM' && hourNum !== 12) hourNum += 12;
+                        if (ampm === 'AM' && hourNum === 12) hourNum = 0;
+                        onCreateTaskClick(day, hourNum);
+                      }}
+                    />
+                  ))}
+                  {events
+                    .filter(event => isSameDay(new Date(event.start), day))
+                    .map((event) => (
+                      <div
+                        key={event.id}
+                        draggable
+                        onDragStart={(e) => handleDragStart(event, e)}
+                        onDragEnd={handleDragEnd}
+                        className={cn(
+                          "absolute left-1 right-1 rounded-md px-2 py-1 text-xs overflow-hidden border shadow-sm transition-all duration-150 group z-20",
+                          draggedEvent?.id === event.id ? "opacity-50 cursor-grabbing" : "cursor-grab",
+                          event.color === "#34D399" && "bg-green-50 text-green-800 border-green-200 hover:bg-green-100 hover:border-green-300",
+                          event.color === "#F87171" && "bg-red-50 text-red-800 border-red-200 hover:bg-red-100 hover:border-red-300",
+                          event.color === "#60A5FA" && "bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100 hover:border-blue-300"
+                        )}
+                        style={{
+                          top: getEventTop(event),
+                          height: getEventHeight(event),
+                          opacity: event.title.includes("Time has passed") ? 0.5 : 1,
+                          cursor: resizingEvent?.event.id === event.id ? 'ns-resize' : 'move'
+                        }}
+                      >
+                        {/* Resize handles */}
+                        <div
+                          className="absolute top-0 left-0 right-0 h-2 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-t-md"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleResizeStart(event, "top");
+                          }}
+                        />
+                        <div
+                          className="absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-b-md"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleResizeStart(event, "bottom");
+                          }}
+                        />
+                        <div className="font-medium truncate">
+                          {(draggedEvent?.id === event.id || resizingEvent?.event.id === event.id) && dragTime ? (
+                            formatEventTime(dragTime.start, dragTime.end)
+                          ) : (
+                            event.courseCode
+                          )}
+                        </div>
+                        <div className="truncate">{event.title}</div>
+                      </div>
+                    ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

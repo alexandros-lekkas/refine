@@ -33,10 +33,10 @@ export default function DashboardLayout({
       disableTransitionOnChange
     >
       <SidebarProvider>
-        <div className="flex h-screen bg-background">
+        <div className="flex h-screen w-screen bg-background">
           <AppSidebar />
-          <div className="space-y-4 p-5">
-            <div className="flex items-center gap-4">
+          <div className="flex-1 w-full">
+            <div className="flex items-center gap-4 p-5">
               <SidebarTrigger />
               <Breadcrumb>
                 <BreadcrumbList>
@@ -67,7 +67,9 @@ export default function DashboardLayout({
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
-            {children}
+            <div className="w-full h-[calc(100vh-80px)] overflow-auto">
+              {children}
+            </div>
           </div>
         </div>
         <Toaster />
