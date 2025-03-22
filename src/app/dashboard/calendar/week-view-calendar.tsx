@@ -28,7 +28,7 @@ const HOURS = [
   "12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM"
 ];
 
-const HOUR_HEIGHT = 32; // Slightly reduced to accommodate more hours
+const HOUR_HEIGHT = 28; // Reduced to match the more compact design
 const MINUTES_IN_HOUR = 60;
 const HOUR_TO_INDEX = Object.fromEntries(
   HOURS.map((hour, index) => [hour, index])
@@ -190,12 +190,12 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
       {/* Fixed Header */}
       <div className="flex-none border-b bg-white z-50">
         <div className="grid grid-cols-[100px_1fr] pr-3">
-          <div className="border-r bg-white p-2 flex items-center justify-center gap-2">
+          <div className="border-r bg-white p-1.5 flex items-center justify-center gap-2">
             <Button
               variant="ghost"
               size="sm"
               className={cn(
-                "h-8 w-8 rounded-md transition-colors",
+                "h-7 w-7 rounded-md transition-colors",
                 "text-[#c026d3] hover:text-[#c026d3]",
                 "border border-[#f5d0fe] hover:border-[#c026d3]",
                 "bg-[#fdf4ff] hover:bg-[#fdf4ff]"
@@ -208,7 +208,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
               variant="ghost"
               size="sm"
               className={cn(
-                "h-8 w-8 rounded-md transition-colors",
+                "h-7 w-7 rounded-md transition-colors",
                 "text-[#c026d3] hover:text-[#c026d3]",
                 "border border-[#f5d0fe] hover:border-[#c026d3]",
                 "bg-[#fdf4ff] hover:bg-[#fdf4ff]"
@@ -227,7 +227,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
                   <div 
                     key={day.toISOString()} 
                     className={cn(
-                      "py-2 px-2 text-center border-r border-b flex flex-col items-center justify-center",
+                      "py-1.5 px-2 text-center border-r border-b flex flex-col items-center justify-center",
                       isToday && "bg-[#fdf4ff]",
                       dayIndex === 6 && "border-r-0"
                     )}
@@ -242,7 +242,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
                     )}>{format(day, "EEE")}</div>
                     {dayEvents.length > 0 && (
                       <div className={cn(
-                        "mt-0.5 px-2 py-0.5 text-xs rounded-md text-center transition-colors w-full",
+                        "mt-0.5 px-1.5 py-0.5 text-xs rounded-md text-center transition-colors w-full",
                         dayEvents.length > 2 
                           ? "bg-[#c026d3] text-white" 
                           : "bg-[#fdf4ff] text-[#c026d3] border border-[#f5d0fe] hover:border-[#c026d3]"
@@ -316,7 +316,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
                         onDragStart={(e) => handleDragStart(event, e)}
                         onDragEnd={handleDragEnd}
                         className={cn(
-                          "absolute left-1 right-1 rounded-md px-1.5 py-0.5 text-xs overflow-hidden border shadow-sm transition-all duration-150 group z-20",
+                          "absolute left-1 right-1 rounded-md px-1 py-0.5 text-xs overflow-hidden border shadow-sm transition-all duration-150 group z-20",
                           draggedEvent?.id === event.id ? "opacity-50 cursor-grabbing" : "cursor-grab",
                           event.color === "#34D399" && "bg-green-50 text-green-800 border-green-200 hover:bg-green-100 hover:border-green-300",
                           event.color === "#F87171" && "bg-red-50 text-red-800 border-red-200 hover:bg-red-100 hover:border-red-300",
@@ -331,7 +331,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
                       >
                         {/* Resize handles */}
                         <div
-                          className="absolute top-0 left-0 right-0 h-1.5 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-t-md"
+                          className="absolute top-0 left-0 right-0 h-1 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-t-md"
                           onMouseDown={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -339,7 +339,7 @@ export function WeekViewCalendar({ events, onCreateTaskClick, onEventUpdate }: W
                           }}
                         />
                         <div
-                          className="absolute bottom-0 left-0 right-0 h-1.5 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-b-md"
+                          className="absolute bottom-0 left-0 right-0 h-1 cursor-ns-resize opacity-0 group-hover:opacity-100 bg-[#c026d3]/10 rounded-b-md"
                           onMouseDown={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
