@@ -14,22 +14,14 @@ interface Event {
 }
 
 export default function CalendarPage() {
+  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState<{ date: Date; hour: number } | null>(null);
 
-  const handleCreateEvent = (event: Omit<Event, 'id'>) => {
-    const newEvent = {
-      ...event,
-      id: Math.random().toString(36).substr(2, 9),
-    };
-    setEvents(prev => [...prev, newEvent]);
-    setSelectedTimeSlot(null);
-  };
-
-  const handleEventUpdate = (updatedEvent: Event) => {
-    setEvents(prev => prev.map(event => 
-      event.id === updatedEvent.id ? updatedEvent : event
-    ));
+  const handleCreateEvent = (event: Event) => {
+    setEvents(prev => [...prev, event]);
+    setIsCreateEventOpen(false);
   };
 
   // Sample events for demonstration
@@ -95,21 +87,27 @@ export default function CalendarPage() {
   return (
     <div className="h-screen overflow-hidden bg-background">
       <div className="mx-auto h-full max-w-[1600px] px-6">
-        <WeekViewCalendar 
-          events={[...events, ...sampleEvents]} 
-          onCreateTaskClick={(date, hour) => setSelectedTimeSlot({ date, hour })}
-          onEventUpdate={handleEventUpdate}
+        <WeekViewCalendar
+          events={[...events, ...sampleEvents]}
+          onCreateTaskClick={(date, hour) => {
+            setSelectedDate(date);
+            setSelectedHour(hour);
+            setIsCreateEventOpen(true);
+          }}
+          onEventUpdate={(updatedEvent) => {
+            setEvents(prev => prev.map(event => 
+              event.id === updatedEvent.id ? updatedEvent : event
+            ));
+          }}
+        />
+        <CreateEventDialog
+          isOpen={isCreateEventOpen}
+          onClose={() => setIsCreateEventOpen(false)}
+          onCreateEvent={handleCreateEvent}
+          defaultDate={selectedDate ?? undefined}
+          defaultHour={selectedHour ?? undefined}
         />
       </div>
-      {selectedTimeSlot && (
-        <CreateEventDialog
-          isOpen={!!selectedTimeSlot}
-          onClose={() => setSelectedTimeSlot(null)}
-          onSubmit={handleCreateEvent}
-          date={selectedTimeSlot.date}
-          hour={selectedTimeSlot.hour}
-        />
-      )}
     </div>
   );
 }

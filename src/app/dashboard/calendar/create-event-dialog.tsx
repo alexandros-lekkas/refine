@@ -1,153 +1,251 @@
 "use client";
 
+import { useState } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { format } from "date-fns";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface CreateEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (event: {
-    title: string;
-    start: Date;
-    end: Date;
-    color: string;
-    courseCode: string;
-  }) => void;
-  date: Date;
-  hour: number;
+  onCreateEvent: (event: any) => void;
+  defaultDate?: Date;
+  defaultHour?: number;
 }
 
-const DURATIONS = [
-  { value: "0.5", label: "30 minutes" },
-  { value: "1", label: "1 hour" },
-  { value: "1.5", label: "1.5 hours" },
-  { value: "2", label: "2 hours" },
-  { value: "3", label: "3 hours" },
-  { value: "4", label: "4 hours" },
+const EVENT_TYPES = [
+  { id: 'academic', label: 'Academic', color: '#60A5FA' },
+  { id: 'club', label: 'Club', color: '#34D399' },
+  { id: 'workout', label: 'Workout', color: '#F87171' },
+  { id: 'social', label: 'Social', color: '#A78BFA' },
+  { id: 'downtime', label: 'Downtime', color: '#FBBF24' },
+  { id: 'other', label: 'Other', color: '#9CA3AF' }
 ];
 
-const COLORS = [
-  { value: "#34D399", label: "Green" },
-  { value: "#F87171", label: "Red" },
-  { value: "#60A5FA", label: "Blue" },
-];
+export function CreateEventDialog({ isOpen, onClose, onCreateEvent, defaultDate, defaultHour }: CreateEventDialogProps) {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('academic');
+  const [type, setType] = useState('assignment');
+  const [dueDate, setDueDate] = useState<Date | undefined>(defaultDate);
+  const [dueTime, setDueTime] = useState(defaultHour ? `${defaultHour}:00` : '12:00');
+  const [priority, setPriority] = useState('medium');
+  const [dateType, setDateType] = useState<'due' | 'start'>('due');
 
-export function CreateEventDialog({
-  isOpen,
-  onClose,
-  onSubmit,
-  date,
-  hour,
-}: CreateEventDialogProps) {
-  const [title, setTitle] = useState("");
-  const [courseCode, setCourseCode] = useState("");
-  const [duration, setDuration] = useState("1");
-  const [color, setColor] = useState("#60A5FA");
+  const handleSubmit = () => {
+    const startDate = dueDate ? new Date(dueDate) : new Date();
+    const [hours, minutes] = dueTime.split(':').map(Number);
+    startDate.setHours(hours, minutes, 0);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const start = new Date(date);
-    start.setHours(hour);
-    const end = new Date(start);
-    end.setHours(start.getHours() + parseFloat(duration));
-
-    onSubmit({
+    const event = {
+      id: Math.random().toString(36).substr(2, 9),
       title,
-      courseCode,
-      start,
-      end,
-      color,
-    });
-    setTitle("");
-    setCourseCode("");
-    setDuration("1");
-    setColor("#60A5FA");
+      description,
+      category,
+      type,
+      start: startDate,
+      end: startDate,
+      color: EVENT_TYPES.find(t => t.id === category)?.color || '#60A5FA',
+      priority
+    };
+
+    onCreateEvent(event);
     onClose();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create New Event</DialogTitle>
-        </DialogHeader>
-        <div className="p-6">
-          <h2 className="text-lg font-medium mb-4">Create New Event</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+      <DialogContent className="max-w-[500px] p-0">
+        <div className="flex items-center justify-between p-4">
+          <DialogTitle className="text-2xl">Create New Task</DialogTitle>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8" 
+            onClick={onClose}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+
+        <div className="p-4 space-y-4">
+          {/* Title */}
+          <div>
+            <Label>Title</Label>
+            <Input
+              placeholder="Enter task title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <Label>Description</Label>
+            <Input
+              placeholder="Enter task description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {/* Category */}
             <div>
-              <Label className="block text-sm font-medium mb-1">Course Code</Label>
+              <Label>Category</Label>
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {EVENT_TYPES.map((type) => (
+                    <SelectItem key={type.id} value={type.id}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Priority */}
+            <div>
+              <Label>Priority</Label>
+              <Select value={priority} onValueChange={setPriority}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {/* Type */}
+            <div>
+              <Label>Type</Label>
+              <Select value={type} onValueChange={setType}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="assignment">Assignment</SelectItem>
+                  <SelectItem value="meeting">Meeting</SelectItem>
+                  <SelectItem value="event">Event</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Due Time */}
+            <div>
+              <Label>Due Time</Label>
               <Input
-                value={courseCode}
-                onChange={(e) => setCourseCode(e.target.value)}
-                placeholder="e.g. CS101"
-                required
+                type="time"
+                value={dueTime}
+                onChange={(e) => setDueTime(e.target.value)}
               />
             </div>
-            <div>
-              <Label className="block text-sm font-medium mb-1">Event Title</Label>
-              <Input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Event title"
-                required
-              />
-            </div>
-            <div>
-              <Label className="block text-sm font-medium mb-1">Date & Time</Label>
-              <Input
-                value={`${format(date, "MMMM d, yyyy")} at ${format(
-                  new Date().setHours(hour),
-                  "h:mm a"
-                )}`}
-                disabled
-              />
-            </div>
-            <div>
-              <Label className="block text-sm font-medium mb-1">Duration</Label>
-              <select
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                className="block w-full p-2 pl-10 text-sm text-gray-700 rounded-lg border-gray-200 focus:ring-blue-500 focus:border-blue-500"
-              >
-                {DURATIONS.map((d) => (
-                  <option key={d.value} value={d.value}>
-                    {d.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <Label className="block text-sm font-medium mb-1">Color</Label>
+          </div>
+
+          {/* Date Selection */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <Label>Date Type</Label>
               <div className="flex gap-2">
-                <button
-                  type="button"
-                  className={`w-8 h-8 rounded-full ${color === "#34D399" ? "ring-2 ring-offset-2" : ""}`}
-                  style={{ backgroundColor: "#34D399" }}
-                  onClick={() => setColor("#34D399")}
-                />
-                <button
-                  type="button"
-                  className={`w-8 h-8 rounded-full ${color === "#F87171" ? "ring-2 ring-offset-2" : ""}`}
-                  style={{ backgroundColor: "#F87171" }}
-                  onClick={() => setColor("#F87171")}
-                />
-                <button
-                  type="button"
-                  className={`w-8 h-8 rounded-full ${color === "#60A5FA" ? "ring-2 ring-offset-2" : ""}`}
-                  style={{ backgroundColor: "#60A5FA" }}
-                  onClick={() => setColor("#60A5FA")}
-                />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={`px-2 py-1 text-sm ${dateType === 'due' ? 'bg-gray-100' : ''}`}
+                  onClick={() => setDateType('due')}
+                >
+                  Due Date
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={`px-2 py-1 text-sm ${dateType === 'start' ? 'bg-gray-100' : ''}`}
+                  onClick={() => setDateType('start')}
+                >
+                  Date
+                </Button>
               </div>
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={onClose}>Cancel</Button>
-              <Button type="submit">Create Event</Button>
-            </DialogFooter>
-          </form>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start text-left font-normal"
+                >
+                  {dueDate ? format(dueDate, "MMMM d, yyyy") : "Select date"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={dueDate}
+                  onSelect={setDueDate}
+                  initialFocus
+                  className="rounded-md border shadow"
+                  classNames={{
+                    months: "space-y-4 p-4",
+                    month: "space-y-4",
+                    caption: "flex justify-between pt-1 relative items-center px-2",
+                    caption_label: "text-sm font-medium",
+                    nav: "flex items-center gap-1",
+                    nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 rounded-full flex items-center justify-center",
+                    nav_button_previous: "absolute left-1",
+                    nav_button_next: "absolute right-1",
+                    table: "w-full border-collapse",
+                    head_row: "flex",
+                    head_cell: "text-gray-500 rounded-md w-9 font-normal text-[0.8rem]",
+                    row: "flex w-full mt-2",
+                    cell: "text-center text-sm relative p-0 hover:bg-gray-100 rounded-full w-9 h-9 flex items-center justify-center",
+                    day: "h-9 w-9 p-0 font-normal",
+                    day_range_middle: "rounded-none",
+                    day_selected: "bg-[#3b82f6] text-white hover:bg-[#3b82f6] hover:text-white focus:bg-[#3b82f6] focus:text-white",
+                    day_today: "bg-gray-100",
+                    day_outside: "opacity-50",
+                    day_disabled: "opacity-50",
+                    day_hidden: "invisible",
+                  }}
+                  components={{
+                    IconLeft: () => <ChevronLeft className="h-4 w-4" />,
+                    IconRight: () => <ChevronRight className="h-4 w-4" />,
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+
+        <div className="p-4">
+          <Button 
+            onClick={handleSubmit}
+            className="w-full bg-[#c026d3] text-white hover:bg-[#a21caf]"
+            disabled={!title}
+          >
+            Create Task
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
