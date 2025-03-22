@@ -10,6 +10,7 @@ import {
   PieChart,
   GalleryVerticalEnd,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import {
   Sidebar,
@@ -38,6 +39,12 @@ const items = [
     title: "Calendar",
     url: "/dashboard/calendar",
     icon: Calendar,
+    subItems: [
+      {
+        title: "Routine Setup",
+        url: "/dashboard/calendar/routine-setup",
+      },
+    ],
   },
   {
     title: "Insights",
@@ -85,6 +92,24 @@ export function AppSidebar() {
                       <span className="text-base">{item.title}</span>
                     </SidebarMenuButton>
                   </Link>
+                  {item.subItems && (
+                    <div className="pl-11 space-y-1">
+                      {item.subItems.map((subItem) => (
+                        <Link
+                          key={subItem.title}
+                          href={subItem.url}
+                          className={cn(
+                            "block py-2 px-4 text-sm rounded-md transition-colors",
+                            pathname === subItem.url
+                              ? "bg-primary/20 text-primary"
+                              : "text-gray-600 hover:bg-primary/10 hover:text-primary"
+                          )}
+                        >
+                          {subItem.title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
