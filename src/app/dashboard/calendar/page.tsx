@@ -111,7 +111,7 @@ export default function CalendarPage() {
   const calendarWidth = isSidebarCollapsed ? 1350 : 1150;
 
   return (
-    <div className="-m-8 h-[calc(100vh-4rem)] overflow-x-auto">
+    <div className="max-w-[1600px] mx-auto px-6 py-6 h-[calc(100vh-4rem)] overflow-x-auto">
       <div style={{ 
         minWidth: `${calendarWidth}px`,
         height: '100%',
