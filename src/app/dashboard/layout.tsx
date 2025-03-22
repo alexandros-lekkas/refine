@@ -4,7 +4,8 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import { TaskProvider } from "@/lib/providers/tasks";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+
+import { AppSidebar } from "./sidebar";
 
 export default function DashboardLayout({
   children,
