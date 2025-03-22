@@ -116,9 +116,9 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-8">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="space-y-1">
           <h1 className="text-3xl font-bold">
             Good {timeOfDay}, {user?.first_name}
           </h1>
@@ -134,29 +134,29 @@ export default function DashboardPage() {
         </Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card className="p-6">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 px-0">
             <CardTitle className="text-sm font-medium">
               Daily Progress
             </CardTitle>
             <Trophy className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
+          <CardContent className="px-0">
+            <div className="text-2xl font-bold mb-2">
               {Math.round(dailyProgress)}%
             </div>
-            <Progress value={dailyProgress} className="mt-2" />
+            <Progress value={dailyProgress} />
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="p-6">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 px-0">
             <CardTitle className="text-sm font-medium">Due Today</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{dueTodayTasks.length}</div>
+          <CardContent className="px-0">
+            <div className="text-2xl font-bold mb-1">{dueTodayTasks.length}</div>
             <p className="text-xs text-muted-foreground">
               {dueTodayTasks.length === 0
                 ? "No tasks due today"
@@ -167,30 +167,30 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="p-6">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 px-0">
             <CardTitle className="text-sm font-medium">Work On Today</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{workOnToday.length}</div>
+          <CardContent className="px-0">
+            <div className="text-2xl font-bold mb-1">{workOnToday.length}</div>
             <p className="text-xs text-muted-foreground">
               {workOnToday.length === 0
                 ? "No tasks to work on"
                 : `${workOnToday.length} task${
                     workOnToday.length === 1 ? "" : "s"
-                  } to start`}
+                  } to work on`}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="p-6">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 px-0">
             <CardTitle className="text-sm font-medium">Starting Soon</CardTitle>
             <Rocket className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{startSoonTasks.length}</div>
+          <CardContent className="px-0">
+            <div className="text-2xl font-bold mb-1">{startSoonTasks.length}</div>
             <p className="text-xs text-muted-foreground">
               {startSoonTasks.length === 0
                 ? "No upcoming tasks"
@@ -202,12 +202,12 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
-          <CardHeader>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="col-span-4 p-6">
+          <CardHeader className="px-0">
             <CardTitle>Due Today</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-0">
             {dueTodayTasks.length === 0 ? (
               <div className="flex items-center justify-center h-[200px] text-muted-foreground">
                 No tasks due today
@@ -237,11 +237,11 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="col-span-3">
-          <CardHeader>
+        <Card className="col-span-3 p-6">
+          <CardHeader className="px-0">
             <CardTitle>Starting Soon</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-0">
             {startSoonTasks.length === 0 ? (
               <div className="flex items-center justify-center h-[200px] text-muted-foreground">
                 No upcoming tasks
