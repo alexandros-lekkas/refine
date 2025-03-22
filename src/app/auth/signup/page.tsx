@@ -64,7 +64,7 @@ export default function SignUpPage() {
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="flex flex-col gap-4 p-6 md:p-10 bg-white">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <Link href="/" className="flex items-center gap-2 font-medium">
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
@@ -77,13 +77,15 @@ export default function SignUpPage() {
           <div className="w-full max-w-xs">
             <form className={cn("flex flex-col gap-6")} onSubmit={handleSignUp}>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-4xl font-bold text-gray-900 animate-in fade-in slide-in-from-top-4 duration-500">Create your account</h1>
-                <p className="text-balance text-base text-gray-500 animate-in fade-in slide-in-from-top-4 duration-500">
+                <h1 className="text-2xl font-bold animate-in fade-in slide-in-from-top-4 duration-500">
+                  Create your account
+                </h1>
+                <p className="text-balance text-sm text-muted-foreground animate-in fade-in slide-in-from-top-4 duration-500">
                   Enter your details below to create your account
                 </p>
               </div>
               {error && (
-                <div className="rounded-md bg-red-50 p-4 text-sm text-red-600 animate-in fade-in duration-300">
+                <div className="rounded-md bg-destructive/15 p-4 text-sm text-destructive animate-in fade-in duration-300">
                   {error}
                 </div>
               )}
@@ -96,76 +98,130 @@ export default function SignUpPage() {
               <div className="grid gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="firstName" className="text-gray-700 text-base">First name</Label>
+                    <Label htmlFor="firstName">First name</Label>
                     <Input
                       id="firstName"
                       type="text"
+                      placeholder="John"
+                      required
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
-                      required
-                      className="h-12 text-base"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="lastName" className="text-gray-700 text-base">Last name</Label>
+                    <Label htmlFor="lastName">Last name</Label>
                     <Input
                       id="lastName"
                       type="text"
+                      placeholder="Doe"
+                      required
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
-                      required
-                      className="h-12 text-base"
                     />
                   </div>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="email" className="text-gray-700 text-base">Email</Label>
+                  <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
                     type="email"
+                    placeholder="m@example.com"
+                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="h-12 text-base"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="password" className="text-gray-700 text-base">Password</Label>
+                  <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
                     type="password"
+                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="h-12 text-base"
                   />
                 </div>
-                <Button type="submit" className="w-full h-12 text-base font-medium">
-                  Sign Up
+                <Button type="submit" className="w-full">
+                  Sign up
                 </Button>
               </div>
-              <div className="text-center">
-                <p className="text-base text-gray-600">
-                  Already have an account?{" "}
-                  <Link href="/auth/login" className="text-primary hover:underline font-medium">
-                    Log in
-                  </Link>
-                </p>
+              <div className="text-center text-sm">
+                Already have an account?{" "}
+                <Link
+                  href="/auth/login"
+                  className="underline underline-offset-4"
+                >
+                  Sign in
+                </Link>
               </div>
             </form>
           </div>
         </div>
       </div>
-      <div className="hidden lg:block relative bg-gradient-to-br from-primary/5 to-accent/5">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-b from-primary/20 to-transparent rounded-full blur-3xl"></div>
-        <div className="relative h-full flex items-center justify-center p-8">
-          <div className="max-w-md text-center">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Join Refine Today</h2>
-            <p className="text-lg text-gray-600">
-              Create an account to unlock personalized study plans, AI-powered assistance, and seamless task management.
+      <div className="hidden lg:flex relative flex-col justify-center p-12 bg-[#0B0A0F] text-white overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 -right-40 w-80 h-80 bg-gradient-to-br from-[#FF3DC0] to-purple-600 rounded-full opacity-20 blur-3xl" />
+          <div className="absolute bottom-0 -left-40 w-80 h-80 bg-gradient-to-tr from-blue-600 to-[#FF3DC0] rounded-full opacity-20 blur-3xl" />
+        </div>
+
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10" />
+
+        <div className="relative max-w-2xl mx-auto text-center">
+          {/* Main Heading */}
+          <div className="space-y-4">
+            <p className="text-[#FF3DC0] font-medium flex items-center justify-center gap-2">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M14 5L21 12M21 12L14 19M21 12H3"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>3x faster project completion</span>
             </p>
+            <h2 className="text-[4rem] leading-none font-extralight">
+              Your Academic Success,{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">
+                AI-Powered
+              </span>
+            </h2>
+          </div>
+
+          {/* KPIs */}
+          <div className="grid grid-cols-3 gap-8 mt-12 mb-12">
+            <div className="text-center space-y-2">
+              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">
+                87%
+              </div>
+              <p className="text-sm text-gray-400">
+                Average Time Saved on Planning
+              </p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">
+                2.5x
+              </div>
+              <p className="text-sm text-gray-400">Improved Study Efficiency</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3DC0] to-purple-500">
+                100%
+              </div>
+              <p className="text-sm text-gray-400">Assignment Coverage</p>
+            </div>
+          </div>
+
+          {/* Sign-up Prompt */}
+          <div className="mt-16">
+            <div className="inline-block px-6 py-3 rounded-lg backdrop-blur-sm bg-white/10 border border-white/10 hover:bg-white/15 transition-colors">
+              <p className="text-lg font-medium">
+                ✨ Sign up now and let Refine (AI) handle the planning! ✨
+              </p>
+            </div>
           </div>
         </div>
       </div>
