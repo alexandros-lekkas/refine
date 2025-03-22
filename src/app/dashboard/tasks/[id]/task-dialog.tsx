@@ -212,7 +212,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Task name"
-              className="text-sm border-none bg-gray-50 px-3 py-2 rounded-lg focus-visible:ring-1 focus-visible:ring-[#c026d3]"
+              className="text-sm border-none bg-muted px-3 py-2 rounded-lg focus-visible:ring-1 focus-visible:ring-primary"
             />
 
             <div className="flex gap-2">
@@ -221,7 +221,9 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                 onClick={() => setTaskType("Exam")}
                 className={cn(
                   "flex-1 text-xs rounded-full py-1.5",
-                  taskType === "Exam" ? "bg-[#c026d3] text-white" : ""
+                  taskType === "Exam"
+                    ? "bg-primary text-primary-foreground"
+                    : ""
                 )}
               >
                 Exam
@@ -231,7 +233,9 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                 onClick={() => setTaskType("Assignment")}
                 className={cn(
                   "flex-1 text-xs rounded-full py-1.5",
-                  taskType === "Assignment" ? "bg-[#c026d3] text-white" : ""
+                  taskType === "Assignment"
+                    ? "bg-primary text-primary-foreground"
+                    : ""
                 )}
               >
                 Assignment
@@ -241,7 +245,9 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                 onClick={() => setTaskType("Project")}
                 className={cn(
                   "flex-1 text-xs rounded-full py-1.5",
-                  taskType === "Project" ? "bg-[#c026d3] text-white" : ""
+                  taskType === "Project"
+                    ? "bg-primary text-primary-foreground"
+                    : ""
                 )}
               >
                 Project
@@ -311,7 +317,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                           setDate(today);
                           setCalendarOpen(false);
                         }}
-                        className="text-sm text-[#c026d3] font-medium"
+                        className="text-sm text-primary font-medium"
                       >
                         Today
                       </Button>
@@ -370,15 +376,15 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                           className={cn(
                             "h-8 w-8 p-0 flex items-center justify-center transition-colors duration-150",
                             isSelected &&
-                              "relative before:absolute before:inset-0 before:rounded-full before:bg-[#c026d3] before:opacity-5 text-black font-normal hover:text-[#c026d3]",
+                              "relative before:absolute before:inset-0 before:rounded-full before:bg-primary before:opacity-5 text-black font-normal hover:text-primary",
                             isToday &&
                               !isSelected &&
-                              "text-black font-normal hover:text-[#c026d3]",
+                              "text-black font-normal hover:text-primary",
                             !isCurrentMonth && "text-gray-300/5",
                             isCurrentMonth &&
                               !isSelected &&
                               !isToday &&
-                              "text-black font-light hover:text-[#c026d3]"
+                              "text-black font-light hover:text-primary"
                           )}
                           disabled={!isCurrentMonth}
                         >
@@ -497,59 +503,59 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
               className="w-full justify-start text-xs font-normal py-2"
               onClick={() => setShowStudyPlan(!showStudyPlan)}
             >
-              <MessageSquare className="w-3.5 h-3.5 mr-1.5 text-[#c026d3]" />
+              <MessageSquare className="w-3.5 h-3.5 mr-1.5 text-primary" />
               Need help breaking down this task? I can help you create a study
               plan or suggest resources.
             </Button>
 
             {showStudyPlan && (
-              <div className="bg-gradient-to-br from-white to-purple-50/50 rounded-lg border border-purple-100 overflow-hidden">
-                <div className="p-3 border-b border-purple-100/50">
+              <div className="bg-gradient-to-br from-background to-accent/50 rounded-lg border border-accent overflow-hidden">
+                <div className="p-3 border-b border-accent/50">
                   <div className="flex items-center gap-2.5">
-                    <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-[#c026d3]/10">
-                      <Sparkles className="w-4 h-4 text-[#c026d3]" />
+                    <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-primary/10">
+                      <Sparkles className="w-4 h-4 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-sm text-gray-900">
+                      <h3 className="font-medium text-sm text-foreground">
                         AI Study Plan
                       </h3>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground">
                         Personalized steps to help you succeed
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="divide-y divide-purple-100/30">
+                <div className="divide-y divide-accent/30">
                   {studyPlan.map((phase, index) => (
                     <div key={index} className="p-3">
                       <div className="flex gap-2.5">
                         <div className="flex-none">
-                          <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#c026d3]/10 text-xs font-medium text-[#c026d3]">
+                          <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-xs font-medium text-primary">
                             {index + 1}
                           </div>
                         </div>
                         <div className="flex-1 min-w-0 space-y-1.5">
                           <div className="flex items-center justify-between">
-                            <h4 className="font-medium text-xs text-gray-900">
+                            <h4 className="font-medium text-xs text-foreground">
                               {phase.title}
                             </h4>
-                            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-[#c026d3]/10">
-                              <Clock className="w-3 h-3 text-[#c026d3]" />
-                              <span className="text-[10px] font-medium text-[#c026d3] whitespace-nowrap">
+                            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-primary/10">
+                              <Clock className="w-3 h-3 text-primary" />
+                              <span className="text-[10px] font-medium text-primary whitespace-nowrap">
                                 {phase.duration}
                               </span>
                             </div>
                           </div>
-                          <p className="text-xs text-gray-600 leading-relaxed">
+                          <p className="text-xs text-muted-foreground leading-relaxed">
                             {phase.description}
                           </p>
                           <div className="flex flex-wrap gap-1">
                             {phase.resources.map((resource, i) => (
                               <span
                                 key={i}
-                                className="group inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white text-[10px] text-gray-600 border border-gray-200"
+                                className="group inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-background text-[10px] text-muted-foreground border border-border"
                               >
-                                <div className="w-1 h-1 rounded-full bg-[#c026d3]/30" />
+                                <div className="w-1 h-1 rounded-full bg-primary/30" />
                                 {resource}
                               </span>
                             ))}
@@ -567,24 +573,25 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Add a description..."
-                className="w-full h-20 text-sm p-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#c026d3] resize-none"
+                className="w-full h-20 text-sm p-2.5 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               />
 
               <div className="space-y-1.5">
                 {subtasks.map((subtask) => (
                   <div
                     key={subtask.id}
-                    className="flex items-center gap-2 bg-gray-50 p-2 rounded-lg group"
+                    className="flex items-center gap-2 bg-muted p-2 rounded-lg group"
                   >
                     <Checkbox
                       checked={subtask.completed}
                       onCheckedChange={() => handleToggleSubtask(subtask.id)}
-                      className="rounded border-gray-300 text-[#c026d3] focus:ring-[#c026d3]"
+                      className="rounded border-border text-primary focus:ring-primary"
                     />
                     <span
                       className={cn(
                         "flex-1 text-xs",
-                        subtask.completed && "line-through text-gray-400"
+                        subtask.completed &&
+                          "line-through text-muted-foreground"
                       )}
                     >
                       {subtask.title}
@@ -601,7 +608,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
                 ))}
                 <Input
                   placeholder="Add subtask and press enter"
-                  className="text-xs border-none bg-gray-50 px-2.5 py-1.5 rounded-lg focus-visible:ring-1 focus-visible:ring-[#c026d3]"
+                  className="text-xs border-none bg-muted px-2.5 py-1.5 rounded-lg focus-visible:ring-1 focus-visible:ring-primary"
                   value={newSubtask}
                   onChange={(e) => setNewSubtask(e.target.value)}
                   onKeyDown={handleAddSubtask}
@@ -611,7 +618,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 p-3 border-t bg-gray-50 rounded-b-2xl">
+        <div className="flex items-center justify-end gap-2 p-3 border-t bg-muted rounded-b-2xl">
           <Button
             variant="ghost"
             size="sm"
@@ -623,7 +630,7 @@ export function TaskDialog({ open, onOpenChange }: TaskDialogProps) {
           <Button
             size="sm"
             onClick={() => onOpenChange(false)}
-            className="bg-[#c026d3] text-white px-3 py-1.5 text-xs rounded-xl"
+            className="bg-primary text-primary-foreground px-3 py-1.5 text-xs rounded-xl"
             disabled={!title || !course || !date}
           >
             Create Task
