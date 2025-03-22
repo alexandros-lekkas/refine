@@ -88,19 +88,9 @@ export default function TasksPage() {
     <>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <h2 className="text-4xl font-bold text-foreground">
-            Tasks - {format(new Date(), "EEEE, MMMM do")}{" "}
-            <span className="text-muted-foreground">(Today)</span>
-          </h2>
-          <div className="flex gap-2">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-          </div>
+          <h2 className="text-4xl font-bold text-foreground">Tasks</h2>
         </div>
+
         <Button
           className="bg-primary hover:bg-primary/90 text-primary-foreground px-4"
           onClick={() => setIsTaskDialogOpen(true)}
@@ -342,7 +332,7 @@ export default function TasksPage() {
           </div>
         </div>
       </div>
-      
+
       <TaskDialog open={isTaskDialogOpen} onOpenChange={setIsTaskDialogOpen} />
     </>
   );
