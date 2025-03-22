@@ -16,14 +16,10 @@ interface Event {
 
 export default function CalendarPage() {
   const [events, setEvents] = useState<Event[]>([]);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState<{
-    date: Date;
-    hour: number;
-  } | null>(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<{ date: Date; hour: number } | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const pathname = usePathname();
 
-  // Listen for sidebar collapse event
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
       if (pathname === '/dashboard/calendar') {
@@ -37,19 +33,19 @@ export default function CalendarPage() {
     };
   }, [pathname]);
 
-  const handleCreateEvent = (event: {
-    title: string;
-    start: Date;
-    end: Date;
-    color: string;
-    courseCode: string;
-  }) => {
+  const handleCreateEvent = (event: Omit<Event, 'id'>) => {
     const newEvent = {
       ...event,
       id: Math.random().toString(36).substr(2, 9),
     };
-    setEvents([...events, newEvent]);
+    setEvents(prev => [...prev, newEvent]);
     setSelectedTimeSlot(null);
+  };
+
+  const handleEventUpdate = (updatedEvent: Event) => {
+    setEvents(prev => prev.map(event => 
+      event.id === updatedEvent.id ? updatedEvent : event
+    ));
   };
 
   // Sample events for demonstration
@@ -125,6 +121,7 @@ export default function CalendarPage() {
           events={[...events, ...sampleEvents]} 
           onCreateTaskClick={(date, hour) => setSelectedTimeSlot({ date, hour })}
           width={calendarWidth}
+          onEventUpdate={handleEventUpdate}
         />
       </div>
       {selectedTimeSlot && (

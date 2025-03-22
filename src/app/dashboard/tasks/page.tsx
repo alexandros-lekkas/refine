@@ -56,6 +56,28 @@ export default function TasksPage() {
   }
 
   return (
+    <div className="min-h-screen w-full flex flex-col bg-background">
+      <div className="flex-1 px-4 py-6 max-w-[1800px] mx-auto w-full">
+        <div className="flex flex-col h-full gap-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <h2 className="text-4xl font-bold text-foreground">
+                Tasks - {format(new Date(), "EEEE, MMMM do")} <span className="text-muted-foreground">(Today)</span>
+              </h2>
+              <div className="flex gap-2">
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-4" onClick={() => setIsTaskDialogOpen(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Task
+            </Button>
+          </div>
     <main className="container mx-auto p-4">
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
@@ -313,6 +335,6 @@ export default function TasksPage() {
         </div>
       </div>
       <TaskDialog open={isTaskDialogOpen} onOpenChange={setIsTaskDialogOpen} />
-    </main>
+    </div>
   );
 }

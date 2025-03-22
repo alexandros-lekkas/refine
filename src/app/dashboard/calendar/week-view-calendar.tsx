@@ -19,6 +19,7 @@ interface WeekViewCalendarProps {
   events: Event[];
   onCreateTaskClick: (date: Date, hour: number) => void;
   width: number;
+  onEventUpdate?: (event: Event) => void;
 }
 
 const HOURS = [
@@ -31,9 +32,10 @@ const HOUR_TO_INDEX = Object.fromEntries(
   HOURS.map((hour, index) => [hour, index])
 );
 
-export function WeekViewCalendar({ events, onCreateTaskClick, width }: WeekViewCalendarProps) {
+export function WeekViewCalendar({ events, onCreateTaskClick, width, onEventUpdate }: WeekViewCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [hoveredSlot, setHoveredSlot] = useState<{ date: Date; hour: string } | null>(null);
+  const [draggedEvent, setDraggedEvent] = useState<Event | null>(null);
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 }); // Start from Sunday
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)); // Sun-Sat
 
@@ -55,6 +57,39 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width }: WeekViewC
     const hourString = format(start, 'h a').toUpperCase();
     const hourIndex = HOUR_TO_INDEX[hourString];
     return `${(hourIndex * 48) + (minutes / 60) * 48}px`;
+  };
+
+  const handleDragStart = (event: Event) => {
+    setDraggedEvent(event);
+  };
+
+  const handleDragOver = (e: React.DragEvent, date: Date, hour: string) => {
+    e.preventDefault();
+    setHoveredSlot({ date, hour });
+  };
+
+  const handleDrop = (e: React.DragEvent, date: Date, hour: string) => {
+    e.preventDefault();
+    if (draggedEvent && onEventUpdate) {
+      const [h, ampm] = hour.split(' ');
+      let hourNum = parseInt(h);
+      if (ampm === 'PM' && hourNum !== 12) hourNum += 12;
+      if (ampm === 'AM' && hourNum === 12) hourNum = 0;
+
+      const newStart = new Date(date);
+      newStart.setHours(hourNum, 0, 0, 0);
+
+      const duration = new Date(draggedEvent.end).getTime() - new Date(draggedEvent.start).getTime();
+      const newEnd = new Date(newStart.getTime() + duration);
+
+      onEventUpdate({
+        ...draggedEvent,
+        start: newStart,
+        end: newEnd,
+      });
+    }
+    setDraggedEvent(null);
+    setHoveredSlot(null);
   };
 
   return (
@@ -126,12 +161,12 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width }: WeekViewC
       </div>
 
       {/* Calendar Grid */}
-      <div className="grid grid-cols-[80px_1fr] h-[calc(100vh-8rem)] overflow-y-auto">
-        <div className="bg-white">
+      <div className="grid grid-cols-[100px_1fr] h-[calc(100vh-8rem)] overflow-y-auto">
+        <div className="bg-white p-2">
           {HOURS.map((hour) => (
             <div key={hour} className="h-12 relative">
               <div className={cn(
-                "absolute top-0 -translate-y-1/2 right-3 text-xs font-medium tracking-wide transition-colors",
+                "absolute top-0 -translate-y-1/2 right-4 text-xs font-medium tracking-wide transition-colors whitespace-nowrap",
                 hoveredSlot?.hour === hour ? "text-[#c026d3]" : "text-gray-500"
               )}>
                 {hour}
@@ -146,13 +181,13 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width }: WeekViewC
                 <div
                   key={`${day.toISOString()}-${hour}`}
                   className={cn(
-                    "h-12 border-t first:border-t-0 relative group transition-all duration-150 cursor-pointer",
+                    "h-12 border-t first:border-t-0 relative group transition-all duration-150",
                     hoveredSlot?.date.toISOString() === day.toISOString() && hoveredSlot?.hour === hour
                       ? "bg-[#fdf4ff] border-[#f5d0fe] border-2 -m-[1px] z-10"
                       : "hover:bg-[#fdf4ff]"
                   )}
-                  onMouseEnter={() => setHoveredSlot({ date: day, hour })}
-                  onMouseLeave={() => setHoveredSlot(null)}
+                  onDragOver={(e) => handleDragOver(e, day, hour)}
+                  onDrop={(e) => handleDrop(e, day, hour)}
                   onClick={() => {
                     const [h, ampm] = hour.split(' ');
                     let hourNum = parseInt(h);
@@ -167,8 +202,10 @@ export function WeekViewCalendar({ events, onCreateTaskClick, width }: WeekViewC
                 .map((event) => (
                   <div
                     key={event.id}
+                    draggable
+                    onDragStart={() => handleDragStart(event)}
                     className={cn(
-                      "absolute left-1 right-1 rounded-md px-2 py-1 text-xs overflow-hidden border transition-all duration-150",
+                      "absolute left-1 right-1 rounded-md px-2 py-1 text-xs overflow-hidden border transition-all duration-150 cursor-move",
                       event.color === "#34D399" && "bg-green-50 text-green-800 border-green-200 hover:bg-green-100 hover:border-green-300",
                       event.color === "#F87171" && "bg-red-50 text-red-800 border-red-200 hover:bg-red-100 hover:border-red-300",
                       event.color === "#60A5FA" && "bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100 hover:border-blue-300"
